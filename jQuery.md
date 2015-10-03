@@ -11,6 +11,7 @@
 - [表单选择器](#表单选择器)
 - [操作DOM元素](#操作dom元素)
 - [jQuery事件与应用](#jquery事件与应用)
+- [jQuery动画特效](#jquery动画特效)
 
 <!-- /MarkdownTOC -->
 
@@ -236,7 +237,6 @@ $("#frmTest :checkbox").attr("disabled","true"); 将属性设置为不可用
 ```js
 $("#test").attr("checked",false); 取消id为test的复选框选中状态
 ```
-
 >__*attr()*__ 方法的作用是设置或者返回元素的属性，其中 *attr(”属性名“)* 格式是 __获取__ 元素属性名的值，*attr(”属性名“，”属性值“)* 格式则是 __设置__ 元素属性名的值。
 
 - __[操作元素的内容](http://www.imooc.com/code/186)__  `html() text()` ?!
@@ -250,7 +250,6 @@ $("#test").attr("checked",false); 取消id为test的复选框选中状态
 $("#content").addClass("blue white");
 $("#content").css({"background-color":"red","color":"white"});
 ```
-
 >前者括号中的参数为增加元素的样式名称,增加多个样式名称时，要用__空格__隔开。  
 >后者直接将样式的属性内容写在括号中，同时设置多属性如上例所示。
 
@@ -269,7 +268,6 @@ function rethtml() {
 $("body").append($html);
 $("body").append(rethtml());
 ```
-
 >__*append(content)*__ 方法的功能是向指定的元素中追加内容，被追加的 _content_ 参数，可以是字符、HTML元素标记，还可以是一个返回字符串内容的函数。
 
 - __[使用 appendTo() 方法向 _被选元素内_ 插入内容](#操作dom元素)__  `$(content).appendTo(selector)`
@@ -300,7 +298,6 @@ $("span").each(function (index) {
   }
 });
 ```
-
 >参数 _function_ 为遍历时的回调函数， _index_ 为遍历元素的序列号，它从0开始。
 
 - __[使用 remove() 和 empty() 方法删除元素](http://www.imooc.com/code/197)__ `remove() empty()` ?!
@@ -312,13 +309,88 @@ $("span").each(function (index) {
 <a name="jquery事件与应用"></a>
 ## jQuery事件与应用
 
+- __[页面加载时出发 ready() 事件](#jquery事件与应用)__ `$(document).ready(function(){}) 等价于 $(function(){})`
 
+```js
+$("#tip").ready(function () {
+  $("#btntest").bind("click", function () {
+    $("#tip").html("我被点击了！");
+  });
+});
+```
+>__*ready()*__ 事件类似于onLoad()事件，但前者只要页面的DOM结构加载后便触发，而后者必须在页面全部元素加载成功才触发， __*ready()*__ 可以写多个，按顺序执行。
 
+- __[使用 bind() 方法绑定元素的事件](#jquery事件与应用)__ `$(selector).bind(event,[data] function)`
 
+```js
+$(function () {
+  $("#btntest").bind("mouseout click", function () {
+    $(this).attr("disabled", "true");
+  })
+});
+```
+>绑定前，需要知道被绑定的元素名，绑定的事件名称，事件中执行的函数内容。  
+>参数event为事件名称，多个事件名称用空格隔开，function为事件执行的函数。
 
+- __[使用 hover() 方法切换事件](#jquery事件与应用)__ `$(selector).hover(over，out)`
 
+```js
+$(function () {
+  $("div").hover(
+  function () {
+    $(this).addClass("orange");
+  },
+  function () {
+    $(this).removeClass("orange")；
+  })
+});
+```
+>__*hover()*__ 方法的功能是当鼠标移到所选元素上时，执行方法中的第一个函数，鼠标移出时，执行方法中的第二个函数，实现事件的切实效果。_over_ 参数为移到所选元素上触发的函数，_out_ 参数为移出元素时触发的函数。
 
+- __[使用 toggle() 方法绑定多个函数](#jquery事件与应用)__ `$(selector).toggle(fun1(),fun2(),funN(),...)`
 
+>__注意：__ toggle()方法支持目前主流稳定的jQuery版本1.8.2，在1.9.0之后的版本是不支持的。
+
+- __[使用 unbind() 方法移除元素绑定的事件](#jquery事件与应用)__ `$(selector).unbind(event,fun)`
+
+```js
+$("#btntest").bind("click", function () {
+  $("div").unbind("click dblclick");
+  $(this).attr("disabled", "true");
+});
+```
+>其中参数 _event_ 表示需要移除的事件名称，多个事件名用空格隔开，_fun_ 参数为事件执行时调用的函数名称。
+
+- __[使用 one() 方法绑定元素的一次性事件](#jquery事件与应用)__ `$(selector).one(event,[data],fun)`
+
+>这种方法绑定的事件只会触发一次。  
+>参数 _event_ 为事件名称，_data_ 为触发事件时携带的数据，_fun_ 为触发该事件时执行的函数。
+
+- __[调用 trigger() 方法手动触发指定事件](http://www.imooc.com/code/272)__ `$(selector).trigger(event)` ?!
+
+- __[文本框的 focus 和 blur 事件](#jquery事件与应用)__
+
+>_focus_ 事件在元素获取焦点时触发，如点击文本框时，触发该事件。  
+>_blur_ 事件在元素丢失焦点时触发，如点击除文本框的任何元素，都会触发该事件。
+
+- __[下拉列表框的 change 事件](#jquery事件与应用)__
+
+>当一个元素的值发生变化时，将会触发 _change_ 事件，例如在选择下拉列表框中的选项时，就会触 _change_ 事件。
+
+- __[调用 live() 方法绑定元素的事件](#jquery事件与应用)__ `$(selector).live(event,[data],fun)`
+
+>与 __*bind()*__ 方法相同， __*live()*__ 方法与可以绑定元素的可执行事件，除此相同功能之外， __*live()*__ 方法还可以绑定动态元素，即使用代码添加的元素事件。  
+>参数 _event_ 为事件名称，_data_ 为触发事件时携带的数据，_fun_ 为触发该事件时执行的函数。  
+>__注意：__从 jQuery 1.7 开始，不再建议使用 .live() 方法。1.9不支持.live()，本节代码编辑器里的js引用版本改为了1.8。
+
+***
+
+<a name="jquery动画特效"></a>
+## jQuery动画特效
+
+- __[调用 show() 和 hide() 方法显示和隐藏元素](#jquery动画特效)__  
+`$(selector).show(speed,[callback])`  
+`$(selector).hide(speed,[callback])`
 
 
 
