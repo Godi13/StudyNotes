@@ -9,6 +9,8 @@
 - [过滤选择器](#过滤选择器)
 - [属性选择器](#属性选择器)
 - [表单选择器](#表单选择器)
+- [操作DOM元素](#操作dom元素)
+- [jQuery事件与应用](#jquery事件与应用)
 
 <!-- /MarkdownTOC -->
 
@@ -16,21 +18,21 @@
 
 <a name="引入jquery文件库"></a>
 ## 引入jQuery文件库
-```javascript
+```js
 <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
 ```
 
 ***
 
 ##### JavaScript代码
-```javascript
+```js
 var page_ps=document.getElementsByTagName("p");
 for(var i = 0; i < page_ps.length; i++) {
   page_ps[i].innerHTML = "Hello imooc!";
 }
 ```
 ##### jQuery代码
-```javascript
+```js
 $("p").html("Hello imooc!");
 ```
 
@@ -41,7 +43,7 @@ $("p").html("Hello imooc!");
 
 - __[#id选择器](#选择器)__ `$("#my_id")`
 
-```javascript
+```js
 <div id="divtest">div的内容</div>
 <div id="default"></div>
 <script type="text/javascript">
@@ -51,7 +53,7 @@ $("p").html("Hello imooc!");
 
 - __[element选择器](#选择器)__ `$("element")`
 
-```javascript
+```js
 <button id="btntest">点我</button>
 <script type="text/javascript">
   $("button").attr("disabled","true");
@@ -62,7 +64,7 @@ $("p").html("Hello imooc!");
 
 - __[*选择器](#选择器)__ `$("*")`
 
-```javascript
+```js
 <form action="#">
   <input id="Button1" type="button" value="button" />
   <input id="Text1" type="text" />
@@ -77,7 +79,7 @@ $("p").html("Hello imooc!");
 
 - __[sele1,sele2,seleN选择器](#选择器)__ `$("sele1,sele2,seleN")`
 
-```javascript
+```js
 $(".red,.green").html("Hello");
 $("div,p").html("World");
 ```
@@ -86,7 +88,7 @@ $("div,p").html("World");
 
 >其中ance desc是使用空格隔开的两个参数。ance参数（ancestor祖先的简写）表示父元素；desc参数（descendant后代的简写）表示后代元素，即包括子元素、孙元素等等。
 
-```javascript
+```js
 <div>
   <p>
     <label></label>
@@ -159,7 +161,7 @@ $("div,p").html("World");
 
 - __[[attribute != value] 属性选择器](#属性选择器)__  `例如：$("li[title!='蔬菜']")`
 
-```javascript
+```js
 $("li[title!='蔬菜']").css("background-color", "green");
 ```
 
@@ -188,14 +190,24 @@ $("li[title!='蔬菜']").css("background-color", "green");
 
 - __[:checkbox 复选框选择器](#表单选择器)__  `例如：$("#frmTest :checkbox")`
 
-```javascript
+```js
 $("#frmTest :checkbox").attr("disabled","true"); 将属性设置为不可用
 ```
 
-- __[:submit 提交按钮选择器](#表单选择器)__  `例如：$("#frmTest input:submit")`
+- __[:submit 提交按钮选择器](http://www.imooc.com/code/171)__  `例如：$("#frmTest input:submit")` ?!
 
+```js
+<form id="frmTest" action="#">
+  <input type="button" value="Input Button" /><br />
+  <input type="submit" value="点我就提交了" /><br />
+  <button>  Button  </button>
+</form>
+<script type="text/javascript">
+  $("#frmTest input:submit").addClass("bg_red");
+</script>
+```
 >通常情况下，一个表单中只允许有一个“type”属性值为“submit”的提交按钮，使用 __*:submit*__ 选择器可获取表单中的这个提交按钮元素。  
->__注意：__ `$("#frmTest input:submit")`中`:submit`前面有`input`
+>__注意：__在上例中，`$("#frmTest input:submit")`的`:submit`前面有`input`,因为`<button>`按钮通常也被认为是提交按钮。
 
 - __[:image 图像域选择器](#表单选择器)__  `例如：$("#frmTest :image")`
 
@@ -213,3 +225,100 @@ $("#frmTest :checkbox").attr("disabled","true"); 将属性设置为不可用
 - __[:selected 选中状态选择器](#表单选择器)__  `例如：$("#frmTest :selected")`
 
 >与 __*:checked*__ 选择器相比，__*:selected*__ 选择器只能获取`<select>`下拉列表框中全部处于选中状态的`<option>`选项元素。
+
+***
+
+<a name="操作dom元素"></a>
+## 操作DOM元素
+
+- __[使用attr()方法控制元素的属性](#操作dom元素)__  `attr("属性名") attr("属性名"，"属性值")`
+
+```js
+$("#test").attr("checked",false); 取消id为test的复选框选中状态
+```
+
+>__*attr()*__ 方法的作用是设置或者返回元素的属性，其中 *attr(”属性名“)* 格式是 __获取__ 元素属性名的值，*attr(”属性名“，”属性值“)* 格式则是 __设置__ 元素属性名的值。
+
+- __[操作元素的内容](http://www.imooc.com/code/186)__  `html() text()` ?!
+
+>使用 __*html()*__ 和 __*text()*__ 方法操作元素的内容，当两个方法的参数为空时，表示获取该元素的内容，而如果方法中包含参数，则表示将参数值设置为元素内容。  
+> __注意：__ __*html()*__ 方法可以获取元素的HTML内容，因此，原文中的格式代码也被一起获取，而 __*text()*__ 方法只是获取元素中的文本内容，并不包含HTML格式代码。
+
+- __[操作元素的样式](#操作dom元素)__  `addclass() css()`
+
+```js
+$("#content").addClass("blue white");
+$("#content").css({"background-color":"red","color":"white"});
+```
+
+>前者括号中的参数为增加元素的样式名称,增加多个样式名称时，要用__空格__隔开。  
+>后者直接将样式的属性内容写在括号中，同时设置多属性如上例所示。
+
+- __[移除属性和样式](#操作dom元素)__  `removeAttr(name) removeClass(class)`
+
+>分别可以实现移除元素的属性和样式的功能，前者方法中参数表示移除的__属性名__，后者方法中参数则表示移除的__样式名__
+
+- __[使用 append() 方法向元素内追加内容](#操作dom元素)__  `$(selector).append(content)`
+
+```js
+var $html = "<div id='test' title='hi'>动态创建</div>";
+function rethtml() {
+  var $html = "<div id='test' title='hi'>调用函数创建</div>";
+  return $html;
+}
+$("body").append($html);
+$("body").append(rethtml());
+```
+
+>__*append(content)*__ 方法的功能是向指定的元素中追加内容，被追加的 _content_ 参数，可以是字符、HTML元素标记，还可以是一个返回字符串内容的函数。
+
+- __[使用 appendTo() 方法向 _被选元素内_ 插入内容](#操作dom元素)__  `$(content).appendTo(selector)`
+
+>参数 _content_ 表示需要插入的内容，参数 _selector_ 表示被选的元素，即把 _content_ 内容插入 _selector_ 元素__内__，默认是在尾部。
+
+- __[使用 before() 和 after() 在 _元素前后_ 插入内容](#操作dom元素)__  `$(selector).before(content) $(selector).after(content)`
+
+>将 _content_ 内容插入到原有 _selector_ 元素内容前后，而并不仅是它的内部。
+
+- __[使用 clone() 方法复制元素](#操作dom元素)__ `$(selector).clone()`
+
+>调用 __*clone()*__ 方法可以生成一个被选元素的副本，即复制了一个被选元素，包含它的__节点__、__文本__和__属性__.
+
+- __[替换内容](#操作dom元素)__ `$(selector).replaceWith(content) $(content).replaceAll(selector)`
+
+- __[使用 wrap() 和 wrapInner() 方法包裹元素和内容](#操作dom元素)__ `$(selector).wrap(wrapper) $(content).wrapInner(wrapper)`
+
+>前者用于包裹元素本身，后者则用于包裹元素 __*内*__ 的内容。  
+>参数 _selector_ 为被包裹的元素， _wrapper_ 参数为包裹元素的格式。
+
+- __[使用 each() 方法遍历元素](#操作dom元素)__ `$(selector).each(function(index))`
+
+```js
+$("span").each(function (index) {
+  if (index == 1) {
+    $(this).attr("class", "red");
+  }
+});
+```
+
+>参数 _function_ 为遍历时的回调函数， _index_ 为遍历元素的序列号，它从0开始。
+
+- __[使用 remove() 和 empty() 方法删除元素](http://www.imooc.com/code/197)__ `remove() empty()` ?!
+
+>__*remove()*__ 方法删除所选元素本身和子元素，该方法可以通过添加过滤参数指定需要删除的某些元素，而 __*empty()*__ 方法则只删除所选元素的子元素。
+
+***
+
+<a name="jquery事件与应用"></a>
+## jQuery事件与应用
+
+
+
+
+
+
+
+
+
+
+
