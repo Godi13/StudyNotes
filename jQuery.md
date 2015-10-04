@@ -12,6 +12,7 @@
 - [操作DOM元素](#操作dom元素)
 - [jQuery事件与应用](#jquery事件与应用)
 - [jQuery动画特效](#jquery动画特效)
+- [jQuery实现Ajax应用](#jquery实现ajax应用)
 
 <!-- /MarkdownTOC -->
 
@@ -257,7 +258,7 @@ $("#content").css({"background-color":"red","color":"white"});
 
 >分别可以实现移除元素的属性和样式的功能，前者方法中参数表示移除的__属性名__，后者方法中参数则表示移除的__样式名__
 
-- __[使用 append() 方法向元素内追加内容](#操作dom元素)__  `$(selector).append(content)`
+- __[使用 append() 方法向 __*元素内*__ 追加内容](#操作dom元素)__  `$(selector).append(content)`
 
 ```js
 var $html = "<div id='test' title='hi'>动态创建</div>";
@@ -391,6 +392,232 @@ $("#btntest").bind("click", function () {
 - __[调用 show() 和 hide() 方法显示和隐藏元素](#jquery动画特效)__  
 `$(selector).show(speed,[callback])`  
 `$(selector).hide(speed,[callback])`
+
+>参数 _speed_ 设置隐藏或显示时的速度值，可为 “ _slow_ ” 、“ _fast_ ” 或毫秒数值,“ _slow_ ” 、“ _fast_ ” 需要用 __" "__ 括起来，毫秒数值不需要括起来，可选项参数 _callback_ 为隐藏或显示动作执行完成后调用的函数名。
+
+- __[调用 toggle() 方法实现动画切换效果](#jquery动画特效)__ `$(selector).toggle(speed,[callback])`
+
+```js
+$(function () {
+var $spn = $("#spnTip");
+  $("h4").bind("click", function () {
+    $("ul").toggle(1000, function () {
+      $spn.html() == "隐藏" ? $spn.html("显示") : $spn.html("隐藏");
+    })
+  });
+});
+```
+>调用 __*toggle()*__ 方法就可以很容易做到，即如果元素处于显示状态，调用该方法则隐藏该元素，反之，则显示该元素。
+
+- __[使用 slideUp() 和 slideDown() 方法的滑动效果](#jquery动画特效)__  
+`$(selector).slideUp(speed,[callback])`  
+`$(selector).slideDown(speed,[callback])`
+
+>__注意：__ __*slideDown()*__ 仅适用于 __被隐藏__ 的元素； __*slideup()*__ 则相反。
+
+- __[使用 slideToggle() 方法实现滑动效果](#jquery动画特效)__ `$(selector).slideToggle(speed,[callback])`
+
+>使用 __*slideToggle()*__ 方法可以切换 slideUp() 和 slideDown() ，即调用该方法时，如果元素已向上滑动，则元素自动向下滑动，反之，则元素自动向上滑动。
+
+- __[使用 fadeIn() 与 fadeOut() 方法实现淡入淡出效果](#jquery动画特效)__  
+`$(selector).fadeIn(speed,[callback])`  
+`$(selector).fadeOut(speed,[callback])`
+
+>__*fadeIn()*__ 和 __*fadeOut()*__ 方法可以实现元素的淡入淡出效果，前者淡入隐藏的元素，后者可以淡出可见的元素。
+
+- __[使用 fadeTo() 方法设置淡入淡出效果的不透明度](#jquery动画特效)__ `$(selector).fadeTo(speed,opacity,[callback])`
+
+```js
+$(function () {
+    $("span").each(function (index) {
+        switch (index) {
+            case 0:
+                $(this).fadeTo(1000,0.2);
+                break;
+            case 1:
+                $(this).fadeTo(1000,0.4);
+                break;
+            case 2:
+                $(this).fadeTo(1000,0.6);
+                break;
+        }
+    });
+});
+```
+>其中 _speed_ 参数为效果的速度，_opacity_ 参数为指定的不透明值，它的取值范围是0.0~1.0，可选项参数 _callback_ 为效果完成后，回调的函数名。
+
+- __[调用 animate() 方法制作简单的动画效果](#jquery动画特效)__ `$(selector).animate({params},speed,[callback])`
+
+```js
+$(function () {
+    $("span").animate({
+        width: "80px",
+        height: "80px"
+    },
+    3000, function () {
+        $("#tip").html("执行完成!");
+    });
+});
+```
+> _params_ 参数为制作动画效果的CSS属性名与值，_speed_ 参数为动画的效果的速度，单位为毫秒，可选项 _callback_ 参数为动画完成时执行的回调函数名。
+
+- __[调用 animate() 方法制作移动位置的动画](#jquery动画特效)__ `$(selector).animate({params},speed,[callback])`
+
+```js
+$(function () {
+    $("span").animate({
+        left: "+=100px"
+    }, 3000, function () {
+        $("span").animate({
+            height: '+=30px',
+            width: '+=30px'
+        }, 3000, function () {
+            $("#tip").html("执行完成!");
+        });
+    });
+});
+
+先移动,再放大,最后显示字样
+```
+>调用 __*animate()*__ 方法不仅可以制作简单渐渐变大的动画效果，而且还能制作移动位置的动画，在移动位置之前，必须将被移元素的 “_position_” 属性值设为 “_absolute_” 或 “_relative_”，否则，该元素移动不了。
+
+- __[调用 stop() 方法停止当先所有动画效果](#jquery动画特效)__ `$(selector).stop([clearQueue],[goToEnd])`
+
+>__*stop()*__ 方法的功能是在动画完成之前，停止当前正在执行的动画效果，这些效果包括滑动、淡入淡出和自定义的动画。  
+>其中，两个__可选项__参数 _clearQueue_ 和 _goToEnd_ 都是__布尔__类型值，前者表示是否停止正在执行的动画，后者表示是否完成正在执行的动画，默认为 _false_ 。
+
+- __[调用 delay() 方法延时执行动画效果](#jquery动画特效)__ `$(selector).delay(duration)`
+
+>参数 _duration_ 为延时值，它的单位是毫秒，当超过延时值时，动画继续执行。
+
+***
+
+<a name="jquery实现ajax应用"></a>
+## jQuery实现Ajax应用
+
+- __[使用 load() 方法异步请求数据](#jquery实现ajax应用)__ `load(url,[data],[callback])`
+
+>使用 __*load()*__ 方法通过Ajax请求加载服务器中的数据，并把返回的数据放置到指定的元素中。  
+>参数 _url_ 为加载服务器地址，可选项 _data_ 参数为请求时发送的数据， _callback_ 参数为数据请求成功后，执行的回调函数。
+
+- __[使用 getJSON() 方法异步加载JSON格式数据](#jquery实现ajax应用)__  
+`jQuery.getJSON(url,[data],[callback])` __或__ `$.getJSON(url,[data],[callback])`
+
+```js
+$(function () {
+    $("#btnShow").bind("click", function () {
+        var $this = $(this);
+        $.getJSON("http://www.imooc.com/data/sport.json",function(data){
+            $this.attr("disabled", "true");
+            $.each(data, function (index, sport) {
+                if(index==3)
+                $("ul").append("<li>" + sport["name"] + "</li>");
+            });
+        });
+    });
+});
+```
+>使用 __*getJSON()*__ 方法可以通过Ajax异步请求的方式，获取服务器中的数组，并对获取的数据进行解析，显示在页面中。  
+> _url_ 参数为请求加载 _json_ 格式文件的服务器地址，可选项 _data_ 参数为请求时发送的数据，_callback_ 参数为数据请求成功后，执行的回调函数。
+
+- __[使用 getScript() 方法异步加载并执行js文件](#jquery实现ajax应用)__  
+`jQuery.getScript(url,[callback])` __或__ `$.getScript(url,[callback])`
+
+```js
+加载例如这样的javascript文件
+
+var data = [{
+    "name": "足球"
+}, {
+    "name": "散步"
+}, {
+    "name": "篮球"
+}, {
+    "name": "乒乓球"
+}, {
+    "name": "骑自行车"
+}];
+$.each(data, function (index, sport) {
+    if (index == 1)
+        $("ul").append("<li>" + sport["name"] + "</li>");
+});
+```
+
+- __[使用 get() 方法以 GET 方式从服务器获取数据](#jquery实现ajax应用)__ `$.get(url,[callback])`
+
+- __[使用 post() 方法以 POST 方式从服务器发送数据](#jquery实现ajax应用)__ `$.post(url,[data],[callback])`
+
+- __[使用 serialize() 方法序列化表单元素值](#jquery实现ajax应用)__ `$(selector).serialize()`
+
+```js
+$(function () {
+  $("#btnAction").bind("click", function() {
+    $("#litest").html($("form").serialize() );
+  });
+});
+```
+>使用 __*serialize()*__方法可以将表单中有 _name_ 属性的元素值进行序列化，生成标准 _URL_ 编码文本字符串，直接可用于 _ajax_ 请求。其中 _selector_ 参数是一个或多个表单中的元素或表单元素本身。
+
+- __[使用 ajax() 方法加载服务器数据](#jquery实现ajax应用)__ `jQuery.ajax([settings])` 或 `$.ajax([settings])`
+
+```js
+$(function () {
+    $("#btnCheck").bind("click", function () {
+        $.ajax({
+            url: "http://www.imooc.com/data/check.php",
+            data: { num: $("#txtNumber").val() },
+            type: "post",
+            success: function (data) {
+                $("ul").append("<li>你输入的<b>  "
+                + $("#txtNumber").val() + " </b>是<b> "
+                + data + " </b></li>");
+            };
+        });
+    });
+});
+```
+>使用 __*ajax()*__ 方法是最底层、功能最强大的请求服务器数据的方法，它不仅可以获取服务器返回的数据，还能向服务器发送请求并传递数值。  
+>其中参数 _settings_ 为发送 _ajax_ 请求时的配置对象，在该对象中，_url_ 表示服务器请求的路径，_data_ 为请求时传递的数据，_dataType_ 为服务器返回的数据类型，_success_ 为请求成功的执行的回调函数，_type_ 为发送数据请求的方式，默认为 _get_ 。
+
+- __[使用 ajaxSetup() 方法设置全局Ajax默认选项](#jquery实现ajax应用)__ `jQuery.ajaxSetup([options])` 或 `$.ajaxSetup([options])`
+
+```js
+$(function () {
+  $.ajaxSetup({
+      type: "post",
+      success: function (data) {
+      $("ul").append("<li>你输入的<b>  "
+          + $("#txtNumber").val() + " </b>是<b> "
+          + data + " </b></li>");
+      }
+  });
+  $("#btnShow_1").bind("click", function () {
+      $.ajax({
+          data: { num: $("#txtNumber").val() },
+          url: "http://www.imooc.com/data/check.php"
+      });
+  });
+  $("#btnShow_2").bind("click", function () {
+      $.ajax({
+          data: { num: $("#txtNumber").val() },
+          url: "http://www.imooc.com/data/check_f.php"
+      });
+});
+```
+>使用 __*ajaxSetup()*__方法可以设置 Ajax 请求的一些全局性选项值，设置完成后，后面的 Ajax 请求将不需要再添加这些选项值。可选项 _options_ 参数为一个对象，通过该对象设置 Ajax 请求时的全局选项值。
+
+- __[使用 ajaxStart() 和 ajaxStop() 方法](#jquery实现ajax应用)__  
+`$(selector).ajaxStart(function())`  
+`$(selector).ajaxStop(function())`
+
+>__*ajaxStart()*__ 和 __*ajaxStop()*__ 方法是绑定Ajax事件。__*ajaxStart()*__ 方法用于在Ajax请求发出前触发函数，__*ajaxStop()*__ 方法用于在Ajax请求完成后触发函数。
+
+
+
+
+
+
+
 
 
 
