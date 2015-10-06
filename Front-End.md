@@ -34,9 +34,9 @@
       default = current
     [merge]
       tool = meld
-`git throw` 用于在修改过程中，尚未推送前，回滚到最后一次推送的版本。  
-`git throwh` 会删除掉最近一次推送的版本。  
-`git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。  
+`git throw` 用于在修改过程中，尚未推送前，回滚到最后一次推送的版本。
+`git throwh` 会删除掉最近一次推送的版本。
+`git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。
 `git rebase -i origin/gh-pages` 合并最新版本到指定的指针所指版本之间所有的版本。
 
 >参考视频教程：*HappyPeter* 老师的 [如何利用Git辅助本地项目开发](http://haoduoshipin.com/v/92) 和 [git使用技巧：小步快跑](http://qd.haoduoshipin.com/p/git-tricks)
@@ -46,12 +46,12 @@
 ## 工作环境配置
 
 #### 1. Ubuntu14.04 服务器上安装 NodeJS
->0. 添加 PPA  
+>0. 添加 PPA
 `$ curl -sL https://deb.nodesource.com/setup | sudo bash -`
-1. 安装 PPA 中提供的nodejs 和 npm  
+1. 安装 PPA 中提供的nodejs 和 npm
 `$ sudo apt-get install nodejs`
-2. 安装编译环境  
-由于 npm 装包的时候，有些 node 的包是需要在本地编译的，所以还要保证系统上有编译环境，很简单，只需要安装  
+2. 安装编译环境
+由于 npm 装包的时候，有些 node 的包是需要在本地编译的，所以还要保证系统上有编译环境，很简单，只需要安装
 `$ sudo apt-get install build-essential`
 
 >参考资料: [How To Install Node.js on an Ubuntu 14.04 server](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server)
@@ -111,7 +111,7 @@
     进入项目文件夹下，在项目内安装gulp
 
     gulp -v                  //查看gulp版本信息
-    npm init                 //一路回去确认，保留默认设置即可，得到 package.json
+    npm init                 //一路回车确认，保留默认设置即可，得到 package.json
     npm i gulp --save-dev    //将gulp信息保留到package.json，同时会生成node_modules文件夹
     vim package.json         //可以在最下面看到gulp版本信息
     vim .gitignore           //输入node_modules/
@@ -174,3 +174,21 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 ```
 
 * [网站文字排版的技巧](http://www.haoduoshipin.com/v/80)
+
+## Ubuntu 环境设置
+
+#### 1. .bashrc 添加
+
+    # Change umask to make directory sharing easier
+    umask 0002
+    # Ignore duplicates in command history and increase
+    # history size to 1000 lines
+    export HISTCONTROL=ignoredups
+    export HISTSIZE=1000
+    # Add some helpful aliases
+    alias l.='ls -d .* --color=auto'
+    # alias ll='ls -l --color=auto'
+
+    alias subl='LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so /opt/sublime_text/sublime_text'
+
+    export PATH=~/.npm-global/bin:$PATH
