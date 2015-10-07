@@ -1,5 +1,20 @@
 # 知识点整理
 
+## 索引
+<!-- MarkdownTOC -->
+
+- [GitHub](#github)
+- [工作环境配置](#工作环境配置)
+- [工具使用](#工具使用)
+- [设计相关](#设计相关)
+- [Ubuntu 环境设置](#ubuntu-环境设置)
+- [CSS相关](#css相关)
+
+<!-- /MarkdownTOC -->
+
+***
+
+<a name="github"></a>
 ## GitHub
 #### 1. Github上创建新项目静态网页
 >0. 新建仓库，命名如：`qd`
@@ -34,15 +49,16 @@
       default = current
     [merge]
       tool = meld
-`git throw` 用于在修改过程中，尚未推送前，回滚到最后一次推送的版本。
-`git throwh` 会删除掉最近一次推送的版本。
-`git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。
+`git throw` 用于在修改过程中，尚未推送前，回滚到最后一次推送的版本。  
+`git throwh` 会删除掉最近一次推送的版本。  
+`git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。  
 `git rebase -i origin/gh-pages` 合并最新版本到指定的指针所指版本之间所有的版本。
 
 >参考视频教程：*HappyPeter* 老师的 [如何利用Git辅助本地项目开发](http://haoduoshipin.com/v/92) 和 [git使用技巧：小步快跑](http://qd.haoduoshipin.com/p/git-tricks)
 
 ***
 
+<a name="工作环境配置"></a>
 ## 工作环境配置
 
 #### 1. Ubuntu14.04 服务器上安装 NodeJS
@@ -106,7 +122,10 @@
     gulp          //确认gulp安装是否成功
     which gulp    //确认gulp安装位置
 
-#### 4. glup使用
+<a name="工具使用"></a>
+## 工具使用
+
+#### 1. glup
 
     进入项目文件夹下，在项目内安装gulp
 
@@ -130,7 +149,7 @@ gulp.task('sass',function(){    //任务名’sass‘
 ```
     gulp sass   //执行任务名为'sass'的命令，会新建文件夹css，里面有main.css
 
->自动更新sass变动
+###### 自动更新sass变动
 
 ```js
 在 gulpfile.js 文件中添加
@@ -141,7 +160,7 @@ gulp.task('watch',function(){
 ```
     gulp watch  //开始自动更新
 
->安装其他的gulp插件方法，如 autoprefixer
+###### 安装其他的gulp插件方法，如 autoprefixer
 
     npm i gulp-autoprefixer -D    //先在终端安装插件
 
@@ -153,8 +172,94 @@ var prefix = require('gulp-autoprefixer');
       .pipe(prefix())            //prefix()可以设置支持的浏览器版本，具体的看官方文档
 ```
 
+###### [在gulp出错时不中止watch的方法](https://github.com/happypeter/modern-web-dev/issues/19)
+
+```js
+function handleError(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
+
+      .on('error', handleError)  //加入.pipe(sass())下面即可
+```
+
+#### 2. React
+
+>0. 命名组件时，首字母要大写
+0. [国内cdn](http://www.bootcdn.cn/react/) 复制`//cdn.bootcss.com/react/0.14.0-rc1/react.js` 粘贴后添加`http:` 不用启动服务器文件
+0. _JSXTransformer.js_ 仅在开发测试阶段使用，上线之前需要预编译
+0. [HTML to JSX Compiler](http://facebook.github.io/react/html-jsx.html) 转换 _HTML_ 到 _JSX_
+0. 父子嵌套时，父元素要注意包裹才可生效，出问题可以看一下Chrome开发者工具中报的什么错误
+
+* ###### 原版
+
+```html
+<script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
+
+<div id="app"></div>
+<script>
+var HelloWorld = React.createClass({
+  render: function(){
+    return (
+      React.createElement("div", null,
+        "Hello World!"
+      )
+    )
+  }
+});
+React.render(React.createElement(HelloWorld, null), document.getElementById('app'));
+</script>
+```
+* ###### 改进版
+
+```html
+<script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
+<script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+
+<div id="app"></div>
+  <script type="text/jsx">
+    var HelloWorld = React.createClass({
+      render: function(){
+        return (
+            <div> Hello World </div>
+            )
+          }
+    });
+    React.render(<HelloWorld />, document.getElementById('app'));
+  </script>
+```
+* ###### 父子嵌套
+
+```html
+<script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
+<script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
+
+<script type="text/jsx">
+  var Child= React.createClass({
+    render: function(){
+      return (
+          <div> Child </div>
+          )
+        }
+  });
+  var Parent = React.createClass({
+    render: function(){
+      return (
+          <div>
+            <div> Hello World </div>
+            <Child/>
+          </div>
+          )
+        }
+  });
+  React.render(<Parent />, document.getElementById('app'));
+</script>
+```
+>参考视频教程： *HappyPeter* 老师的 [好多视频第164期](http://haoduoshipin.com/v/164)
+
 ***
 
+<a name="设计相关"></a>
 ## 设计相关
 
 * [GitHub组件标准](http://primercss.io/)
@@ -175,6 +280,9 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 
 * [网站文字排版的技巧](http://www.haoduoshipin.com/v/80)
 
+***
+
+<a name="ubuntu-环境设置"></a>
 ## Ubuntu 环境设置
 
 #### 1. .bashrc 添加
@@ -192,3 +300,34 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
     alias subl='LD_PRELOAD=/opt/sublime_text/libsublime-imfix.so /opt/sublime_text/sublime_text'
 
     export PATH=~/.npm-global/bin:$PATH
+
+<a name="css相关"></a>
+## CSS相关
+
+#### 1. .clearfix
+
+```sass
+.clearfix:before,
+.clearfix:after
+{
+ content: " ";
+ display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+```
+>参考视频教程： *HappyPeter* 老师的 [Clearfix详解](http://qd.haoduoshipin.com/p/clearfix-in-detail)  
+>参考资料：[The very latest new new way to do "clearfix"](http://cssmojo.com/latest_new_clearfix_so_far/)
+
+#### 2. 常用CSS
+
+```sass
+* {
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {}  //当最小宽度大于600px时
+
+border：1px solid red;   //调式时可以先添加边框
+```
