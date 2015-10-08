@@ -1,31 +1,55 @@
-# 知识点整理
+# 索引
 
-## 索引
 <!-- MarkdownTOC -->
 
-- [GitHub](#github)
-- [工作环境配置](#工作环境配置)
-- [工具使用](#工具使用)
-- [设计相关](#设计相关)
-- [Ubuntu 环境设置](#ubuntu-环境设置)
-- [CSS相关](#css相关)
+- [知识点整理](#知识点整理)
+  - [GitHub](#github)
+    - [1. Github上创建新项目静态网页](#1-github上创建新项目静态网页)
+    - [2. push后发现版本有误等情况的时候](#2-push后发现版本有误等情况的时候)
+    - [3. ～/.gitconfig设置与Git技巧之小步快跑](#3-～gitconfig设置与git技巧之小步快跑)
+  - [工作环境配置](#工作环境配置)
+    - [1. Ubuntu14.04 服务器上安装 NodeJS](#1-ubuntu1404-服务器上安装-nodejs)
+    - [2. Ubuntu 14.04 安装 node v4](#2-ubuntu-1404-安装-node-v4)
+    - [3. glup安装](#3-glup安装)
+    - [4. webpack + React 镜像安装](#4-webpack--react-镜像安装)
+  - [工具使用](#工具使用)
+    - [1. glup](#1-glup)
+    - [2. React基础讲解](#2-react基础讲解)
+    - [3. webpack](#3-webpack)
+    - [4. webpack + React](#4-webpack--react)
+    - [5. webpack + css](#5-webpack--css)
+    - [6.React组件复用](#6react组件复用)
+  - [设计相关](#设计相关)
+  - [Ubuntu](#ubuntu)
+    - [1. .bashrc 添加](#1-bashrc-添加)
+    - [2. deb 包命令](#2-deb-包命令)
+  - [CSS相关](#css相关)
+    - [1. .clearfix](#1-clearfix)
+    - [2. 常用CSS](#2-常用css)
 
 <!-- /MarkdownTOC -->
+
+<a name="知识点整理"></a>
+# 知识点整理
 
 ***
 
 <a name="github"></a>
 ## GitHub
+
+<a name="1-github上创建新项目静态网页"></a>
 #### 1. Github上创建新项目静态网页
 >0. 新建仓库，命名如：`qd`
 1. 建立分支保存名称：`gh-pages`
 2. 创建`index.html`文件
 3. 输入`godi13.github.io/qd`即可登陆该分支网页
 
+<a name="2-push后发现版本有误等情况的时候"></a>
 #### 2. push后发现版本有误等情况的时候
 
 >[How to undo (almost) anything with Git](https://github.com/blog/2019-how-to-undo-almost-anything-with-git)
 
+<a name="3-～gitconfig设置与git技巧之小步快跑"></a>
 #### 3. ～/.gitconfig设置与Git技巧之小步快跑
 
     [user]
@@ -61,6 +85,7 @@
 <a name="工作环境配置"></a>
 ## 工作环境配置
 
+<a name="1-ubuntu1404-服务器上安装-nodejs"></a>
 #### 1. Ubuntu14.04 服务器上安装 NodeJS
 >0. 添加 PPA
 `$ curl -sL https://deb.nodesource.com/setup | sudo bash -`
@@ -72,7 +97,9 @@
 
 >参考资料: [How To Install Node.js on an Ubuntu 14.04 server](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-an-ubuntu-14-04-server)
 
+<a name="2-ubuntu-1404-安装-node-v4"></a>
 #### 2. Ubuntu 14.04 安装 node v4
+
     打开终端输入
 
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.27.1/install.sh | bash
@@ -103,6 +130,7 @@
 
     可以看到系统上的 node 版本已经是 4.1.1 了
 
+<a name="3-glup安装"></a>
 #### 3. glup安装
 
     npm get prefix        //获取Nodejs安装位置信息
@@ -122,9 +150,36 @@
     gulp          //确认gulp安装是否成功
     which gulp    //确认gulp安装位置
 
+<a name="4-webpack--react-镜像安装"></a>
+#### 4. webpack + React 镜像安装
+
+    npm i -g webpack     //全局安装webpack，如果失败可以使用淘宝镜像，方法如下
+
+    在～/.bashrc中添加
+    #alias for cnpm
+    alias cnpm="npm --registry=https://registry.npm.taobao.org \
+    --cache=$HOME/.npm/.cache/cnpm \
+    --disturl=https://npm.taobao.org/dist \
+    --userconfig=$HOME/.cnpmrc "
+
+    source .bashrc       //添加后运行
+    vim .cnpmrc          //打开cnpmrc，输入 prefix=~/.npm-global
+    source .cnpmrc       //添加后运行
+
+    cnpm i -g webpack    //使用淘宝镜像进行全局安装
+
+    测试：新建一个文件夹，进入后输入
+    npm init             //一路回车，生成 package.json 文件
+    cnpm i -g react react-dom        //全局安装，查看返回信息 react@0.14.0 /home/godi13/.npm-global/lib/node_modules/react 正确
+    cnpm i --save react react-dom    //局部安装，查看返回信息 react@0.14.0 node_modules/react 正确
+
+>[淘宝npm镜像](http://npm.taobao.org/)  
+>[webpack学习资料](https://fakefish.github.io/react-webpack-cookbook/)
+
 <a name="工具使用"></a>
 ## 工具使用
 
+<a name="1-glup"></a>
 #### 1. glup
 
     进入项目文件夹下，在项目内安装gulp
@@ -135,6 +190,7 @@
     vim package.json         //可以在最下面看到gulp版本信息
     vim .gitignore           //输入node_modules/
     npm i gulp-sass -D       // i 相当于install，-D 相当于--save-dev，gulp-sass 依赖于 libsass
+
 ```js
 创建 gulpfile.js 文件
 
@@ -160,6 +216,17 @@ gulp.task('watch',function(){
 ```
     gulp watch  //开始自动更新
 
+###### [在gulp出错时不中止watch的方法](https://github.com/happypeter/modern-web-dev/issues/19)
+
+```js
+function handleError(err) {
+  console.log(err.toString());
+  this.emit('end');
+}
+
+      .on('error', handleError)  //加入.pipe(sass())下面即可
+```
+
 ###### 安装其他的gulp插件方法，如 autoprefixer
 
     npm i gulp-autoprefixer -D    //先在终端安装插件
@@ -172,18 +239,8 @@ var prefix = require('gulp-autoprefixer');
       .pipe(prefix())            //prefix()可以设置支持的浏览器版本，具体的看官方文档
 ```
 
-###### [在gulp出错时不中止watch的方法](https://github.com/happypeter/modern-web-dev/issues/19)
-
-```js
-function handleError(err) {
-  console.log(err.toString());
-  this.emit('end');
-}
-
-      .on('error', handleError)  //加入.pipe(sass())下面即可
-```
-
-#### 2. React
+<a name="2-react基础讲解"></a>
+#### 2. React基础讲解
 
 >0. 命名组件时，首字母要大写
 0. [国内cdn](http://www.bootcdn.cn/react/) 复制`//cdn.bootcss.com/react/0.14.0-rc1/react.js` 粘贴后添加`http:` 不用启动服务器文件
@@ -191,7 +248,7 @@ function handleError(err) {
 0. [HTML to JSX Compiler](http://facebook.github.io/react/html-jsx.html) 转换 _HTML_ 到 _JSX_
 0. 父子嵌套时，父元素要注意包裹才可生效，出问题可以看一下Chrome开发者工具中报的什么错误
 
-* ###### 原版
+>原版
 
 ```html
 <script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
@@ -210,7 +267,8 @@ var HelloWorld = React.createClass({
 React.render(React.createElement(HelloWorld, null), document.getElementById('app'));
 </script>
 ```
-* ###### 改进版
+
+>改进版
 
 ```html
 <script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
@@ -226,14 +284,16 @@ React.render(React.createElement(HelloWorld, null), document.getElementById('app
           }
     });
     React.render(<HelloWorld />, document.getElementById('app'));
-  </script>
+</script>
 ```
-* ###### 父子嵌套
+
+>父子嵌套
 
 ```html
 <script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
 <script src="http://cdn.bootcss.com/react/0.14.0-beta3/JSXTransformer.js"></script>
 
+<div id="app"></div>
 <script type="text/jsx">
   var Child= React.createClass({
     render: function(){
@@ -247,7 +307,7 @@ React.render(React.createElement(HelloWorld, null), document.getElementById('app
       return (
           <div>
             <div> Hello World </div>
-            <Child/>
+            <Child />
           </div>
           )
         }
@@ -256,6 +316,189 @@ React.render(React.createElement(HelloWorld, null), document.getElementById('app
 </script>
 ```
 >参考视频教程： *HappyPeter* 老师的 [好多视频第164期](http://haoduoshipin.com/v/164)
+
+<a name="3-webpack"></a>
+#### 3. webpack
+
+    npm init    //初始化，生成package.json文件，一路回车即可
+
+    npm i --save-dev webpack    //局部安装webpack
+
+  >打开subl，创建 _webpack.config.js_ 配置文件，进入[webpack网站](http://webpack.github.io/docs/tutorials/getting-started/)，复制如下代码：
+
+```js
+module.exports = {
+    entry: "./entry.js",
+    output: {
+        path: __dirname,
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.css$/, loader: "style!css" }
+        ]
+    }
+};
+```
+>测试：只是打捆js文件，可以删除暂时用不到的代码，修改 entry.js 为 main.js，如下：
+
+```js
+module.exports = {
+    entry: "./main.js",         //修改为自己习惯名字
+    output: {
+        path: __dirname,        //输出位置，当前文件夹下
+        filename: "bundle.js"   //输出文件名
+    }
+};
+```
+>分别创建main.js，hello.js添加如下内容
+
+```js
+//main.js
+require("./hello.js");          //此处要添加路径./，否则会报错
+console.log("I am main.js");
+
+//hello.js
+console.log("I am hello.js");
+```
+>完成后在终端执行 `webpack` ，生成 `bundle.js` 文件，执行 `node bundle.js` 确认结果
+
+<a name="4-webpack--react"></a>
+#### 4. webpack + React
+
+>删除 _index.html_ 中其他的js，加入
+
+```html
+<script src="bundle.js"></script>
+```
+
+>创建 _webpack.config.js_ 配置文件，输入以下内容
+
+```js
+module.exports = {
+    entry: "./main.js",
+    output: {
+        path: __dirname,
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.js$/, loader: "babel" }  //检测文件后缀名为.js，打捆js文件
+        ]
+    }
+};
+```
+    cnpm i --save-dev babel-loader   //局部安装babel-loader完成后，可以把index.html中的JSXTransformer.js路径删除
+    cnpm i --save react react-dom    //局部安装react完成后，可以把index.html中的React.js路径删除
+
+###### 实际案例修改过程
+
+>在各个组件中添加如下代码
+
+```js
+var React = require('react');        //调用react
+
+module.exports = 组件名称;            //将组件变成模块，保证 main.js 可以 require 进来
+```
+>在 _App.js_ 中添加
+
+```js
+var React = require('react');
+var Action = require('./Action.js');  //路径
+var Haoduo = require('./Haoduo.js');  //路径
+var Books = require('./Books.js');    //路径
+
+module.exports = App;
+```
+>新建 _main.js_ 文件，添加
+
+```js
+var React = require('react');
+var ReactDOM = require('react-dom');                        //React v0.14 建议增加ReactDOM
+var App = require('./components/App.js');                   //注意要有路径
+
+ReactDOM.render(<App />, document.getElementById('app'));  //React v0.14 建议改为ReactDOM.render
+```
+>以上都修改完成后，执行 `webpack`
+
+<a name="5-webpack--css"></a>
+#### 5. webpack + css
+
+>删除 _gulpfile.js_  
+删除 _package.json_ 中 _gulp_ 相关工具  
+安装以下loader
+
+    cnpm i -D style-loader css-loader sass-loader autoprefixer-loader
+
+>在 _webpack.config.js_ 文件中添加 _loader_
+
+```js
+module.exports = {
+    entry: "./main.js",
+    output: {
+        path: __dirname,
+        filename: "bundle.js"
+    },
+    module: {
+        loaders: [
+            { test: /\.js$/, loader: "babel" },                         //注意这要有一个逗号！！
+            { test: /\.scss$/, loader: "style!css!autoprefixer!sass" }  //检测后缀为 .scss 的文件
+        ]
+    }
+};
+```
+>现在可以直接在 _main.js_ 中 _require_ 非 _js_ 文件了，添加
+
+```js
+require('./styles/main.scss');
+```
+>现在可以删除 _index.html_ 中的
+
+```html
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+```
+
+    webpack --watch   //效果类似于 gulp watch
+
+>__最终只需要上传 _index.html_ 和 _bundle.js_ 文件即可__
+
+<a name="6react组件复用"></a>
+#### 6.React组件复用
+
+>React支持从父组件向子组件传递属性值
+
+```js
+//Button.js
+var React = require('react');
+var classNames = require('classnames');
+var Button = React.createClass({
+  render: function() {
+    var classes = classNames({
+      button: true,
+      green: this.props.isGreen,
+      pink: this.props.isPink
+    })
+    return (
+          <a href="#" className={classes} >{this.props.text}</a>    //classes 会最终接受到 "button green" 或 "button pink"
+      );
+    }
+  });
+module.exports = Button;
+
+//Action.js
+var React = require('react');
+var Button = require('./Button.js');
+var Action = React.createClass({
+  render: function() {
+    return (
+        <div className="action clearfix">
+          <Button isGreen={true} text={'Join'}/>    //通过传递 isGreen 还是 isPink 来控制
+        </div>
+      );
+    }
+  });
+module.exports = Action;
+```
 
 ***
 
@@ -273,6 +516,7 @@ React.render(React.createElement(HelloWorld, null), document.getElementById('app
 >注意：从色盘网上下载的sass颜色不是scss版本，需要在后面补全<kbd>;</kbd>
 
 * [Normalize.css页面重置](http://www.bootcss.com/p/html5boilerplate/)
+* [React组件](http://material-ui.com/#/)
 
 ``` sass
 font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
@@ -282,9 +526,10 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 
 ***
 
-<a name="ubuntu-环境设置"></a>
-## Ubuntu 环境设置
+<a name="ubuntu"></a>
+## Ubuntu
 
+<a name="1-bashrc-添加"></a>
 #### 1. .bashrc 添加
 
     # Change umask to make directory sharing easier
@@ -301,9 +546,27 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 
     export PATH=~/.npm-global/bin:$PATH
 
+    #alias for cnpm
+    alias cnpm="npm --registry=https://registry.npm.taobao.org \
+    --cache=$HOME/.npm/.cache/cnpm \
+    --disturl=https://npm.taobao.org/dist \
+    --userconfig=$HOME/.cnpmrc "
+
+<a name="2-deb-包命令"></a>
+#### 2. deb 包命令
+
+    安装/升级deb包： sudo dpkg -i xxx.deb
+    卸载deb包：     sudo dpkg -r（-p） xxxname
+
+    -i  在系统中安装/升级软件
+    -r  在系统中卸载软件,不删除配置文件
+    -p  在系统中卸载软件以及其配置文件
+    -l  在系统中查询软件内容信息
+
 <a name="css相关"></a>
 ## CSS相关
 
+<a name="1-clearfix"></a>
 #### 1. .clearfix
 
 ```sass
@@ -320,6 +583,7 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 >参考视频教程： *HappyPeter* 老师的 [Clearfix详解](http://qd.haoduoshipin.com/p/clearfix-in-detail)  
 >参考资料：[The very latest new new way to do "clearfix"](http://cssmojo.com/latest_new_clearfix_so_far/)
 
+<a name="2-常用css"></a>
 #### 2. 常用CSS
 
 ```sass
