@@ -12,13 +12,15 @@
     - [2. Ubuntu 14.04 安装 node v4](#2-ubuntu-1404-安装-node-v4)
     - [3. glup安装](#3-glup安装)
     - [4. webpack + React 镜像安装](#4-webpack--react-镜像安装)
+    - [5. react-hot-boilerplate 安装](#5-react-hot-boilerplate-安装)
+    - [6. SVG](#6-svg)
   - [工具使用](#工具使用)
     - [1. glup](#1-glup)
     - [2. React基础讲解](#2-react基础讲解)
     - [3. webpack](#3-webpack)
     - [4. webpack + React](#4-webpack--react)
     - [5. webpack + css](#5-webpack--css)
-    - [6.React组件复用](#6react组件复用)
+    - [6. React组件复用](#6-react组件复用)
   - [设计相关](#设计相关)
   - [Ubuntu](#ubuntu)
     - [1. .bashrc 添加](#1-bashrc-添加)
@@ -176,6 +178,82 @@
 >[淘宝npm镜像](http://npm.taobao.org/)  
 >[webpack学习资料](https://fakefish.github.io/react-webpack-cookbook/)
 
+<a name="5-react-hot-boilerplate-安装"></a>
+#### 5. react-hot-boilerplate 安装
+
+>* 从 github 下载 [_react-hot-boilerplate_](https://github.com/gaearon/react-hot-boilerplate)
+* 进入文件夹输入 `npm i` 进行安装
+* 输入 `npm start` 运行服务，在浏览器输入 `localhost:3000` 即可
+
+```js
+//webpack.config.js 文件配置
+var path = require('path');
+var webpack = require('webpack');
+
+module.exports = {
+  devtool: 'eval',          // eval 代表提高编译速度
+  entry: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    './src/index'           // 根据项目名称此处修改为 './src/main.js'
+  ],
+  output: {
+    path: path.join(__dirname, 'dist'),  //编译输出位置
+    filename: 'bundle.js',
+    publicPath: '/static/'  //指定内存位置，index.html主页上的 bundle.js路径也要相应修改为 <script src="/static/bundle.js"></script>
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  module: {
+    loaders: [
+    { test: /\.js$/, loaders: ['react-hot', 'babel'], include: path.join(__dirname, 'src') },
+    //注意此处为loaders，并且所有文件夹都要放着src下面，比如 components,main.js,styles/ 之类
+    { test:/\.scss$/, loader: "style!css!autoprefixer!sass" }
+    ]
+  }
+};
+```
+    cnpm i -D react-hot-loader webpack-dev-server  //需要安装
+
+```js
+//再项目中创建 server.js
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var config = require('./webpack.config');
+
+new WebpackDevServer(webpack(config), {
+  publicPath: config.output.publicPath,
+  hot: true,
+  historyApiFallback: true
+}).listen(3000, 'localhost', function (err, result) {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log('Listening at localhost:3000');
+});
+```
+    node server.js    //开发模式下使用的命令
+
+    webpack           //调试完成后输入,可以在 dist 目录下可以找到 bundle.js
+
+>参考资料： [webpack.config.js 参数详解](http://gaearon.github.io/react-hot-loader/getstarted/)  
+>参考资料： [非 _React_ 构架下使用热模块替换的方法](http://christianalfoni.github.io/react-webpack-cookbook/Automatic-browser-refresh.html)
+
+<a name="6-svg"></a>
+#### 6. SVG
+
+    cnpm i -D react-inlinesvg
+
+```js
+var Isvg = require('react-inlinesvg');
+
+<Isvg src="/path/to/myfile.svg"></Isvg>
+```
+
+>参考资料： [react-inlinesvg](https://github.com/matthewwithanm/react-inlinesvg)
+
 <a name="工具使用"></a>
 ## 工具使用
 
@@ -242,7 +320,8 @@ var prefix = require('gulp-autoprefixer');
 <a name="2-react基础讲解"></a>
 #### 2. React基础讲解
 
->0. 命名组件时，首字母要大写
+>[React中文教程](http://wiki.jikexueyuan.com/project/react/)
+0. 命名组件时，首字母要大写
 0. [国内cdn](http://www.bootcdn.cn/react/) 复制`//cdn.bootcss.com/react/0.14.0-rc1/react.js` 粘贴后添加`http:` 不用启动服务器文件
 0. _JSXTransformer.js_ 仅在开发测试阶段使用，上线之前需要预编译
 0. [HTML to JSX Compiler](http://facebook.github.io/react/html-jsx.html) 转换 _HTML_ 到 _JSX_
@@ -462,8 +541,8 @@ require('./styles/main.scss');
 
 >__最终只需要上传 _index.html_ 和 _bundle.js_ 文件即可__
 
-<a name="6react组件复用"></a>
-#### 6.React组件复用
+<a name="6-react组件复用"></a>
+#### 6. React组件复用
 
 >React支持从父组件向子组件传递属性值
 
@@ -516,13 +595,13 @@ module.exports = Action;
 >注意：从色盘网上下载的sass颜色不是scss版本，需要在后面补全<kbd>;</kbd>
 
 * [Normalize.css页面重置](http://www.bootcss.com/p/html5boilerplate/)
-* [React组件](http://material-ui.com/#/)
 
 ``` sass
 font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 ```
 
 * [网站文字排版的技巧](http://www.haoduoshipin.com/v/80)
+* [React组件](http://material-ui.com/#/)
 
 ***
 

@@ -16,7 +16,7 @@ The remote host or network may be down. Please try the request again.
 Your cache administrator is webmaster.
 ```
 
-与翻墙设置有关，具体原因待查，时好时坏。
+将 _Setting-Default_ 中的 `"server_host": "127.0.0.1"` 改为 `"server_host": "localhost"` 即可
 
 ### 2. SublimeText 的 Package Control
 
