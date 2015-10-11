@@ -649,14 +649,15 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 #### 1. .clearfix
 
 ```sass
-.clearfix:before,
-.clearfix:after
-{
- content: " ";
- display: table;
-}
-.clearfix:after {
-  clear: both;
+.clearfix {
+  &:before,
+  &:after {
+      content: " ";
+      display: table;
+  }
+  &:after {
+      clear: both;
+  }
 }
 ```
 >参考视频教程： *HappyPeter* 老师的 [Clearfix详解](http://qd.haoduoshipin.com/p/clearfix-in-detail)  
