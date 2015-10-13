@@ -23,6 +23,8 @@
 
 <a name="引入jquery文件库"></a>
 ## 引入jQuery文件库
+> [jQuary CDN服务](http://www.bootcdn.cn/jquery/)
+
 ```js
 <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
 ```
