@@ -320,8 +320,10 @@ var prefix = require('gulp-autoprefixer');
 <a name="2-react基础讲解"></a>
 #### 2. React基础讲解
 
->[React中文教程](http://wiki.jikexueyuan.com/project/react/)
-0. 命名组件时，首字母要大写
+>[React中文教程](http://wiki.jikexueyuan.com/project/react/)  
+>[React学习笔记](React.md)
+
+0. 命名组件时，首字母要大写  
 0. [国内cdn](http://www.bootcdn.cn/react/) 复制`//cdn.bootcss.com/react/0.14.0-rc1/react.js` 粘贴后添加`http:` 不用启动服务器文件
 0. _JSXTransformer.js_ 仅在开发测试阶段使用，上线之前需要预编译
 0. [HTML to JSX Compiler](http://facebook.github.io/react/html-jsx.html) 转换 _HTML_ 到 _JSX_
@@ -347,7 +349,7 @@ React.render(React.createElement(HelloWorld, null), document.getElementById('app
 </script>
 ```
 
->改进版
+>JSX版
 
 ```html
 <script src="http://cdn.bootcss.com/react/0.14.0-rc1/react.js"></script>
