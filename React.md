@@ -22,7 +22,12 @@
     - [属性的含义和用法](#属性的含义和用法)
     - [状态的含义和用法](#状态的含义和用法)
     - [属性和状态的对比](#属性和状态的对比)
-    - [属性和状态实战](#属性和状态实战)
+  - [8.React 事件的用法](#8react-事件的用法)
+    - [事件处理函数的使用](#事件处理函数的使用)
+    - [事件对象介绍](#事件对象介绍)
+    - [事件和状态关联](#事件和状态关联)
+  - [9. 组件的协同使用](#9-组件的协同使用)
+    - [组件嵌套](#组件嵌套)
 
 <!-- /MarkdownTOC -->
 
@@ -593,8 +598,161 @@ React.render(<HelloUniverse/>, document.body);
 
 表格总结：__状态只和组件本身相关，组件不能修改属性。__
 
-<a name="属性和状态实战"></a>
-#### 属性和状态实战
+<a name="8react-事件的用法"></a>
+## 8.React 事件的用法
+
+<a name="事件处理函数的使用"></a>
+#### 事件处理函数的使用
+
+>onClick={this.handleClick} 不能加括号，加括号会调用返回值
+
+|触摸-移动端   |键盘       |剪切  |表单     |焦点   |UI元素|滚动|
+|-------------|----------|-----|--------|-------|------|----|
+|onTouchCancel|onKeyDown|onCopy|onChange|onFocus|onScroll|onWheel|
+|onTouchEnd   |onKeyPress|onCut|onInput|onBlur|
+|onTouchMove  |onKeyUp|onPaste|onSubmit|
+|onTouchStart |
+
+鼠标点击移动：`onClick` `onContextMenu` `onDoubleClick` `onMouseDown` `onMouseEnter` `onMouseLeave` `onMouseMove` `onMouseOut` `onMouseOver` `onMouseUp`  
+鼠标拖拽：`onDrop` `onDrag` `onDragEnd` `onDragEnter` `onDragExit` `onDragLeave` `onDragOver` `onDragStart`
+
+<a name="事件对象介绍"></a>
+#### 事件对象介绍
+
+```js
+handleChange: function (event) {
+  console.log(event.target.value);
+},
+```
+##### 通用属性：所有的对象都有的属性
+|属性类型|属性名  |描述 |
+|-------|-------|------|
+|boolean|bubbles|事件是否可以冒泡|
+|boolean|cancelable|事件是否可以取消|
+|DOMEventTarget|currentTarget|
+|boolean|defaultPrevented|事件是否禁止默认行为|
+|number|eventPhase|事件所处阶段|
+|boolean|isTrusted|事件是否可信|
+|DOMEvent|nativeEvent|
+|void|perventDefault()|
+|void|stopPropagation()|对应bubbles|
+|DOMEventTarget|target|
+|number|timeStamp|时间戳，事件触发时间|
+|string|type|
+
+##### 不同属性
+|属性类型|属性名  |描述 |
+|-------|-------|------|
+|剪切|
+|DOMDataTransfer|clipboardData|
+|键盘|
+|boolean|altKey|是否按下alt键|
+|Number|charCode|通过按键的字符编码确定按下的键|
+|boolean|ctrlKey|是否按下ctrl键|
+|function|getModifierState(Key)|是否按下辅助按键|
+|String|key|按下的键|
+|Number|keyCode|非字符编码的键|
+|String|locale|本地化的一些字符串|
+|Number|location|位置|
+|boolean|metaKey|window键|
+|boolean|repeat|按键是否重复|
+|boolean|shiftKey|是否按下shift|
+|Number|which|通用化的charCode、keyCode|
+|焦点|
+|DOMEventTarget|relatedTarget|转移前的焦点|
+|鼠标|
+|boolean|altKey|
+|Number|button|
+|Number|buttons|
+|Number|clientX|当前鼠标所处的X轴坐标，原点为浏览器窗口的左上角|
+|Number|clientY|
+|boolean|ctrlKey|
+|function|getModifierState(Key)|
+|boolean|metaKey|
+|Number|pageX|原点为HTML页面的左上角|
+|Number|pageY|
+|DOMEventTarget|relatedTarget|
+|Number|screenX|原点为显示器的左上角|
+|Number|screenY|
+|boolean|shiftKey|
+|触摸|
+|boolean|altKey|
+|DOMTouchList|changedTouches|
+|boolean|ctrlKey|
+|function|getModifierState(key)|
+|boolean|metaKey|
+|boolean|shiftKey|
+|DOMTouchList|targetTouches|
+|DOMTouchList|touches|
+|UI元素|
+|Number|detail|滚动的距离|
+|DOMAbstractView|view|界面|
+|鼠标滚轮滚动|
+|Number|deltaMode|
+|Number|deltaX|
+|Number|deltaY|
+|Number|deltaZ|
+
+<a name="事件和状态关联"></a>
+#### 事件和状态关联
+
+```js
+handleChange: function (event) {
+  this.setState({inputText: event.target.value});  //this.setState 设置组件的状态
+},
+```
+
+<a name="9-组件的协同使用"></a>
+## 9. 组件的协同使用
+
+组件的协同本质上是对组件的一种__组织、管理方式__。
+
+目的：逻辑清晰、代码模块化、封装细节、代码复用
+
+组件协同方式：组件嵌套（用于嵌套与封装）、Mixin混入（用于抽离与复用）
+
+<a name="组件嵌套"></a>
+#### 组件嵌套
+组件嵌套的本质时__父子关系__。
+
+父组件通过属性与子组件通信，子组件通过委托与父组件通信。
+
+|优点   |说明   |
+|-------|------|
+|逻辑清晰|父子关系和人类社会的父子关系对应，易于理解|
+|代码模块化|每个模块对应一个功能，不同的模块可以同步开发|
+|封装细节|开发者只需要关注组件的功能，不用关心组件的实现细节|
+
+|缺点   |说明   |
+|-------|------|
+|编写难度高|父子关系的具体实现需要经过深思熟虑，贸然编写将导致关系混乱、代码难以维护|
+|无法掌握所有细节|使用者只知道组件用法，不知道实现细节，遇到问题难以修复|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

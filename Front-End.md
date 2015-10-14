@@ -25,6 +25,7 @@
   - [Ubuntu](#ubuntu)
     - [1. .bashrc 添加](#1-bashrc-添加)
     - [2. deb 包命令](#2-deb-包命令)
+    - [3. 关于权限](#3-关于权限)
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
@@ -643,6 +644,13 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
     -r  在系统中卸载软件,不删除配置文件
     -p  在系统中卸载软件以及其配置文件
     -l  在系统中查询软件内容信息
+
+<a name="3-关于权限"></a>
+#### 3. 关于权限
+
+    修改用户组 sudo chgrp groupname filename
+    修改拥有者 sudo chown ownername filename
+
 
 <a name="css相关"></a>
 ## CSS相关
