@@ -29,6 +29,10 @@
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
+  - [服务器相关](#服务器相关)
+    - [1. 初步设置服务器](#1-初步设置服务器)
+    - [2.服务器相关指令](#2服务器相关指令)
+    - [3.Tmux 快捷键](#3tmux-快捷键)
 
 <!-- /MarkdownTOC -->
 
@@ -685,3 +689,46 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 
 border：1px solid red;   //调式时可以先添加边框
 ```
+
+<a name="服务器相关"></a>
+## 服务器相关
+
+<a name="1-初步设置服务器"></a>
+#### 1. 初步设置服务器
+1. 启用服务器
+2. `ssh root@公网IP`
+3. `apt-get update`
+4. `apt-get install nginx`
+5. `service nginx status`查看状态
+6. 如果成功，浏览器中输入ip即可登陆
+7. 登陆本地终端，上传指令`scp -r 目录名 root@公网IP:`，冒号不能忘
+8. 在服务器终端可以输入`ls`查看
+9. 查看nginx默认配置`cat /etc/nginx/sites-enabled/default`，查找存放项目位置，如`root /usr/share/nginx/html`
+10. `cp 目录名/* /usr/share/nginx/html`
+11. `cd /usr/share/nginx/html`
+12. `ls`查看确认
+
+<a name="2服务器相关指令"></a>
+#### 2.服务器相关指令
+1. `lsb_release -a` 查看服务器系统版本
+
+<a name="3tmux-快捷键"></a>
+#### 3.Tmux 快捷键
+
+|快捷键|说明|
+|:-----|:---|
+|C+b ?|help|
+|C+b t|time|
+|C+b d|save & exit|
+|C+b &|close window|
+|C+b space|next default layout|
+|C+b "|split pane horizontally|
+|C+b %|split pane vertically|
+|C+b arrow key|switch pane|
+|C+b c|(c)reate a new window|
+|C+b n|move to the (n)ext window|
+|C+b p|move to the (p)revious window|
+|Hold C+b| don't release it and hold one of the arrow keys - resize pane|
+
+>参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)
+
