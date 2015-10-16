@@ -8,6 +8,7 @@
   - [2.CSS3 边框](#2css3-边框)
     - [边框基本属性](#边框基本属性)
     - [图片边框属性](#图片边框属性)
+    - [圆角边框属性](#圆角边框属性)
 
 <!-- /MarkdownTOC -->
 
@@ -73,36 +74,36 @@
 
   * [伪元素](#1css3选择器)
 
-      |元素名         |功能描述|
-      |--------------|-------|
-      |::first-letter|选择文本块的第一个字母，除非在同一行中包含一些其他元素|
-      |::first-line|选择文本块的第一个字母，除非在同一行中包含一些其他元素|
-      |::before,::after|要为伪元素生成内容，还需要配合content属性|
-      |::selection|用来匹配突出显示的文本，仅接受background，color两个属性|
+  |元素名         |功能描述|
+  |--------------|-------|
+  |::first-letter|选择文本块的第一个字母，除非在同一行中包含一些其他元素|
+  |::first-line|选择文本块的第一个字母，除非在同一行中包含一些其他元素|
+  |::before,::after|要为伪元素生成内容，还需要配合content属性|
+  |::selection|用来匹配突出显示的文本，仅接受background，color两个属性|
 
   * [属性选择器](#1css3选择器)
 
-      |选择器         |功能描述|
-      |--------------|-------|
-      |E[attr]|选择匹配具有属性attr的E元素。其中E可以省略，表示选择定义了attr属性的任意类型元素|
-      |E[attr=val]|选择匹配具有属性attr的E元素，并且attr的属性值为val（其中val区分大小写），同样E元素省略时表示选择定义了attr属性值为val的任意类型元素|
-      |E[attr~=val]|选择匹配E元素，且E元素定义了属性attr，attr属性值具有多个空格分隔的值，其中一个值等于val。例如，.info[title~=more]将匹配元素具有类名info，而且这个元素设置了一个属性title，同时title属性值以包含了“more”的任何元素，例如<a class="info" title="click here for more information">click me</a>|
-      |E[attr*=val]|选择匹配元素E，且E元素定义了属性attr，其属性值任意位置包含了“val”。换句话说，字符串val与属性值中的任意位置相匹配|
-      |E[attr^=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val开头的任何字符串|
-      |E[attr$=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val结尾的任何字符串。与E[attr^=val]相反|
+  |选择器         |功能描述|
+  |--------------|-------|
+  |E[attr]|选择匹配具有属性attr的E元素。其中E可以省略，表示选择定义了attr属性的任意类型元素|
+  |E[attr=val]|选择匹配具有属性attr的E元素，并且attr的属性值为val（其中val区分大小写），同样E元素省略时表示选择定义了attr属性值为val的任意类型元素|
+  |E[attr~=val]|选择匹配E元素，且E元素定义了属性attr，attr属性值具有多个空格分隔的值，其中一个值等于val。例如，.info[title~=more]将匹配元素具有类名info，而且这个元素设置了一个属性title，同时title属性值以包含了“more”的任何元素，例如<a class="info" title="click here for more information">click me</a>|
+  |E[attr*=val]|选择匹配元素E，且E元素定义了属性attr，其属性值任意位置包含了“val”。换句话说，字符串val与属性值中的任意位置相匹配|
+  |E[attr^=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val开头的任何字符串|
+  |E[attr$=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val结尾的任何字符串。与E[attr^=val]相反|
 
-      E[attr|=val] 选择匹配E元素，且E元素定义了属性attr，attr属性值是一个具有val或者以val-开始的属性值。常用于lang属性（例如lang=“en-us”）。例如p[lang|=en]将匹配定义为英语的任何段落，无论时英式英语还是美式英语
+  E[attr|=val] 选择匹配E元素，且E元素定义了属性attr，attr属性值是一个具有val或者以val-开始的属性值。常用于lang属性（例如lang=“en-us”）。例如p[lang|=en]将匹配定义为英语的任何段落，无论时英式英语还是美式英语
 
-      >注意：E[attr=val]选择器中，属性和属性值必须完全匹配，特别对于属性值是词列表的形式，例如，`<a href="#" class="links item"></a>`，其中a[class="links"]{...}是找不到匹配元素，只有a[class="link item"]{...}才匹配。
+  >注意：E[attr=val]选择器中，属性和属性值必须完全匹配，特别对于属性值是词列表的形式，例如，`<a href="#" class="links item"></a>`，其中a[class="links"]{...}是找不到匹配元素，只有a[class="link item"]{...}才匹配。
 
 <a name="css中常见的通配符"></a>
 #### CSS中常见的通配符
 
-  |通配符|功能描述|示例|
-  |-----|-------|---|
-  |^|匹配起始符|span[class^=span]表示选择以类名以“span”开头的所有span元素|
-  |$|匹配终止符|a[herf$=pdf]表示选择以“pdf”结尾的href属性的所有a元素|
-  |\*|匹配任意字符|a[title*=site]匹配a元素，而且a元素的title属性值中任意位置有“site”字符的任何字符串|
+|通配符|功能描述|示例|
+|-----|-------|---|
+|^|匹配起始符|span[class^=span]表示选择以类名以“span”开头的所有span元素|
+|$|匹配终止符|a[herf$=pdf]表示选择以“pdf”结尾的href属性的所有a元素|
+|\*|匹配任意字符|a[title*=site]匹配a元素，而且a元素的title属性值中任意位置有“site”字符的任何字符串|
 
 <a name="2css3-边框"></a>
 ## 2.CSS3 边框
@@ -141,7 +142,7 @@
 
 <a name="图片边框属性"></a>
 #### 图片边框属性
->border-image: none | <image\> [<number\> | <percentage\>] {1,4} [/ <broder-width\> {1,4}] ?[stretch | repeat | round] {0,2}
+>`border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
 
 > * none: 默认值，表示边框无背景图片
   * <image\>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
@@ -151,7 +152,10 @@
 
 >  border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
 
+<a name="圆角边框属性"></a>
+#### 圆角边框属性
 
+>`border-radius: none | <length> {1,4}[/<length>{1,4}] ？`
 
 
 

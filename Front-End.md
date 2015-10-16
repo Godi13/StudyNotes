@@ -24,8 +24,7 @@
   - [设计相关](#设计相关)
   - [Ubuntu](#ubuntu)
     - [1. .bashrc 添加](#1-bashrc-添加)
-    - [2. deb 包命令](#2-deb-包命令)
-    - [3. 关于权限](#3-关于权限)
+    - [2.常用指令](#2常用指令)
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
@@ -33,7 +32,7 @@
     - [1. 初步设置服务器](#1-初步设置服务器)
     - [2.服务器相关指令](#2服务器相关指令)
     - [3.Tmux 快捷键](#3tmux-快捷键)
-    - [4.脚本设置](#4脚本设置)
+    - [4.服务器本地同步脚本设置](#4服务器本地同步脚本设置)
 
 <!-- /MarkdownTOC -->
 
@@ -639,8 +638,10 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
     --disturl=https://npm.taobao.org/dist \
     --userconfig=$HOME/.cnpmrc "
 
-<a name="2-deb-包命令"></a>
-#### 2. deb 包命令
+
+<a name="2常用指令"></a>
+#### 2.常用指令
+###### 1. deb 包命令
 
     安装/升级deb包： sudo dpkg -i xxx.deb
     卸载deb包：     sudo dpkg -r（-p） xxxname
@@ -650,11 +651,14 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
     -p  在系统中卸载软件以及其配置文件
     -l  在系统中查询软件内容信息
 
-<a name="3-关于权限"></a>
-#### 3. 关于权限
+###### 2. 关于权限
 
     修改用户组 sudo chgrp groupname filename
     修改拥有者 sudo chown ownername filename
+
+###### 3.下载网站
+
+    wget -p -np -k -r url(你的网站入口)
 
 
 <a name="css相关"></a>
@@ -712,6 +716,7 @@ border：1px solid red;   //调式时可以先添加边框
 <a name="2服务器相关指令"></a>
 #### 2.服务器相关指令
 1. `lsb_release -a` 查看服务器系统版本
+2. `scp filename/folder -r root@公网IP或域名:/usr/share/nginx/html/` 上传文件到服务器指定位置
 
 <a name="3tmux-快捷键"></a>
 #### 3.Tmux 快捷键
@@ -731,10 +736,11 @@ border：1px solid red;   //调式时可以先添加边框
 |C+b p|move to the (p)revious window|
 |Hold C+b| don't release it and hold one of the arrow keys - resize pane|
 
->参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)
+>参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)  
+>参考视频：[命令行操作神器 tmux](http://haoduoshipin.com/v/41)
 
-<a name="4脚本设置"></a>
-#### 4.脚本设置
+<a name="4服务器本地同步脚本设置"></a>
+#### 4.服务器本地同步脚本设置
 
     bin cat filename.sh
     #!/bin bash
@@ -745,3 +751,18 @@ border：1px solid red;   //调式时可以先添加边框
     git push
     ssh root@公网IP或域名 'source .bashrc && ~/bin/filename.sh'
 
+    //source .bashrc 的意思是：运行一下 .bashrc 中的初始化语句。
+    //~/bin/filename.sh 的意思是执行 filename.sh 这个脚本
+
+      注意，这个脚本是存放在服务器之上的。里面的内容是：
+
+    cd ~/foldername/
+    git pull
+    /home/peter/.rbenv/shims/bundle
+    /home/peter/.rbenv/shims/bundle exec /home/peter/.rbenv/shims/rake db:migrate RAILS_ENV=production
+    /home/peter/.rbenv/shims/bundle exec /home/peter/.rbenv/shims/rake assets:precompile RAILS_ENV=production
+    touch tmp/restart.txt
+
+    //注意：最后四句是Rails部署相关代码，可以忽略
+
+>参考资料：[安装开发环境](http://book.haoduoshipin.com/go-responsive/c/chap-2.html)
