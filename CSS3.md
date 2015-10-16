@@ -196,52 +196,65 @@
 <a name="背景的基本属性"></a>
 #### 背景的基本属性
 
->`background: [<background-color>], [<background-image>], [<background-repeat>], [<background-attachment>], [<background-position>]`
+`background: [<background-color>], [<background-image>], [<background-repeat>], [<background-attachment>], [<background-position>]`
 
-* background-color（背景颜色）
->`background-color: transparent || <color>` 默认值为“transparent”
-* background-image（背景图片）
->`background-image: none || <url>` 默认值为“none”
-* background-repeat（背景图片展开方式）
->`background-repeat: repeat || repeat-x || repeat-y || no-repeat` 默认值为“repeat”
-* background-attachment（背景图片是固定还是滚动）
->`background-attachment: scroll || fixed` 默认值为“scroll”  
+* background-color（背景颜色）  
+`background-color: transparent || <color>` 默认值为“transparent”
+
+* background-image（背景图片）  
+`background-image: none || <url>` 默认值为“none”
+
+* background-repeat（背景图片展开方式）  
+`background-repeat: repeat || repeat-x || repeat-y || no-repeat` 默认值为“repeat”
+
+* background-attachment（背景图片是固定还是滚动）  
+`background-attachment: scroll || fixed` 默认值为“scroll”
 注意：取值为“fixed”时，一般运用在html或body标签上，使用在其他标签上不能达到固定效果
-* background-position（背景图片位置）
->`background-position: <percentage> || <length> || [left|center|right], [top|center|bottom]` 默认值为“(0,0)||(0%, 0%)||(left top)”
+
+* background-position（背景图片位置）  
+`background-position: <percentage> || <length> || [left|center|right], [top|center|bottom]` 默认值为“(0,0)||(0%, 0%)||(left top)”
 
 <a name="背景新增属性"></a>
 #### 背景新增属性
 
-* background-origin:指定绘制背景图片的起点
->`background-origin: padding || border || content` 较老  
->`background-origin: padding-box || border-box || content-box` 新版
+* background-origin:指定绘制背景图片的起点  
+`background-origin: padding || border || content` 较老  
+`background-origin: padding-box || border-box || content-box` 新版
     * padding-box(padding):默认值，决定background-position起始位置从padding的外边缘（border的内边缘）开始显示背景图片。
     * border-box(border):决定background-position起始位置从border的外边缘开始显示背景图片。
     * content-box(content):决定background-position起始位置从content的外边缘（padding的内边缘）开始显示背景图片。
-    >注意：IE8一下版本background-origin的默认值为border，背景图片的background-position是从border开始显示背景图片。  
-    如果background-attachment设置为fixed，background-origin将不起任何作用。
-* background-clip:指定背景图片的显示范围
->`bakgroung-clip : border-box || padding-box || content-box`
+
+>注意：IE8一下版本background-origin的默认值为border，背景图片的background-position是从border开始显示背景图片。  
+如果background-attachment设置为fixed，background-origin将不起任何作用。
+
+* background-clip:指定背景图片的显示范围  
+`bakgroung-clip : border-box || padding-box || content-box`
+
     * border-box（背景图片再边框下，这个也是background-clip的默认值）
+
     >默认值，元素背景图像从元素的border区域向外裁剪，即元素边框之外的背景图片都将被裁减掉。
+
     * padding-box（背景延伸到padding的外边缘，但不会超出边框的范围）
+
     >元素背景图像从padding区域向外裁剪，即元素padding区域之外的背景图像将被裁剪掉。
+
     * content-box（背景仅在内容区域绘制，不会超出padding和边框的范围）
+
     >元素背景图像从content区域向外裁剪，即元素内容区域之外的背景图像将被裁剪掉。
 
-    >在Webkit内核下，background-clip还有一个text属性，配合Webkit内核的私有属性text-fill-color:transparent可以制作背景图片填充文本的效果。
+  >在Webkit内核下，background-clip还有一个text属性，配合Webkit内核的私有属性text-fill-color:transparent可以制作背景图片填充文本的效果。
 
-* background-size:指定背景图片的尺寸大小
->`background-size: auto || <length> || <perentage> || cover || contain`
+* background-size:指定背景图片的尺寸大小  
+`background-size: auto || <length> || <perentage> || cover || contain`
     * auto:默认值。将保持背景片的原始高度和宽度。
     * <length>:取具体的整数值（例如px值），将改变背景图片的大小。
     * <percentage>:取值为百分值，可以时0%~100%。此时，同样改变背景图片的大小，但此值是相对于元素的宽度来进行计算，并不是根据背景图片的宽度来进行计算。
     * cover:将背景图片放大，以适合铺满整个容器。但这种方法会致使背景图片失真。
     * contain:保持背景图像本身的宽高比例，将背景图像缩放到宽度或高度正好适应所定义背景容器的区域。
 
-* background-break:指定内联元素的背景图片进行平铺时的循环方式(
->目前仅支持Firefox，并且需要修改属性写法
+* background-break:指定内联元素的背景图片进行平铺时的循环方式
+
+      >目前仅支持Firefox，并且需要修改属性写法
 
 <a name="多背景属性"></a>
 #### 多背景属性
@@ -290,15 +303,15 @@ background-color:color;
 |white-space|定义文字之间和文本之间的空白符间距|normal（默认）、nowrap（空白符合并、换行符忽略）、pre（空白符、换行符保留）、pre-wrap（空白符、换行符保留）、pre-line（空白符合并、换行符保留）|
 |direction|控制文本流入的方向|ltr（默认）、rtl（文本从右到左流入）、inherit（文本流入方向由继承获得）|
 
-* 文本阴影
->`text-shadow: none | <length> none | [<shadow>,] * <shadow> 或 none | <color> [,<color>]*` 也就是  
+* 文本阴影  
+`text-shadow: none | <length> none | [<shadow>,] * <shadow> 或 none | <color> [,<color>]*` 也就是  
 `text-shadow:[颜色 color] x轴位移（x-offset） y轴位移（y-offset） 模糊半径（blur-radius）`
 
 <a name="溢出文本属性"></a>
 #### 溢出文本属性
 
-* text-overflow
->text-overflow:clip | ellipsis
+* text-overflow  
+`text-overflow:clip | ellipsis`
     * clip:不显示省略标记（…），只是简单的裁切。
     * ellipsis:文本溢出时显示省略标记（…），省略标记插入的位置是最后一个字符。
     >实际上，text-overflow属性仅用于决定文本溢出时是否显示省略标记（…），并不具备样式定义的功能。要实现文本溢出时裁切文本显示省略标记（…）效果，还需要两个属性的配合：强制文本再一行显示（white-space:nowrap）和溢出内容隐藏（overflow:hidden），并且需要定义容器的宽度。
@@ -306,14 +319,14 @@ background-color:color;
 <a name="文本换行"></a>
 #### 文本换行
 
-* word-wrap
->word-wrap:normal | break-word  
+* word-wrap  
+`word-wrap:normal | break-word`  
 >注意：word-wrap 应用在`<pre>`和`<table>`中时，没有任何效果。
     * normal：默认值，浏览器只在半角空格或连字符的地方进行换行。
     * break-word:将内容在边界内换行（不截断英文单词换行）
 
-* word-break
->word-break:normal | break-all | keep-all  
+* word-break  
+`word-break:normal | break-all | keep-all`  
 用于设置或检索对象内文本的字内换行行为，在出现多种语言的情况下尤为有用。
     * normal： 默认值，根据语言自己的规则确定换行方式，中文到边界上的汉字换行，英文从整个单词换行。
     * break-all：可以强行截断英文单词，达到词内换行。
@@ -321,8 +334,8 @@ background-color:color;
     * keep-all：不允许字断开。如果是中文把前后标点符号内的一个汉字短语整个换行，英文单词整个换行；如果出现某个英文字符长度超过容器边界，后面的部分将撑破容器；如果边框为固定属性，则后面部分无法显示。
     >在Chrome和Safari下不生效
 
-* white-space
->white-space: normal || pre || nowrap || pre-line || pre-wrap || inherit
+* white-space  
+`white-space: normal || pre || nowrap || pre-line || pre-wrap || inherit`
     * normal：默认值。空白处会被浏览器忽略。可以通过这个值恢复到属性的默认值。
     * pre：文本空白处会被浏览器扣留，其行为类似于HTML中的`<pre>`标签效果。
     * nowrap：文本不会换行，文本会在同一行上，直到碰到换行标签`<br/>`为止。
