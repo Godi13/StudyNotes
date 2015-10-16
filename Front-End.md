@@ -33,6 +33,7 @@
     - [1. 初步设置服务器](#1-初步设置服务器)
     - [2.服务器相关指令](#2服务器相关指令)
     - [3.Tmux 快捷键](#3tmux-快捷键)
+    - [4.脚本设置](#4脚本设置)
 
 <!-- /MarkdownTOC -->
 
@@ -731,4 +732,16 @@ border：1px solid red;   //调式时可以先添加边框
 |Hold C+b| don't release it and hold one of the arrow keys - resize pane|
 
 >参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)
+
+<a name="4脚本设置"></a>
+#### 4.脚本设置
+
+    bin cat filename.sh
+    #!/bin bash
+
+    cd ~/项目位置
+    git add -A
+    git commit -a -m"i"
+    git push
+    ssh root@公网IP或域名 'source .bashrc && ~/bin/filename.sh'
 
