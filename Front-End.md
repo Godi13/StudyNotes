@@ -693,6 +693,11 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 @media (min-width: 600px) {}  //当最小宽度大于600px时
 
 border：1px solid red;   //调式时可以先添加边框
+
+.simple {
+  background: #91877b;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);  //喜欢的字体阴影
+}
 ```
 
 <a name="服务器相关"></a>

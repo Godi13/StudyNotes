@@ -9,6 +9,17 @@
     - [边框基本属性](#边框基本属性)
     - [图片边框属性](#图片边框属性)
     - [圆角边框属性](#圆角边框属性)
+    - [盒子阴影属性](#盒子阴影属性)
+  - [3.CCS3 背景](#3ccs3-背景)
+    - [背景的基本属性](#背景的基本属性)
+    - [背景新增属性](#背景新增属性)
+    - [多背景属性](#多背景属性)
+  - [4.CSS3 文本](#4css3-文本)
+    - [字体类型](#字体类型)
+    - [文本类型](#文本类型)
+    - [溢出文本属性](#溢出文本属性)
+    - [文本换行](#文本换行)
+  - [5. CSS3 颜色特性](#5-css3-颜色特性)
 
 <!-- /MarkdownTOC -->
 
@@ -109,7 +120,7 @@
 ## 2.CSS3 边框
 <a name="边框基本属性"></a>
 #### 边框基本属性
-  >border: border-width border-style border-color; 其中border-style必须有
+  >`border: border-width border-style border-color;` 其中border-style必须有
 
   * border-width: 设置元素边框的粗细，默认值“medium”（大约等于3~4px）
   * border-color: 设置元素边框的颜色
@@ -145,9 +156,9 @@
 >`border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
 
 > * none: 默认值，表示边框无背景图片
-  * <image\>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
-  * <number\>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
-  * <percentage\>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
+  * <image>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
+  * <number>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
+  * <percentage>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
   * stretch、repeat、round: 这三个属性参数是用来设置边框背景图片的铺放方式，类似于background-position，其中stretch会拉伸边框背景图片、repeat是会重复边框背景图片、round是平铺边框背景图片，其中stretch为默认值
 
 >  border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
@@ -156,6 +167,172 @@
 #### 圆角边框属性
 
 >`border-radius: none | <length> {1,4}[/<length>{1,4}] ？`
+
+特殊应用：
+
+* 当border-radius半径小于或等于border的厚度时，元素边框内部就不具有圆角效果。如圆角半径比边框值大时，内圆角就会出来。
+* 元素相邻边有不同的宽度，这个角将会从宽的边平滑过渡到窄的一边，其中一条边甚至可以是0，元素相邻转角是由大向小转。
+
+注意：表格元素table用border-radius时不一样的，当表格样式属性border-collapse是collapse时，表格不能正常显示，只有border-collapse属性值为separate时，表格圆角才能正常显示。
+
+<a name="盒子阴影属性"></a>
+#### 盒子阴影属性
+
+>`box-shadow:none | [ <length> <length> <length>?<length>? || <color> ], [ <length> <length> <length>? <length>? || <color> ]+`  
+简写：  
+`box-shadow:none | [inset x-offset y-offset blur-radius spread-radius color], [inset x-offset y-offset blur-radius spread-radius color]`
+
+>* none：默认值，元素没有任何阴影效果。
+* inset：阴影类型，可选值。如果不设置，其默认的投影方式是外阴影；如果取其唯一值“inset”，就是给元素设置内阴影。
+* x-offset：阴影水平偏移量，其值可以是正负值。如果取正值，则阴影在元素的右边，反之取负值，阴影在元素的左边。
+* y-offset：阴影垂直偏移量，其值可以是正负值。如果取正值，则阴影在元素的底部，反之取负值，阴影在元素的顶部。
+* blur-radius：阴影模糊半径，可选参数。其值只能是正值，如果取值为“0”时，表示阴影不具有模糊效果，如果取值越大，阴影的边缘就越模糊。
+* spread-radius：阴影扩展半径，可选参数。其值可以是正负值，如果取值为正值，则整个阴影都延展扩大，反之取值为负值，则整个阴影都缩小。
+* color：阴影颜色，可选参数，如果不设定任何颜色时，浏览器会取默认色，但各浏览器默认色不一样，特别是在Webkit内核下的浏览器将无色，也就是透明，建议不要省略这个参数。
+
+<a name="3ccs3-背景"></a>
+## 3.CCS3 背景
+
+<a name="背景的基本属性"></a>
+#### 背景的基本属性
+
+>`background: [<background-color>], [<background-image>], [<background-repeat>], [<background-attachment>], [<background-position>]`
+
+* background-color（背景颜色）
+>`background-color: transparent || <color>` 默认值为“transparent”
+* background-image（背景图片）
+>`background-image: none || <url>` 默认值为“none”
+* background-repeat（背景图片展开方式）
+>`background-repeat: repeat || repeat-x || repeat-y || no-repeat` 默认值为“repeat”
+* background-attachment（背景图片是固定还是滚动）
+>`background-attachment: scroll || fixed` 默认值为“scroll”  
+注意：取值为“fixed”时，一般运用在html或body标签上，使用在其他标签上不能达到固定效果
+* background-position（背景图片位置）
+>`background-position: <percentage> || <length> || [left|center|right], [top|center|bottom]` 默认值为“(0,0)||(0%, 0%)||(left top)”
+
+<a name="背景新增属性"></a>
+#### 背景新增属性
+
+* background-origin:指定绘制背景图片的起点
+>`background-origin: padding || border || content` 较老  
+>`background-origin: padding-box || border-box || content-box` 新版
+    * padding-box(padding):默认值，决定background-position起始位置从padding的外边缘（border的内边缘）开始显示背景图片。
+    * border-box(border):决定background-position起始位置从border的外边缘开始显示背景图片。
+    * content-box(content):决定background-position起始位置从content的外边缘（padding的内边缘）开始显示背景图片。
+    >注意：IE8一下版本background-origin的默认值为border，背景图片的background-position是从border开始显示背景图片。  
+    如果background-attachment设置为fixed，background-origin将不起任何作用。
+* background-clip:指定背景图片的显示范围
+>`bakgroung-clip : border-box || padding-box || content-box`
+    * border-box（背景图片再边框下，这个也是background-clip的默认值）
+    >默认值，元素背景图像从元素的border区域向外裁剪，即元素边框之外的背景图片都将被裁减掉。
+    * padding-box（背景延伸到padding的外边缘，但不会超出边框的范围）
+    >元素背景图像从padding区域向外裁剪，即元素padding区域之外的背景图像将被裁剪掉。
+    * content-box（背景仅在内容区域绘制，不会超出padding和边框的范围）
+    >元素背景图像从content区域向外裁剪，即元素内容区域之外的背景图像将被裁剪掉。
+
+    >在Webkit内核下，background-clip还有一个text属性，配合Webkit内核的私有属性text-fill-color:transparent可以制作背景图片填充文本的效果。
+
+* background-size:指定背景图片的尺寸大小
+>`background-size: auto || <length> || <perentage> || cover || contain`
+    * auto:默认值。将保持背景片的原始高度和宽度。
+    * <length>:取具体的整数值（例如px值），将改变背景图片的大小。
+    * <percentage>:取值为百分值，可以时0%~100%。此时，同样改变背景图片的大小，但此值是相对于元素的宽度来进行计算，并不是根据背景图片的宽度来进行计算。
+    * cover:将背景图片放大，以适合铺满整个容器。但这种方法会致使背景图片失真。
+    * contain:保持背景图像本身的宽高比例，将背景图像缩放到宽度或高度正好适应所定义背景容器的区域。
+
+* background-break:指定内联元素的背景图片进行平铺时的循环方式(
+>目前仅支持Firefox，并且需要修改属性写法
+
+<a name="多背景属性"></a>
+#### 多背景属性
+
+>background:[background-image] | [background-position] | [background-size] | [background-repeat] | [background-attachment] | [background-clip] | [background-origin],*  
+
+>可以把上面的缩写拆解成以下形式：  
+
+>background-image:url1,url2,...,urlN;  
+background-repeat:repeat1,repeat2,...,repeatN;  
+background-position:position1,position2,...,positionN;  
+background-size:size1,size2,...,sizeN;  
+background-attachment:attachment1,attachment2,...,attachmentN;  
+background-clip:clip1,clip2,...,clipN;  
+background-origin:origin1,origin2,...,originN;  
+background-color:color;
+
+<a name="4css3-文本"></a>
+## 4.CSS3 文本
+
+<a name="字体类型"></a>
+#### 字体类型
+|属性       |功能描述|取值|
+|----------|------|----|
+|font-family|定义字体的类型||
+|font-style|定义字体样式|normal（默认）、italic（斜体）、oblique（倾斜）|
+|font-weight|定义字体粗细，除了关键字，还可以设定数值100~900|normal（默认）、bold（粗体）、bolder（特粗体）、lighter（细体）|
+|font-size-adjust|定义是否强制对文本使用同一尺寸||
+|font-stretch|定义是否横向拉伸变形字体||
+|font-variant|定义字体大小写|normal（默认）、small-caps（小型的大写字母字体）|
+
+<a name="文本类型"></a>
+#### 文本类型
+
+|属性       |功能描述     |取值    |
+|----------|------------|--------|
+|word-spacing|定义词与词之间的间距|normal(默认)、length（设置词与词之间的距离值，可以是负数）|
+|letter-spacing|定义字符之间的间距|normal(默认)、length（设置字符与字符之间的距离，可以是负数）|
+|vertical-align|定义文本的垂直对齐方式|baseline(默认)、sub（上标对齐）、super（下标对齐）、bottom（行框底端对齐）、text-bottom（行内文本底端对齐）、top（顶端对齐）、middle（居中对齐）、blink（闪烁线）|
+|text-decoration|定义文本的修饰线|none（默认值）、underline（下划线）、overline（上划线）、line-through（删除线）、blink（闪烁线）|
+|text-indent|定义文本首行缩进|length（长度单位）和百分比|
+|text-align|定义文本水平对齐方式|left（左对齐）、center（水平居中）、right（右对齐）、justify（两端对齐）|
+|line-height|定义文本行高|normal（默认）、长度值、百分比值、数字|
+|text-transform|定义文本大小写|none（默认）、uppercase（大写）、lowercase（小写）、capitalize（首字大写）|
+|text-shadow|定义文本阴影效果||
+|white-space|定义文字之间和文本之间的空白符间距|normal（默认）、nowrap（空白符合并、换行符忽略）、pre（空白符、换行符保留）、pre-wrap（空白符、换行符保留）、pre-line（空白符合并、换行符保留）|
+|direction|控制文本流入的方向|ltr（默认）、rtl（文本从右到左流入）、inherit（文本流入方向由继承获得）|
+
+* 文本阴影
+>`text-shadow: none | <length> none | [<shadow>,] * <shadow> 或 none | <color> [,<color>]*` 也就是  
+`text-shadow:[颜色 color] x轴位移（x-offset） y轴位移（y-offset） 模糊半径（blur-radius）`
+
+<a name="溢出文本属性"></a>
+#### 溢出文本属性
+
+* text-overflow
+>text-overflow:clip | ellipsis
+    * clip:不显示省略标记（…），只是简单的裁切。
+    * ellipsis:文本溢出时显示省略标记（…），省略标记插入的位置是最后一个字符。
+    >实际上，text-overflow属性仅用于决定文本溢出时是否显示省略标记（…），并不具备样式定义的功能。要实现文本溢出时裁切文本显示省略标记（…）效果，还需要两个属性的配合：强制文本再一行显示（white-space:nowrap）和溢出内容隐藏（overflow:hidden），并且需要定义容器的宽度。
+
+<a name="文本换行"></a>
+#### 文本换行
+
+* word-wrap
+>word-wrap:normal | break-word  
+>注意：word-wrap 应用在`<pre>`和`<table>`中时，没有任何效果。
+    * normal：默认值，浏览器只在半角空格或连字符的地方进行换行。
+    * break-word:将内容在边界内换行（不截断英文单词换行）
+
+* word-break
+>word-break:normal | break-all | keep-all  
+用于设置或检索对象内文本的字内换行行为，在出现多种语言的情况下尤为有用。
+    * normal： 默认值，根据语言自己的规则确定换行方式，中文到边界上的汉字换行，英文从整个单词换行。
+    * break-all：可以强行截断英文单词，达到词内换行。
+    >不同的浏览器下效果不一
+    * keep-all：不允许字断开。如果是中文把前后标点符号内的一个汉字短语整个换行，英文单词整个换行；如果出现某个英文字符长度超过容器边界，后面的部分将撑破容器；如果边框为固定属性，则后面部分无法显示。
+    >在Chrome和Safari下不生效
+
+* white-space
+>white-space: normal || pre || nowrap || pre-line || pre-wrap || inherit
+    * normal：默认值。空白处会被浏览器忽略。可以通过这个值恢复到属性的默认值。
+    * pre：文本空白处会被浏览器扣留，其行为类似于HTML中的`<pre>`标签效果。
+    * nowrap：文本不会换行，文本会在同一行上，直到碰到换行标签`<br/>`为止。
+    * pre-line：合并空白符序列，但保留换行符，此属性不支持IE7.0-、Firefox 3.0- 和 Opera 9.2-以下版本的浏览器。
+    * pre-wrap：保留空白符序列，但是正常进行换行，此属性值不支持IE7.0和Firefox 3.0以下版本浏览器。
+    * inherit：继承父元素的white-space属性值，此属性值再所有的IE浏览器都不支持。
+
+<a name="5-css3-颜色特性"></a>
+## 5. CSS3 颜色特性
+
 
 
 
