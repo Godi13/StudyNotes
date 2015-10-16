@@ -20,6 +20,16 @@
     - [溢出文本属性](#溢出文本属性)
     - [文本换行](#文本换行)
   - [5. CSS3 颜色特性](#5-css3-颜色特性)
+    - [透明属性](#透明属性)
+  - [6. CSS3 盒模型](#6-css3-盒模型)
+    - [盒模型属性](#盒模型属性)
+    - [内容溢出属性](#内容溢出属性)
+    - [自由缩放属性](#自由缩放属性)
+    - [外轮廓属性](#外轮廓属性)
+  - [8. CSS3 伸缩布局盒模型](#8-css3-伸缩布局盒模型)
+    - [旧版本Flexbox模型的基本使用](#旧版本flexbox模型的基本使用)
+    - [混合版本Flexbox模型的基本使用](#混合版本flexbox模型的基本使用)
+    - [新版本Flexbox模型的基本使用](#新版本flexbox模型的基本使用)
 
 <!-- /MarkdownTOC -->
 
@@ -124,11 +134,12 @@
 
   * border-width: 设置元素边框的粗细，默认值“medium”（大约等于3~4px）
   * border-color: 设置元素边框的颜色
-  >border-color: [ <color\> | trabsparent ]{1,4} | inherit  下列属性中color是复数colors
-    + border-top-colors:[ <color\> | trabsparent ]{1,4} | inherit;
-    + border-right-colors:[ <color\> | trabsparent ]{1,4} | inherit;
-    + border-bottom-colors:[ <color\> | trabsparent ]{1,4} | inherit;
-    + border-left-colors:[ <color\> | trabsparent ]{1,4} | inherit;
+
+  `border-color: [ <color> | trabsparent ]{1,4} | inherit` 下列属性中color是复数colors
+    border-top-colors:[ <color> | trabsparent ]{1,4} | inherit;
+    border-right-colors:[ <color> | trabsparent ]{1,4} | inherit;
+    border-bottom-colors:[ <color> | trabsparent ]{1,4} | inherit;
+    border-left-colors:[ <color> | trabsparent ]{1,4} | inherit;
 
 
   * border-style: 设置元素边框的类型
@@ -156,9 +167,9 @@
 `border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
 
 * none: 默认值，表示边框无背景图片
-* <image>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
-* <number>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
-* <percentage>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
+* <image\>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
+* <number\>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
+* <percentage\>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
 * stretch、repeat、round: 这三个属性参数是用来设置边框背景图片的铺放方式，类似于background-position，其中stretch会拉伸边框背景图片、repeat是会重复边框背景图片、round是平铺边框背景图片，其中stretch为默认值
 
 border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
@@ -178,11 +189,11 @@ border-image 和 background-image 之间有一些类似之处，包括图片的�
 <a name="盒子阴影属性"></a>
 #### 盒子阴影属性
 
->`box-shadow:none | [ <length> <length> <length>?<length>? || <color> ], [ <length> <length> <length>? <length>? || <color> ]+`  
+`box-shadow:none | [ <length> <length> <length>?<length>? || <color> ], [ <length> <length> <length>? <length>? || <color> ]+`  
 简写：  
 `box-shadow:none | [inset x-offset y-offset blur-radius spread-radius color], [inset x-offset y-offset blur-radius spread-radius color]`
 
->* none：默认值，元素没有任何阴影效果。
+* none：默认值，元素没有任何阴影效果。
 * inset：阴影类型，可选值。如果不设置，其默认的投影方式是外阴影；如果取其唯一值“inset”，就是给元素设置内阴影。
 * x-offset：阴影水平偏移量，其值可以是正负值。如果取正值，则阴影在元素的右边，反之取负值，阴影在元素的左边。
 * y-offset：阴影垂直偏移量，其值可以是正负值。如果取正值，则阴影在元素的底部，反之取负值，阴影在元素的顶部。
@@ -345,6 +356,274 @@ background-color:color;
 
 <a name="5-css3-颜色特性"></a>
 ## 5. CSS3 颜色特性
+
+<a name="透明属性"></a>
+#### 透明属性
+
+`opacity: alphavalue || inherit`
+
+* alphavalue: 默认值为1，可以取0~1任意浮点数。其中取值为1时，元素是完全不透明的；反之，取值为0时，元素是完全透明不可见。其值不可以是负数。  
+* inherit： 表示继承父元素的opacity设置的值，即继承父元素的不透明性。
+
+>opacity属性、alpha通道、transparent属性值的区别：
+
+>opacity是CSS3中专门用来设置透明度的一个属性，其取值范围从0~1,0表示完全透明，1表示不透明。  
+opacity只能给整个元素设置一个透明度，并且其透明度直接会继承给其后代元素。  
+
+>alpha通道是用来对元素设置透明度，针对元素的背景色、文字颜色、边框颜色等设置透明度。
+
+>transparent属性值给元素的颜色设置完全透明色，例如背景色、边框色、文字颜色、阴影色等，相当于alpha的通道值设置为0。在CSS3中，可以在一切指定的颜色值的属性中指定transparent值。
+
+<a name="6-css3-盒模型"></a>
+## 6. CSS3 盒模型
+
+CSS中主要的几种盒模型：inline、inline-block、block、table、absolute position、float  
+IE6以下版本浏览器的宽度包含了元素的padding和border值
+
+<a name="盒模型属性"></a>
+#### 盒模型属性
+
+`boxsizing: content-box | border-box | inherit`
+
+* content-box：默认值，让元素维持W3C的标准盒模型。`element width/height = border + padding + content width/height`
+* border-box：让元素维持IE传统的盒模型。
+* inherit：此值使元素继续父元素的盒模型模式。
+* padding-box：Firefox浏览器独有。`element width/height = content + padding width/height`
+
+<a name="内容溢出属性"></a>
+#### 内容溢出属性
+
+`overflow-x: visible | hidden | scroll | auto | no-display | no-content`  
+`overflow-y: visible | hidden | scroll | auto | no-display | no-content`
+
+* visible：默认值。表示不剪切容器中的任何内容、不添加滚动条，元素将被剪切为包含对象的窗口大小，而且clip属性设置将失效。
+* auto：再需要时剪切内容并添加滚动条。也就是说当内容超过容器的宽度或者高度时，溢出的内容将会隐藏在容器中，并且会添加滚动条，用户可以拖动滚动条查看隐藏在容器中的内容。
+* hidden：内容溢出容器时，所有内容都将隐藏，而且不显示滚动条。
+* scroll：不管内容有没有溢出容器，overflow-x都会显示横向的滚动条，而overflow-y会显示纵向的滚动条。
+* no-display：当内容溢出容器时不显示元素，此时类似于元素添加了display：none声明一样。
+* no-content：当内容溢出容器时不显示内容，此时类似于添加了visibility：hidden声明一样。
+
+<a name="自由缩放属性"></a>
+#### 自由缩放属性
+
+`resize: none | both | horizontal | vertical | inherit `
+
+* none：用户不能拖动元素修改尺寸大小。
+* both：用户可以拖动元素，同时修改元素的高度和宽度。
+* horizontal：用户可以拖动元素，仅可以修改元素的宽度，但不能修改元素的高度。
+* vertical：用户可以拖动元素，仅可以修改元素的高度，但不能修改元素的宽度。
+* inherit：继承父元素的resize属性值。
+
+>表单中的文本域textarea元素默认情况就具有resize功能，属性默认值为“both”
+
+<a name="外轮廓属性"></a>
+#### 外轮廓属性
+
+`outline: [outline-color] || [outline-style] || [outline-width] || [outline-offset] || inherit`
+
+* outline-color：定义轮廓线的颜色，省略时此参数默认值为黑色。
+* outline-style：定义轮廓线的样式，省略时此参数默认值none。
+* outline-width：定义轮廓线的宽度，省略时此参数默认值miedium，表示绘制中等宽度的轮廓线。
+* outline-offset：定义轮廓边框的偏移位置的数值，此值可以取负数值。
+* inherit：继承父元素的outline效果。
+
+>outline与border的不同：  
+outline制作的边框只能同时四边出现，不能单边出现，而且outline制作的模拟边框不会影响盒模型大小，而border制作的边框直接影响元素盒模型大小。
+
+<a name="8-css3-伸缩布局盒模型"></a>
+## 8. CSS3 伸缩布局盒模型
+
+>如何辨别旧 Flexbox 和 Flexbox：
+
+>* 看到 `display:box` 或者 `box-{*}` 属性，说明是2009年版本的Flexbox
+* 看到 `display:flexbox` 或者 `flex()` 函数，说明时2011年版本，已称为Flexbox混合版本
+* 看到 `display:flex` 或者 `flex-{*}` 属性，说明时当前规范，也就是W3C标准规范版本的Flexbox
+
+<a name="旧版本flexbox模型的基本使用"></a>
+#### 旧版本Flexbox模型的基本使用
+
+##### 伸缩容器设置
+`display: box | inline-box`
+
+* box：设置为块伸缩容器。
+* inline-box：设置为内联级伸缩容器。
+
+##### 伸缩流方向
+`box-orient: horizontal | vertical | inline-axis | block-axis`
+
+* horizontal：伸缩项目再伸缩容器中从左到右在一条水平线上排列显示。
+* vertical：伸缩项目在伸缩容器中从上到下在一条垂直线上排列显示。
+* inline-axis：伸缩项目沿着内联轴排列显示。
+* block-axis：伸缩项目沿着块轴排列显示。
+
+##### 布局顺序
+
+`box-direction: normal | reverse`
+
+布局顺序是指伸缩项目再伸缩容器中的流动顺序，根据W3C规范可知，文档流方向是按照文档在HTML（DOM）中出现的先后顺序决定的。
+
+##### 伸缩换行
+
+`box-lines: single | multiple`
+
+* single：伸缩容器的所有伸缩项目一行或一列显示。如果伸缩容器设置了overflow属性，可以直接控制伸缩项目是否隐藏、裁剪或者出现滚动条。
+* multiple：指定伸缩容器多行或多列显示伸缩项目，当伸缩容器没有足够空间放置所有伸缩项目的时候，伸缩项目就会自动换行或多列显示。
+
+如果没有给伸缩容器显示设置box-lines属性值时，一旦伸缩容器没有足够的空间容纳伸缩项目时，伸缩项目就会溢出伸缩容器。
+
+##### 主轴对齐
+
+指定如何在伸缩项目之间分布伸缩容器额外空间
+
+`box-pack: start | end | center | justify`
+
+* start：伸缩项目向一行的起始位置靠齐。伸缩容器沿着布局轴方向的所有额外空间都被置于布局轴的末尾。
+* end：和start值相反，伸缩项目向一行的结束位置靠齐。伸缩容器沿着布局轴方向的所有额外空间都被置于布局轴的开始。
+* center：伸缩项目向一行的中间位置靠齐。伸缩容器所有额外空间平均分布在第一伸缩项目前面和最后一个伸缩项目的后面。
+* justify：伸缩项目会平均分布在一行里。伸缩容器所有额外空间平均分布在所有伸缩项目之间，而且在第一个伸缩项目之前和最后一个伸缩项目之后不分配伸缩容器的任何额外空间。
+
+##### 侧轴对齐
+
+`box-align: start | end | center | baseline | stretch`
+
+* start：伸缩项目顶部边缘放置在伸缩容器的顶端，伸缩容器的额外空间放置在伸缩项目底端。
+* end：和start值相反，所有伸缩项目底部边缘放置在伸缩容器的底端，伸缩容器的额外空间放置在伸缩项目顶端。
+* center：伸缩项目紧靠在一起，垂直居中于伸缩容器。伸缩容器额外的空间平均分配在伸缩项目的顶部和底部。
+* baseline：伸缩项目根据它们的基线对齐。伸缩容器额外空间可前可后显示。
+* stretch：伸缩项目填充整个伸缩容器。
+
+##### 伸缩性
+
+`box-flex: <number>`
+
+box-flex属性能够灵活地控制伸缩项目在伸缩容器中的显示空间。
+
+##### 显示顺序
+
+`box-ordinal-group: <integer>` 默认值为1，正整数
+
+<a name="混合版本flexbox模型的基本使用"></a>
+#### 混合版本Flexbox模型的基本使用
+
+伸缩布局模型混合版本主要用于IE10浏览器，在使用混合版本时需要使用浏览器前缀“-ms-”
+
+##### 伸缩容器设置
+
+`display: flexbox | inline-flexbox`
+
+##### 伸缩流方向
+
+`-ms-flex-direction: row | row-reverse | colum | column-reverse` 类似于旧版`box-orient`
+
+##### 伸缩换行
+
+`flex-wrap: nowrap | wrap | wrap-reverse` 类似于旧版`box-lines`
+
+##### 伸缩流方向与换行
+
+`flex-flow: <flex-direction> | <flex-wrap>`
+
+##### 主轴对齐
+
+`flex-pack: start | end | center | justify | distribute`
+
+* distribute：伸缩项目会平均分布在同一行里，两端保留中间相邻伸缩项目之间间距一半的空间。如果伸缩容器没有足够空间或者只有一个伸缩项目的时候就会遵循center方式。
+
+##### 侧轴对齐
+
+`flex-align: start | end | center | baseline |stretch` 类似于旧版`box-align`
+
+* stretch：伸缩项目拉伸填充整个伸缩容器，如果伸缩容器没有足够的空间，将以start方式显示
+
+##### 堆栈伸缩行
+
+`flex-line-pack: start | end | center | justify | distribute | stretch` 类似于`flex-pack`
+
+##### 伸缩性
+
+-ms-flex 属性指定伸缩项目的宽度或高度是否基于伸缩容器中的可用空间具有弹性。该值还指示分配给子元素可用空间比例。  
+当伸缩项目设置了 -ms-flex 属性时，则查询 -ms-flex 而不是width或height属性以确定伸缩项目的主要尺寸。如果元素不是伸缩项目，则 -ms-flex 属性不起作用。
+
+`-ms-flex: <positive-flex> <negative-flex> <preferred-size> | none`
+
+* <positive-flex\>:设置正弹性的整数。如果忽略，该伸缩项目的正弹性为1。负值无效。
+* <negative-flex\>:设置负弹性的整数。如果忽略，该伸缩项目的正弹性为0。负值无效。
+* <perferred-size\>:设置伸缩项目的首选大小。可以为width或height属性的任何有效值，包括inherit。如果忽略，首选大小默认为0px。如果<preferred-size\>组件在伸缩容器的伸缩项目上为auto，首选大小为该伸缩项目的width或height属性（平行于主轴的那个属性）。
+* none:相当于正弹性<positive-flex\>值为0，负弹性<negative-flex\>值为0，首选大小<preferred-size\>值为auto，也就是-ms-flex值为 “0 0 auto”
+
+##### 显示顺序
+
+`flex-order: <integer>`  
+integer是一个自然数，默认值为0
+
+<a name="新版本flexbox模型的基本使用"></a>
+#### 新版本Flexbox模型的基本使用
+
+##### 伸缩容器
+
+`display: flex | inline-flex`
+
+##### 伸缩流方向
+
+`flex-direction: row | row-reverse | column | column-reverse`
+
+##### 伸缩换行
+
+适用于伸缩容器，也就是伸缩项目的父元素。主要用来定义伸缩容器里是单行还是多行显示，侧轴的方向决定了新行堆放的方向。
+
+`flex-wrap: nowrap | wrap | wrap-reverse`
+
+##### 伸缩流方向与换行
+
+`flew-flow: <'flex-direction'> || <'flex-wrap'>`
+
+>注意：flex-flow属性和writing-mode有直接的关系。当使用writing-mode:vertical-rl时转向垂直布局（如传统的中文、日文和韩文排版，也就是竖排），flex-flow:row将垂直排列伸缩项目，和column将水平排列伸缩项目。
+
+##### 主轴对齐
+
+适用于伸缩容器，也就是伸缩项目的父元素。
+
+`justify-content: flex-start | flex-end | center | space-between | space-around`
+
+##### 侧轴对齐
+
+align-items 和 justify-content 相呼应。align-items 调整伸缩项目在侧轴上的定位方式。主要用来定义伸缩项目可以在伸缩容器的当前行的侧轴上的对齐方式。可以把它想象成侧轴（垂直于主轴）的 justify-content。
+
+`align-items: flex-start | flex-end | center | baseline | stretch`
+
+伸缩项目的align-self属性主要是用来设置单独伸缩项目在侧轴对齐的方式，可以用来覆盖该伸缩项目的伸缩容器的align-items属性。它的值和align-items一样。对于匿名伸缩项目，align-self的值永远与其关联的伸缩容器的align-items的值相同。另外，如果伸缩项目的任一个侧轴上的外边距为auto，则align-self没有效果。如果align-self的值为auto，则其计算值为伸缩项目的伸缩容器的align-items值，如果该伸缩项目没有伸缩容器，则计算值为stretch。
+
+##### 堆栈伸缩行
+
+align-content属性会更改flex-wrap的行为。主要用来调准伸缩行在伸缩容器里的对齐方式。
+
+`align-content: flex-start | flex-end | center | space-between | space-around | stretch`
+
+* stetch：align-content的默认值，各行将会伸展以占用额外的空间。
+
+>这个属性只有伸缩项目有多行时才生效，这种情况只有display的flex-wrap为wrap时，并且没有足够的空间把伸缩项目行放在同一行中。也就是这个属性将对每一行起作用而不是每个伸缩项目。
+
+##### 伸缩性
+
+`flex:none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]`
+
+flex属性可以用来指定可伸缩长度的部件：扩展比率、收缩比率，以及伸缩基准值。
+
+* flex-grow： <number\> 默认值为：0
+* flex-shrink： <number\> 默认值为：1，此属性根据需要用来定义伸缩项目收缩的能力。
+* flex-basis： <length\> | auto 默认值为： auto，此属性用来设置伸缩项目的伸缩基准值，伸缩容器的额外空间按比率进行伸缩。
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
