@@ -120,7 +120,7 @@
 ## 2.CSS3 边框
 <a name="边框基本属性"></a>
 #### 边框基本属性
-  >`border: border-width border-style border-color;` 其中border-style必须有
+`border: border-width border-style border-color;` 其中border-style必须有
 
   * border-width: 设置元素边框的粗细，默认值“medium”（大约等于3~4px）
   * border-color: 设置元素边框的颜色
@@ -153,20 +153,20 @@
 
 <a name="图片边框属性"></a>
 #### 图片边框属性
->`border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
+`border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
 
-> * none: 默认值，表示边框无背景图片
-  * <image>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
-  * <number>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
-  * <percentage>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
-  * stretch、repeat、round: 这三个属性参数是用来设置边框背景图片的铺放方式，类似于background-position，其中stretch会拉伸边框背景图片、repeat是会重复边框背景图片、round是平铺边框背景图片，其中stretch为默认值
+* none: 默认值，表示边框无背景图片
+* <image>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
+* <number>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
+* <percentage>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
+* stretch、repeat、round: 这三个属性参数是用来设置边框背景图片的铺放方式，类似于background-position，其中stretch会拉伸边框背景图片、repeat是会重复边框背景图片、round是平铺边框背景图片，其中stretch为默认值
 
->  border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
+border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
 
 <a name="圆角边框属性"></a>
 #### 圆角边框属性
 
->`border-radius: none | <length> {1,4}[/<length>{1,4}] ？`
+`border-radius: none | <length> {1,4}[/<length>{1,4}] ？`
 
 特殊应用：
 
@@ -208,11 +208,11 @@
 `background-repeat: repeat || repeat-x || repeat-y || no-repeat` 默认值为“repeat”
 
 * background-attachment（背景图片是固定还是滚动）  
-`background-attachment: scroll || fixed` 默认值为“scroll”
+`background-attachment: scroll || fixed` 默认值为“scroll”  
 注意：取值为“fixed”时，一般运用在html或body标签上，使用在其他标签上不能达到固定效果
 
 * background-position（背景图片位置）  
-`background-position: <percentage> || <length> || [left|center|right], [top|center|bottom]` 默认值为“(0,0)||(0%, 0%)||(left top)”
+`background-position: <percentage> || <length> || [left|center|right], [top|center|bottom]` 默认值为“(0,0) || (0%, 0%) || (left top)”
 
 <a name="背景新增属性"></a>
 #### 背景新增属性
