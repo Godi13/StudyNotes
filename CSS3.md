@@ -30,6 +30,26 @@
     - [旧版本Flexbox模型的基本使用](#旧版本flexbox模型的基本使用)
     - [混合版本Flexbox模型的基本使用](#混合版本flexbox模型的基本使用)
     - [新版本Flexbox模型的基本使用](#新版本flexbox模型的基本使用)
+  - [8. CSS3 多列布局](#8-css3-多列布局)
+    - [多列布局基本属性](#多列布局基本属性)
+    - [多列布局列宽属性](#多列布局列宽属性)
+    - [多列布局列数属性](#多列布局列数属性)
+    - [多列布局列间距属性](#多列布局列间距属性)
+    - [多列布局列边框样式属性](#多列布局列边框样式属性)
+    - [多列布局跨列属性](#多列布局跨列属性)
+    - [多列布局列高度属性](#多列布局列高度属性)
+  - [9. CSS3 渐变](#9-css3-渐变)
+    - [线性渐变](#线性渐变)
+    - [径向渐变](#径向渐变)
+    - [重复渐变](#重复渐变)
+  - [10. CSS3 变形](#10-css3-变形)
+    - [变形属性详解](#变形属性详解)
+    - [2D变形](#2d变形)
+    - [多重变形](#多重变形)
+  - [11. CSS3 过渡](#11-css3-过渡)
+    - [过渡属性](#过渡属性)
+  - [12. CSS3 动画](#12-css3-动画)
+  - [13. 媒体特性与Responsive设计](#13-媒体特性与responsive设计)
 
 <!-- /MarkdownTOC -->
 
@@ -167,9 +187,9 @@
 `border-image: none | <image> [<number> | <percentage>] {1,4} [/ <broder-width> {1,4}] ?[stretch | repeat | round] {0,2}`
 
 * none: 默认值，表示边框无背景图片
-* <image\>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
-* <number\>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
-* <percentage\>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
+* \<image\>: 设置背景图片，这跟background-image一样，可以使用绝对或相对的URL地址，来指定边框的背景图片
+* \<number\>: number时一个数值，用来设置边框或者边框背景图片的大小，其单位时像素（px），可以使用1~4个值，表示4个方位的值，可以参考border-width设置方式
+* \<percentage\>: percentage也是用来设置边框或者边框背景图片的大小，跟number不同之处是，percentage使用的是百分比
 * stretch、repeat、round: 这三个属性参数是用来设置边框背景图片的铺放方式，类似于background-position，其中stretch会拉伸边框背景图片、repeat是会重复边框背景图片、round是平铺边框背景图片，其中stretch为默认值
 
 border-image 和 background-image 之间有一些类似之处，包括图片的引用和排列方式等
@@ -546,10 +566,10 @@ box-flex属性能够灵活地控制伸缩项目在伸缩容器中的显示空间
 
 `-ms-flex: <positive-flex> <negative-flex> <preferred-size> | none`
 
-* <positive-flex\>:设置正弹性的整数。如果忽略，该伸缩项目的正弹性为1。负值无效。
-* <negative-flex\>:设置负弹性的整数。如果忽略，该伸缩项目的正弹性为0。负值无效。
-* <perferred-size\>:设置伸缩项目的首选大小。可以为width或height属性的任何有效值，包括inherit。如果忽略，首选大小默认为0px。如果<preferred-size\>组件在伸缩容器的伸缩项目上为auto，首选大小为该伸缩项目的width或height属性（平行于主轴的那个属性）。
-* none:相当于正弹性<positive-flex\>值为0，负弹性<negative-flex\>值为0，首选大小<preferred-size\>值为auto，也就是-ms-flex值为 “0 0 auto”
+* \<positive-flex\>:设置正弹性的整数。如果忽略，该伸缩项目的正弹性为1。负值无效。
+* \<negative-flex\>:设置负弹性的整数。如果忽略，该伸缩项目的正弹性为0。负值无效。
+* \<perferred-size\>:设置伸缩项目的首选大小。可以为width或height属性的任何有效值，包括inherit。如果忽略，首选大小默认为0px。如果\<preferred-size\>组件在伸缩容器的伸缩项目上为auto，首选大小为该伸缩项目的width或height属性（平行于主轴的那个属性）。
+* none:相当于正弹性\<positive-flex\>值为0，负弹性\<negative-flex\>值为0，首选大小\<preferred-size\>值为auto，也就是-ms-flex值为 “0 0 auto”
 
 ##### 显示顺序
 
@@ -609,15 +629,175 @@ align-content属性会更改flex-wrap的行为。主要用来调准伸缩行在�
 
 flex属性可以用来指定可伸缩长度的部件：扩展比率、收缩比率，以及伸缩基准值。
 
-* flex-grow： <number\> 默认值为：0
-* flex-shrink： <number\> 默认值为：1，此属性根据需要用来定义伸缩项目收缩的能力。
-* flex-basis： <length\> | auto 默认值为： auto，此属性用来设置伸缩项目的伸缩基准值，伸缩容器的额外空间按比率进行伸缩。
+* flex-grow： \<number\> 默认值为：0
+* flex-shrink： \<number\> 默认值为：1，此属性根据需要用来定义伸缩项目收缩的能力。
+* flex-basis： \<length\> | auto 默认值为： auto，此属性用来设置伸缩项目的伸缩基准值，伸缩容器的额外空间按比率进行伸缩。
 
+##### 显示顺序
 
+`order: <number>`
 
+<a name="8-css3-多列布局"></a>
+## 8. CSS3 多列布局
 
+* columns：集成column-width和column-count两个属性，用于实现元素多列布局效果。
+* column-width：定义每列列宽度。
+* column-count：定义分列列数。
+* column-gap：定义列间距。
+* column-rule：定义列边框。
+* column-span：定义多布布局中子元素跨列效果。
+* column-fill：控制每列的列高效果。
 
+<a name="多列布局基本属性"></a>
+#### 多列布局基本属性
 
+`column: <column-width> || <column-count>`
+
+<a name="多列布局列宽属性"></a>
+#### 多列布局列宽属性
+
+`column-width: auto | <length>`
+
+<a name="多列布局列数属性"></a>
+#### 多列布局列数属性
+
+`column-count: auto | <integer>`
+
+* auto：默认值，表示元素只有一列。其主要依靠浏览器计算自动设置。
+* \<integer\>：正整数值，主要用来定义元素的列数，取值为大于0的整数，负值无效。
+
+列数=（容器宽度 - 间距）/ 列间距
+
+<a name="多列布局列间距属性"></a>
+#### 多列布局列间距属性
+
+`column-gap: normal | <length>`
+
+* normal: 默认值，主要通过浏览器默认设置时行解析，一般情况下，normal值相当于1em。
+* \<length\>：由浮点数字和单位标识符组成的长度值，主要用来设置列与列之间的间距，常用px、em单位的任何整数值，但其不能为负值。
+
+<a name="多列布局列边框样式属性"></a>
+#### 多列布局列边框样式属性
+
+`column-rule: <column-rule=width> | <column-rule-style> | <column-rule-color>`
+
+* column-rule-width：类似于border-width属性，主要用来定义列边框的宽度，其默认值medium，该属性接受任意浮点数，但不接受负值。像border-width属性一样，可以使用关键词medium、thick和thin。
+* column-rule-style：此值类似于border-style属性，主要用来定义列边框样式，其默认值为none。该属性值与border-style属值相同，包括none、hidden、dotted、dashed、solid、double、groove、ridge、inset、outset。
+* column-rule-color：此值类似于border-color属性，主要用来定义列边框样色，其默认值为前景色color的值，使用时相当于border-color。该属性接受所有的颜色。如果不希望显示颜色，也可以将其设置为transparent（透明色）。
+
+<a name="多列布局跨列属性"></a>
+#### 多列布局跨列属性
+
+`column-span: none | all`
+
+* none：默认值，表示不跨越任何列。
+* all：跟none值刚好相反，表示的是元素跨越所有列，并定位在列的Z轴之上。
+
+<a name="多列布局列高度属性"></a>
+#### 多列布局列高度属性
+
+`column-fill: auto | balance`
+
+* auto： 默认值，各列的高度随其内容的变化自动变化。
+* balance： 各列的高度将会根据内容最多的一列的高度进行统一。
+
+<a name="9-css3-渐变"></a>
+## 9. CSS3 渐变
+
+<a name="线性渐变"></a>
+#### 线性渐变
+
+Webkit引擎老式语法  
+`-webkit-gradient(<type>,<point>[,<radius>]?,<point>[,<radius>]?[,<stop>]*)`
+
+Webkit引擎新式语法  
+`-webkit-linear-gradient([<point> || <angle>,]?<stop>,<stop>[,<stop>*]`
+
+Geocko引擎  
+`-moz-linear-gradient([<point>||<angle>,]?<stop>,<stop>[,<stop>]*)`
+
+Presto引擎  
+`-o-linear-gradient([<point>||<angle>,]?<stop>,<stop>[,<stop>]*)`
+
+Trident引擎  
+`-ms-linear-gradient([<point>||<angle>,]?<stop>,<stop>[,<stop>]*)`
+
+W3C标准线性渐变语法  
+`linear-gradient([[<angle> | to <side-or-corner> ],]?<color-stop>[,<color-stop>]+)`
+
+<a name=""></a>
+<a name="径向渐变"></a>
+#### 径向渐变
+
+Webkit引擎老式语法  
+`-webkit-gradient([<type>],[<position> || <angle>,]?[<shape> || <size>,]?<color-stop>,<color-stop>[,<color-stop>]*)`
+
+Webkit引擎新式语法  
+`-webkit-linear-gradient([<position> || <angle>,]?[<shape> || <size>,]?<color-stop>,<color-stop>[,<color-stop>]*)`
+
+Geocko引擎  
+`-moz-radial-gradient([<position> || <angle>,]?[<shape> || <size>,]?<color-stop>,<color-stop>[,<color-stop>]*)`
+
+Presto引擎  
+`-o-radial-gradient([<position> || <angle>,]?[<shape> || <size>,]?<color-stop>,<color-stop>[,<color-stop>]*)`
+
+Trident引擎  
+`-ms-radial-gradient([<position> || <angle>,]?[<shape> || <size>,]?<color-stop>,<color-stop>[,<color-stop>]*)`
+
+W3C标准线性渐变语法  
+`radial-gradient([[<shape> || <size>] [at <position>]?, | at <position>,]?<color-stop>[,<color-stop>]+)`
+
+<a name="重复渐变"></a>
+#### 重复渐变
+
+<a name="10-css3-变形"></a>
+## 10. CSS3 变形
+
+CSS3 变形中具有X/Y可用的函数：translateX()、translateY()、scaleX()、scaleY()、skewX()、skewY()  
+CSS3 2D 变形函数包括：translate()、scale()、rotate()、skew()、matrix()  
+CSS3 3D 变形函数包括：rotateX()、rotateY()、rotate3d()、translateZ()、translate3d()、scaleZ()、scale3d()、matrix3d()
+
+<a name="变形属性详解"></a>
+#### 变形属性详解
+
+`transform: none | <transform-function> [<transform-function>]*`
+
+`transform-origin: [<percentage> | <length> | left | center | right | top | bottom] | [<percentage> | <length> | left | center | right] | [[<percentage> | <length> |  left | center | right] && [<percentage> | <length> | top | center | bottom]] <length> ?`
+
+`transform-style: flat | preserve-3d`
+>注意：如果元素设置了transform-style值为preserve-3d，就不能为了防止子元素溢出容器而设置overflow值为hidden，如果设置了overflow:hidden同样可以迫使子元素出现再同一平面（和元素设置了transform-style为flat一样的效果）
+
+`perspective: none | <length>`
+
+`perspective-origin: [<percentage> | <length> | left | center | right | top | bottom] | [[<percentage> | <length> |  left | center | right] && [<percentage> | <length> | top | center | bottom]]`
+
+`backface-visibility: visible | hidden`
+
+<a name="2d变形"></a>
+#### 2D变形
+
+`translate(tx,ty)`
+
+`scale(sx,sy)`
+
+<a name="多重变形"></a>
+#### 多重变形
+
+`transform: <transform-function> <transform-function>*`
+
+<a name="11-css3-过渡"></a>
+## 11. CSS3 过渡
+
+<a name="过渡属性"></a>
+#### 过渡属性
+
+`transition: [<'transition-property'> || <'transition-duration'> || <'transition-timing-function'> || <'transition-delay'>] [,[<'transition-propertry'> || <'transtion-duration'> || <'transition-timing-function'> || <'transition-delay'>]]*`
+
+<a name="12-css3-动画"></a>
+## 12. CSS3 动画
+
+<a name="13-媒体特性与responsive设计"></a>
+## 13. 媒体特性与Responsive设计
 
 
 
