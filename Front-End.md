@@ -12,32 +12,35 @@
     - [2. Ubuntu 14.04 安装 node v4](#2-ubuntu-1404-安装-node-v4)
     - [3. glup安装](#3-glup安装)
     - [4. webpack + React 镜像安装](#4-webpack--react-镜像安装)
-    - [5. react-hot-boilerplate 安装](#5-react-hot-boilerplate-安装)
-    - [6. SVG](#6-svg)
+    - [5.sass + webpack + react + hot-boilerplate 工作环境配置](#5sass--webpack--react--hot-boilerplate-工作环境配置)
   - [工具使用](#工具使用)
     - [1. glup](#1-glup)
     - [2. React基础讲解](#2-react基础讲解)
     - [3. webpack](#3-webpack)
     - [4. webpack + React](#4-webpack--react)
     - [5. webpack + css](#5-webpack--css)
-    - [6. React组件复用](#6-react组件复用)
-  - [设计相关](#设计相关)
+    - [6. react-hot-boilerplate 安装](#6-react-hot-boilerplate-安装)
+    - [7. SVG](#7-svg)
+    - [8. React组件复用](#8-react组件复用)
   - [Ubuntu](#ubuntu)
     - [1. .bashrc 添加](#1-bashrc-添加)
     - [2.常用指令](#2常用指令)
+    - [3.Tmux](#3tmux)
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
   - [服务器相关](#服务器相关)
     - [1. 初步设置服务器](#1-初步设置服务器)
     - [2.服务器相关指令](#2服务器相关指令)
-    - [3.Tmux 快捷键](#3tmux-快捷键)
+    - [3.本地SSH设置](#3本地ssh设置)
     - [4.服务器本地同步脚本设置](#4服务器本地同步脚本设置)
 
 <!-- /MarkdownTOC -->
 
 <a name="知识点整理"></a>
 # 知识点整理
+
+>[关于WEB开发全栈详细介绍](https://www.youtube.com/watch?v=pB0WvcxTbCA)
 
 ***
 
@@ -183,81 +186,13 @@
 >[淘宝npm镜像](http://npm.taobao.org/)  
 >[webpack学习资料](https://fakefish.github.io/react-webpack-cookbook/)
 
-<a name="5-react-hot-boilerplate-安装"></a>
-#### 5. react-hot-boilerplate 安装
+<a name="5sass--webpack--react--hot-boilerplate-工作环境配置"></a>
+#### 5.sass + webpack + react + hot-boilerplate 工作环境配置
 
->* 从 github 下载 [_react-hot-boilerplate_](https://github.com/gaearon/react-hot-boilerplate)
-* 进入文件夹输入 `npm i` 进行安装
-* 输入 `npm start` 运行服务，在浏览器输入 `localhost:3000` 即可
+>[Godi13](https://github.com/Godi13/hmr-sass-react-webpack)  
+[sketch-with-css](https://github.com/happypeter/sketch-with-css)
 
-```js
-//webpack.config.js 文件配置
-var path = require('path');
-var webpack = require('webpack');
-
-module.exports = {
-  devtool: 'eval',          // eval 代表提高编译速度
-  entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
-    './src/index'           // 根据项目名称此处修改为 './src/main.js'
-  ],
-  output: {
-    path: path.join(__dirname, 'dist'),  //编译输出位置
-    filename: 'bundle.js',
-    publicPath: '/static/'  //指定内存位置，index.html主页上的 bundle.js路径也要相应修改为 <script src="/static/bundle.js"></script>
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  module: {
-    loaders: [
-    { test: /\.js$/, loaders: ['react-hot', 'babel'], include: path.join(__dirname, 'src') },
-    //注意此处为loaders，并且所有文件夹都要放着src下面，比如 components,main.js,styles/ 之类
-    { test:/\.scss$/, loader: "style!css!autoprefixer!sass" }
-    ]
-  }
-};
-```
-    cnpm i -D react-hot-loader webpack-dev-server  //需要安装
-
-```js
-//再项目中创建 server.js
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
-
-new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
-  hot: true,
-  historyApiFallback: true
-}).listen(3000, 'localhost', function (err, result) {
-  if (err) {
-    console.log(err);
-  }
-
-  console.log('Listening at localhost:3000');
-});
-```
-    node server.js    //开发模式下使用的命令
-
-    webpack           //调试完成后输入,可以在 dist 目录下可以找到 bundle.js
-
->参考资料： [webpack.config.js 参数详解](http://gaearon.github.io/react-hot-loader/getstarted/)  
->参考资料： [非 _React_ 构架下使用热模块替换的方法](http://christianalfoni.github.io/react-webpack-cookbook/Automatic-browser-refresh.html)
-
-<a name="6-svg"></a>
-#### 6. SVG
-
-    cnpm i -D react-inlinesvg
-
-```js
-var Isvg = require('react-inlinesvg');
-
-<Isvg src="/path/to/myfile.svg"></Isvg>
-```
-
->参考资料： [react-inlinesvg](https://github.com/matthewwithanm/react-inlinesvg)
+***
 
 <a name="工具使用"></a>
 ## 工具使用
@@ -299,7 +234,7 @@ gulp.task('watch',function(){
 ```
     gulp watch  //开始自动更新
 
-###### [在gulp出错时不中止watch的方法](https://github.com/happypeter/modern-web-dev/issues/19)
+###### 在gulp出错时不中止watch的方法
 
 ```js
 function handleError(err) {
@@ -548,8 +483,84 @@ require('./styles/main.scss');
 
 >__最终只需要上传 _index.html_ 和 _bundle.js_ 文件即可__
 
-<a name="6-react组件复用"></a>
-#### 6. React组件复用
+<a name="6-react-hot-boilerplate-安装"></a>
+#### 6. react-hot-boilerplate 安装
+
+>* 从 github 下载 [_react-hot-boilerplate_](https://github.com/gaearon/react-hot-boilerplate)
+* 进入文件夹输入 `npm i` 进行安装
+* 输入 `npm start` 运行服务，在浏览器输入 `localhost:3000` 即可
+
+```js
+//webpack.config.js 文件配置
+var path = require('path');
+var webpack = require('webpack');
+
+module.exports = {
+  devtool: 'eval',          // eval 代表提高编译速度
+  entry: [
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server',
+    './src/index'           // 根据项目名称此处修改为 './src/main.js'
+  ],
+  output: {
+    path: path.join(__dirname, 'dist'),  //编译输出位置
+    filename: 'bundle.js',
+    publicPath: '/static/'  //指定内存位置，index.html主页上的 bundle.js路径也要相应修改为 <script src="/static/bundle.js"></script>
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  module: {
+    loaders: [
+    { test: /\.js$/, loaders: ['react-hot', 'babel'], include: path.join(__dirname, 'src') },
+    //注意此处为loaders，并且所有文件夹都要放着src下面，比如 components,main.js,styles/ 之类
+    { test:/\.scss$/, loader: "style!css!autoprefixer!sass" }
+    ]
+  }
+};
+```
+    cnpm i -D react-hot-loader webpack-dev-server  //需要安装
+
+```js
+//在项目中创建 server.js
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var config = require('./webpack.config');
+
+new WebpackDevServer(webpack(config), {
+  publicPath: config.output.publicPath,
+  hot: true,
+  historyApiFallback: true
+}).listen(3000, 'localhost', function (err, result) {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log('Listening at localhost:3000');
+});
+```
+    node server.js    //开发模式下使用的命令
+
+    webpack           //调试完成后输入,可以在 dist 目录下可以找到 bundle.js
+
+>参考资料： [webpack.config.js 参数详解](http://gaearon.github.io/react-hot-loader/getstarted/)  
+>参考资料： [非 _React_ 构架下使用热模块替换的方法](http://christianalfoni.github.io/react-webpack-cookbook/Automatic-browser-refresh.html)
+
+<a name="7-svg"></a>
+#### 7. SVG
+
+    cnpm i -D react-inlinesvg
+
+```js
+var Isvg = require('react-inlinesvg');
+
+<Isvg src="/path/to/myfile.svg"></Isvg>
+```
+
+>参考资料： [react-inlinesvg](https://github.com/matthewwithanm/react-inlinesvg)
+
+<a name="8-react组件复用"></a>
+#### 8. React组件复用
 
 >React支持从父组件向子组件传递属性值
 
@@ -585,30 +596,6 @@ var Action = React.createClass({
   });
 module.exports = Action;
 ```
-
-***
-
-<a name="设计相关"></a>
-## 设计相关
-
-* [GitHub组件标准](http://primercss.io/)
-* [语义UI](http://semantic-ui.com/introduction/getting-started.html)
-* [Google设计](https://design.google.com/)
-* [Polymer](https://www.polymer-project.org/1.0/)
-* [Materialup](http://www.materialup.com/)
-* [Dribbble](https://dribbble.com/)
-* [色盘](http://www.materialpalette.com/blue-grey/lime)
-
->注意：从色盘网上下载的sass颜色不是scss版本，需要在后面补全<kbd>;</kbd>
-
-* [Normalize.css页面重置](http://www.bootcss.com/p/html5boilerplate/)
-
-``` sass
-font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-```
-
-* [网站文字排版的技巧](http://www.haoduoshipin.com/v/80)
-* [React组件](http://material-ui.com/#/)
 
 ***
 
@@ -656,10 +643,39 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
     修改用户组 sudo chgrp groupname filename
     修改拥有者 sudo chown ownername filename
 
-###### 3.下载网站
+###### 3.其他
 
-    wget -p -np -k -r url(你的网站入口)
+    wget -p -np -k -r url(你的网站入口)  //下载网站
+    ifconfig                           //查看IP
+    eog *                              //打开图片
 
+<a name="3tmux"></a>
+#### 3.Tmux
+
+|快捷键|说明|
+|:-----|:---|
+|C+b ?|help|
+|C+b t|time|
+|C+b d|save & exit|
+|C+b &|close window|
+|C+b space|next default layout|
+|C+b "|split pane horizontally|
+|C+b %|split pane vertically|
+|C+b arrow key|switch pane|
+|C+b c|(c)reate a new window|
+|C+b n|move to the (n)ext window|
+|C+b p|move to the (p)revious window|
+|Hold C+b| don't release it and hold one of the arrow keys - resize pane|
+
+    tmux list-sessions          //查看当前tmux窗口情况
+    tmux new-session -s name    //创建命名的窗口
+
+    tmux a -t name              //返回指定的窗口
+    tmux kill-session -t name   //关闭指定的窗口
+    tmux kill-sever             //关闭所有的窗口
+
+>参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)  
+>参考视频：[命令行操作神器 tmux](http://haoduoshipin.com/v/41)
 
 <a name="css相关"></a>
 ## CSS相关
@@ -685,7 +701,9 @@ font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB",
 <a name="2-常用css"></a>
 #### 2. 常用CSS
 
-```sass
+``` sass
+font-family: "Helvetica Neue", "Segoe UI", Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+
 * {
   box-sizing: border-box;
 }
@@ -722,27 +740,22 @@ border：1px solid red;   //调式时可以先添加边框
 #### 2.服务器相关指令
 1. `lsb_release -a` 查看服务器系统版本
 2. `scp filename/folder -r root@公网IP或域名:/usr/share/nginx/html/` 上传文件到服务器指定位置
+3. `logout` 退出回到本地终端
 
-<a name="3tmux-快捷键"></a>
-#### 3.Tmux 快捷键
-
-|快捷键|说明|
-|:-----|:---|
-|C+b ?|help|
-|C+b t|time|
-|C+b d|save & exit|
-|C+b &|close window|
-|C+b space|next default layout|
-|C+b "|split pane horizontally|
-|C+b %|split pane vertically|
-|C+b arrow key|switch pane|
-|C+b c|(c)reate a new window|
-|C+b n|move to the (n)ext window|
-|C+b p|move to the (p)revious window|
-|Hold C+b| don't release it and hold one of the arrow keys - resize pane|
-
->参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)  
->参考视频：[命令行操作神器 tmux](http://haoduoshipin.com/v/41)
+<a name="3本地ssh设置"></a>
+#### 3.本地SSH设置
+1. `sudo vim /etc/hosts` 添加ip地址，设置别名如`127.0.0.1 loc`
+2. 不输密码登陆服务器设置步骤：
+    * `ssh-keygen` 生成SSH密钥
+    * `cd .ssh`
+    * `id_rsa.pub`拷贝到服务器
+    * `ssh-copy-id root@公网IP`
+3. 自定义登陆服务器指令：
+    * `cd /bin`
+    * 新建`sudo vim name_ssh`
+    * 添加`ssh root@公网IP`后<kbd>Z</kbd><kbd>Z</kbd>
+    * `sudo chmod +x name_ssh`添加写权限
+    * 输入`name_ssh`即可登陆网站服务器
 
 <a name="4服务器本地同步脚本设置"></a>
 #### 4.服务器本地同步脚本设置

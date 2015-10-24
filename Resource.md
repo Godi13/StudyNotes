@@ -41,5 +41,9 @@
 * [Materialup](http://www.materialup.com/)
 * [Dribbble](https://dribbble.com/)
 * [色盘](http://www.materialpalette.com/blue-grey/lime)
+
+>注意：从色盘网上下载的sass颜色不是scss版本，需要在后面补全<kbd>;</kbd>
+
 * [Normalize.css页面重置](http://www.bootcss.com/p/html5boilerplate/)
 * [网站文字排版的技巧](http://www.haoduoshipin.com/v/80)
+* [React组件](http://material-ui.com/#/)
