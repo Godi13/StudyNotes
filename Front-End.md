@@ -12,7 +12,7 @@
     - [2. Ubuntu 14.04 安装 node v4](#2-ubuntu-1404-安装-node-v4)
     - [3. glup安装](#3-glup安装)
     - [4. webpack + React 镜像安装](#4-webpack--react-镜像安装)
-    - [5.sass + webpack + react + hot-boilerplate 工作环境配置](#5sass--webpack--react--hot-boilerplate-工作环境配置)
+    - [5. sass + webpack + react + hot-boilerplate 工作环境配置](#5-sass--webpack--react--hot-boilerplate-工作环境配置)
   - [工具使用](#工具使用)
     - [1. glup](#1-glup)
     - [2. React基础讲解](#2-react基础讲解)
@@ -186,8 +186,8 @@
 >[淘宝npm镜像](http://npm.taobao.org/)  
 >[webpack学习资料](https://fakefish.github.io/react-webpack-cookbook/)
 
-<a name="5sass--webpack--react--hot-boilerplate-工作环境配置"></a>
-#### 5.sass + webpack + react + hot-boilerplate 工作环境配置
+<a name="5-sass--webpack--react--hot-boilerplate-工作环境配置"></a>
+#### 5. sass + webpack + react + hot-boilerplate 工作环境配置
 
 >[Godi13](https://github.com/Godi13/hmr-sass-react-webpack)  
 [sketch-with-css](https://github.com/happypeter/sketch-with-css)
@@ -628,6 +628,7 @@ module.exports = Action;
 
 <a name="2常用指令"></a>
 #### 2.常用指令
+
 ###### 1. deb 包命令
 
     安装/升级deb包： sudo dpkg -i xxx.deb
@@ -648,6 +649,7 @@ module.exports = Action;
     wget -p -np -k -r url(你的网站入口)  //下载网站
     ifconfig                           //查看IP
     eog *                              //打开图片
+    tar zxvf filename.tgz              //解压缩.tgz
 
 <a name="3tmux"></a>
 #### 3.Tmux

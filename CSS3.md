@@ -26,7 +26,7 @@
     - [内容溢出属性](#内容溢出属性)
     - [自由缩放属性](#自由缩放属性)
     - [外轮廓属性](#外轮廓属性)
-  - [8. CSS3 伸缩布局盒模型](#8-css3-伸缩布局盒模型)
+  - [7. CSS3 伸缩布局盒模型](#7-css3-伸缩布局盒模型)
     - [旧版本Flexbox模型的基本使用](#旧版本flexbox模型的基本使用)
     - [混合版本Flexbox模型的基本使用](#混合版本flexbox模型的基本使用)
     - [新版本Flexbox模型的基本使用](#新版本flexbox模型的基本使用)
@@ -128,14 +128,14 @@
   |--------------|-------|
   |E[attr]|选择匹配具有属性attr的E元素。其中E可以省略，表示选择定义了attr属性的任意类型元素|
   |E[attr=val]|选择匹配具有属性attr的E元素，并且attr的属性值为val（其中val区分大小写），同样E元素省略时表示选择定义了attr属性值为val的任意类型元素|
-  |E[attr~=val]|选择匹配E元素，且E元素定义了属性attr，attr属性值具有多个空格分隔的值，其中一个值等于val。例如，.info[title~=more]将匹配元素具有类名info，而且这个元素设置了一个属性title，同时title属性值以包含了“more”的任何元素，例如<a class="info" title="click here for more information">click me</a>|
+  |E[attr~=val]|选择匹配E元素，且E元素定义了属性attr，attr属性值具有多个空格分隔的值，其中一个值等于val。例如，.info[title~=more]将匹配元素具有类名info，而且这个元素设置了一个属性title，同时title属性值以包含了“more”的任何元素，例如`<a class="info" title="click here for more information">click me</a>`|
   |E[attr*=val]|选择匹配元素E，且E元素定义了属性attr，其属性值任意位置包含了“val”。换句话说，字符串val与属性值中的任意位置相匹配|
   |E[attr^=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val开头的任何字符串|
   |E[attr$=val]|选择匹配元素E，且E元素定义了属性attr，其属性值以val结尾的任何字符串。与E[attr^=val]相反|
 
   E[attr|=val] 选择匹配E元素，且E元素定义了属性attr，attr属性值是一个具有val或者以val-开始的属性值。常用于lang属性（例如lang=“en-us”）。例如p[lang|=en]将匹配定义为英语的任何段落，无论时英式英语还是美式英语
 
-  >注意：E[attr=val]选择器中，属性和属性值必须完全匹配，特别对于属性值是词列表的形式，例如，`<a href="#" class="links item"></a>`，其中a[class="links"]{...}是找不到匹配元素，只有a[class="link item"]{...}才匹配。
+>注意：`E[attr=val]`选择器中，属性和属性值必须完全匹配，特别对于属性值是词列表的形式，例如，`<a href="#" class="links item"></a>`，其中`a[class="links"]{...}`是找不到匹配元素，只有`a[class="link item"]{...}`才匹配。
 
 <a name="css中常见的通配符"></a>
 #### CSS中常见的通配符
@@ -155,12 +155,13 @@
   * border-width: 设置元素边框的粗细，默认值“medium”（大约等于3~4px）
   * border-color: 设置元素边框的颜色
 
-  `border-color: [ <color> | trabsparent ]{1,4} | inherit` 下列属性中color是复数colors
-    border-top-colors:[ <color> | trabsparent ]{1,4} | inherit;
-    border-right-colors:[ <color> | trabsparent ]{1,4} | inherit;
-    border-bottom-colors:[ <color> | trabsparent ]{1,4} | inherit;
-    border-left-colors:[ <color> | trabsparent ]{1,4} | inherit;
+  `border-color: [ <color> | trabsparent ]{1,4} | inherit`
 
+    下列属性中color是复数colors
+      border-top-colors:[ <color> | trabsparent ]{1,4} | inherit;
+      border-right-colors:[ <color> | trabsparent ]{1,4} | inherit;
+      border-bottom-colors:[ <color> | trabsparent ]{1,4} | inherit;
+      border-left-colors:[ <color> | trabsparent ]{1,4} | inherit;
 
   * border-style: 设置元素边框的类型
     - border-top-style:设置元素顶部边框类型
@@ -450,8 +451,8 @@ IE6以下版本浏览器的宽度包含了元素的padding和border值
 >outline与border的不同：  
 outline制作的边框只能同时四边出现，不能单边出现，而且outline制作的模拟边框不会影响盒模型大小，而border制作的边框直接影响元素盒模型大小。
 
-<a name="8-css3-伸缩布局盒模型"></a>
-## 8. CSS3 伸缩布局盒模型
+<a name="7-css3-伸缩布局盒模型"></a>
+## 7. CSS3 伸缩布局盒模型
 
 >如何辨别旧 Flexbox 和 Flexbox：
 
@@ -460,29 +461,29 @@ outline制作的边框只能同时四边出现，不能单边出现，而且outl
 * 看到 `display:flex` 或者 `flex-{*}` 属性，说明时当前规范，也就是W3C标准规范版本的Flexbox
 
 <a name="旧版本flexbox模型的基本使用"></a>
-#### 旧版本Flexbox模型的基本使用
+#### [旧版本Flexbox模型的基本使用](#7-css3-伸缩布局盒模型)
 
-##### 伸缩容器设置
+##### 1.伸缩容器设置
 `display: box | inline-box`
 
 * box：设置为块伸缩容器。
 * inline-box：设置为内联级伸缩容器。
 
-##### 伸缩流方向
+##### 2.伸缩流方向
 `box-orient: horizontal | vertical | inline-axis | block-axis`
 
-* horizontal：伸缩项目再伸缩容器中从左到右在一条水平线上排列显示。
+* horizontal：伸缩项目在伸缩容器中从左到右在一条水平线上排列显示。
 * vertical：伸缩项目在伸缩容器中从上到下在一条垂直线上排列显示。
 * inline-axis：伸缩项目沿着内联轴排列显示。
 * block-axis：伸缩项目沿着块轴排列显示。
 
-##### 布局顺序
+##### 3.布局顺序
 
 `box-direction: normal | reverse`
 
 布局顺序是指伸缩项目再伸缩容器中的流动顺序，根据W3C规范可知，文档流方向是按照文档在HTML（DOM）中出现的先后顺序决定的。
 
-##### 伸缩换行
+##### 4.伸缩换行
 
 `box-lines: single | multiple`
 
@@ -491,7 +492,7 @@ outline制作的边框只能同时四边出现，不能单边出现，而且outl
 
 如果没有给伸缩容器显示设置box-lines属性值时，一旦伸缩容器没有足够的空间容纳伸缩项目时，伸缩项目就会溢出伸缩容器。
 
-##### 主轴对齐
+##### 5.主轴对齐
 
 指定如何在伸缩项目之间分布伸缩容器额外空间
 
@@ -502,7 +503,7 @@ outline制作的边框只能同时四边出现，不能单边出现，而且outl
 * center：伸缩项目向一行的中间位置靠齐。伸缩容器所有额外空间平均分布在第一伸缩项目前面和最后一个伸缩项目的后面。
 * justify：伸缩项目会平均分布在一行里。伸缩容器所有额外空间平均分布在所有伸缩项目之间，而且在第一个伸缩项目之前和最后一个伸缩项目之后不分配伸缩容器的任何额外空间。
 
-##### 侧轴对齐
+##### 6.侧轴对齐
 
 `box-align: start | end | center | baseline | stretch`
 
@@ -512,56 +513,56 @@ outline制作的边框只能同时四边出现，不能单边出现，而且outl
 * baseline：伸缩项目根据它们的基线对齐。伸缩容器额外空间可前可后显示。
 * stretch：伸缩项目填充整个伸缩容器。
 
-##### 伸缩性
+##### 7.伸缩性
 
 `box-flex: <number>`
 
 box-flex属性能够灵活地控制伸缩项目在伸缩容器中的显示空间。
 
-##### 显示顺序
+##### 8.显示顺序
 
 `box-ordinal-group: <integer>` 默认值为1，正整数
 
 <a name="混合版本flexbox模型的基本使用"></a>
-#### 混合版本Flexbox模型的基本使用
+#### [混合版本Flexbox模型的基本使用](#7-css3-伸缩布局盒模型)
 
 伸缩布局模型混合版本主要用于IE10浏览器，在使用混合版本时需要使用浏览器前缀“-ms-”
 
-##### 伸缩容器设置
+##### 1.伸缩容器设置
 
 `display: flexbox | inline-flexbox`
 
-##### 伸缩流方向
+##### 2.伸缩流方向
 
 `-ms-flex-direction: row | row-reverse | colum | column-reverse` 类似于旧版`box-orient`
 
-##### 伸缩换行
+##### 3.伸缩换行
 
 `flex-wrap: nowrap | wrap | wrap-reverse` 类似于旧版`box-lines`
 
-##### 伸缩流方向与换行
+##### 4.伸缩流方向与换行
 
 `flex-flow: <flex-direction> | <flex-wrap>`
 
-##### 主轴对齐
+##### 5.主轴对齐
 
 `flex-pack: start | end | center | justify | distribute`
 
 * distribute：伸缩项目会平均分布在同一行里，两端保留中间相邻伸缩项目之间间距一半的空间。如果伸缩容器没有足够空间或者只有一个伸缩项目的时候就会遵循center方式。
 
-##### 侧轴对齐
+##### 6.侧轴对齐
 
 `flex-align: start | end | center | baseline |stretch` 类似于旧版`box-align`
 
 * stretch：伸缩项目拉伸填充整个伸缩容器，如果伸缩容器没有足够的空间，将以start方式显示
 
-##### 堆栈伸缩行
+##### 7.堆栈伸缩行
 
 `flex-line-pack: start | end | center | justify | distribute | stretch` 类似于`flex-pack`
 
-##### 伸缩性
+##### 8.伸缩性
 
--ms-flex 属性指定伸缩项目的宽度或高度是否基于伸缩容器中的可用空间具有弹性。该值还指示分配给子元素可用空间比例。  
+`-ms-flex` 属性指定伸缩项目的宽度或高度是否基于伸缩容器中的可用空间具有弹性。该值还指示分配给子元素可用空间比例。  
 当伸缩项目设置了 -ms-flex 属性时，则查询 -ms-flex 而不是width或height属性以确定伸缩项目的主要尺寸。如果元素不是伸缩项目，则 -ms-flex 属性不起作用。
 
 `-ms-flex: <positive-flex> <negative-flex> <preferred-size> | none`
@@ -571,71 +572,120 @@ box-flex属性能够灵活地控制伸缩项目在伸缩容器中的显示空间
 * \<perferred-size\>:设置伸缩项目的首选大小。可以为width或height属性的任何有效值，包括inherit。如果忽略，首选大小默认为0px。如果\<preferred-size\>组件在伸缩容器的伸缩项目上为auto，首选大小为该伸缩项目的width或height属性（平行于主轴的那个属性）。
 * none:相当于正弹性\<positive-flex\>值为0，负弹性\<negative-flex\>值为0，首选大小\<preferred-size\>值为auto，也就是-ms-flex值为 “0 0 auto”
 
-##### 显示顺序
+##### 9.显示顺序
 
 `flex-order: <integer>`  
 integer是一个自然数，默认值为0
 
 <a name="新版本flexbox模型的基本使用"></a>
-#### 新版本Flexbox模型的基本使用
+#### [新版本Flexbox模型的基本使用](#7-css3-伸缩布局盒模型)
 
-##### 伸缩容器
+##### 1.伸缩容器 _`flex`_
 
-`display: flex | inline-flex`
+    display: flex | inline-flex
 
-##### 伸缩流方向
+其中属性值`flex`等同于`box`和`flexbox`，将一个容器设置为伸缩容器，而属性值`inline-flex`等同于`inline-box`和`inline-flexbox`，将一个容器设置为内联伸缩容器。
 
-`flex-direction: row | row-reverse | column | column-reverse`
+>注意：CSS的`columns`在伸缩容器上没有效果；`float`、`clear`和`vertical-align`在伸缩项目上没有效果。
 
-##### 伸缩换行
+##### 2.伸缩流方向 _`flex-direction`_
 
-适用于伸缩容器，也就是伸缩项目的父元素。主要用来定义伸缩容器里是单行还是多行显示，侧轴的方向决定了新行堆放的方向。
+    flex-direction: row | row-reverse | column | column-reverse
 
-`flex-wrap: nowrap | wrap | wrap-reverse`
+`flex-direction`适用于伸缩容器，也就是伸缩项目的父元素。主要用来创建主轴，从而定义了伸缩项目放置在伸缩容器的方向。
 
-##### 伸缩流方向与换行
+|属性|描述 |
+|:--|:----|
+|row|在ltr排版方式下从左向右排列；在rtl排版方式下从右向左排列（默认值）|
+|row-reverse|与row排列方向相反，在ltr排版方式下从右向左排列；在rtl排版方式下从左向右排列|
+|column|类似于row，不过是从上到下排列|
+|column-reverse|类似于row-reverse，不过是从下到上排列|
 
-`flew-flow: <'flex-direction'> || <'flex-wrap'>`
+##### 3.伸缩换行 _`flex-wrap`_
 
->注意：flex-flow属性和writing-mode有直接的关系。当使用writing-mode:vertical-rl时转向垂直布局（如传统的中文、日文和韩文排版，也就是竖排），flex-flow:row将垂直排列伸缩项目，和column将水平排列伸缩项目。
+    flex-wrap: nowrap | wrap | wrap-reverse
 
-##### 主轴对齐
+`flex-wrap`适用于伸缩容器，也就是伸缩项目的父元素。主要用来定义伸缩容器里是单行还是多行显示，侧轴的方向决定了新行堆放的方向。
 
-适用于伸缩容器，也就是伸缩项目的父元素。
+|属性|描述 |
+|:--|:----|
+|nowrap|伸缩容器单行显示，ltr排版下，伸缩项目从左到右排列；rtl排版上伸缩项目从右向左排列（默认值）|
+|wrap|伸缩容器多行显示，ltr排版下，伸缩项目从左到右排列；rtl排版上伸缩项目从右向左排列|
+|wrap-reverse|伸缩容器多行显示，ltr排版下，伸缩项目从右向左排列；rtl排版上伸缩项目从左向右排列（和wrap相反）|
 
-`justify-content: flex-start | flex-end | center | space-between | space-around`
+##### 4.伸缩流方向与换行 _`flex-flow`_
 
-##### 侧轴对齐
+    flex-flow: <'flex-direction'> || <'flex-wrap'>
 
-align-items 和 justify-content 相呼应。align-items 调整伸缩项目在侧轴上的定位方式。主要用来定义伸缩项目可以在伸缩容器的当前行的侧轴上的对齐方式。可以把它想象成侧轴（垂直于主轴）的 justify-content。
+`flex-flow`适用于伸缩容器，也就是伸缩项目的父元素。这是`flex-direction`和`flex-wrap`属性的__缩写版本__，同时定义了伸缩容器的主轴和侧轴。其默认值为`row` `nowrap`
 
-`align-items: flex-start | flex-end | center | baseline | stretch`
+>注意：`flex-flow`属性和`writing-mode`有直接的关系。当使用`writing-mode:vertical-rl`时转向垂直布局（如传统的中文、日文和韩文排版，也就是竖排），`flex-flow:row`将垂直排列伸缩项目，和column将水平排列伸缩项目。
 
-伸缩项目的align-self属性主要是用来设置单独伸缩项目在侧轴对齐的方式，可以用来覆盖该伸缩项目的伸缩容器的align-items属性。它的值和align-items一样。对于匿名伸缩项目，align-self的值永远与其关联的伸缩容器的align-items的值相同。另外，如果伸缩项目的任一个侧轴上的外边距为auto，则align-self没有效果。如果align-self的值为auto，则其计算值为伸缩项目的伸缩容器的align-items值，如果该伸缩项目没有伸缩容器，则计算值为stretch。
+##### 5.主轴对齐 _`justify-content`_
 
-##### 堆栈伸缩行
+    justify-content: flex-start | flex-end | center | space-between | space-around
 
-align-content属性会更改flex-wrap的行为。主要用来调准伸缩行在伸缩容器里的对齐方式。
+`justify-content`适用于伸缩容器，也就是伸缩项目的父元素。主要用来定义伸缩项目沿着主轴线的对齐方式。当一行的所有伸缩项目都不能伸缩或可伸缩但已经达到其最大长度时，这一属性才会对伸缩容器额外空间进行分配。当伸缩项目溢出某一行时，这一属性也会在项目的对齐上施加一些控制。
 
-`align-content: flex-start | flex-end | center | space-between | space-around | stretch`
+|属性|描述 |
+|:--|:----|
+|flex-start|伸缩项目向一行的起始位置靠齐。类似旧的规范版本中的start（默认值）|
+|flex-end|伸缩项目向一行的结束位置靠齐。类似旧的规范版本中的end|
+|center|伸缩项目向一行的中间位置靠齐。类似旧的规范版本中的center|
+|space-between|伸缩项目会平均地分布在行里。第一个伸缩项目一行中的最开始位置，最后一个伸缩项目在一行中最终的位置。类似旧的规范版本中的justify|
+|space-around|伸缩项目会平均地分布在行里，两端保留一半的空间。类似旧规范版本中的distribute|
 
-* stetch：align-content的默认值，各行将会伸展以占用额外的空间。
+##### 6.侧轴对齐 _`align-items`_  _`align-self`_
 
->这个属性只有伸缩项目有多行时才生效，这种情况只有display的flex-wrap为wrap时，并且没有足够的空间把伸缩项目行放在同一行中。也就是这个属性将对每一行起作用而不是每个伸缩项目。
+    align-items: flex-start | flex-end | center | baseline | stretch
 
-##### 伸缩性
+`align-items` 和 `justify-content` 相呼应。`align-items` 调整伸缩项目在侧轴上的定位方式。主要用来定义伸缩项目可以在伸缩容器的当前行的侧轴上的对齐方式。可以把它想象成侧轴（垂直于主轴）的 `justify-content`
 
-`flex:none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]`
+|属性|描述 |
+|:--|:----|
+|flex-start|伸缩项目在侧轴起点边的外边距紧靠住该行在侧轴起始边|
+|flex-end|伸缩项目在侧轴起点边的外边距紧靠住该行在侧轴终点边|
+|center|伸缩项目的外边距盒在该边的侧轴上居中放置|
+|baseline|伸缩项目根据伸缩项目的基线对齐，基线根据伸缩项目的内容计算得到|
+|stretch|默认值，伸缩项目拉伸填充整个伸缩容器。此值会使用伸缩项目的外边距盒的尺寸在遵照（min/max-width/height）属性的限制下尽可能接近所在行的尺寸|
 
-flex属性可以用来指定可伸缩长度的部件：扩展比率、收缩比率，以及伸缩基准值。
+伸缩项目的`align-self`属性主要是用来设置单独伸缩项目在侧轴对齐的方式，可以用来覆盖该伸缩项目的伸缩容器的`align-items`属性。它的值和`align-items`一样。  
+对于匿名伸缩项目，`align-self`的值永远与其关联的伸缩容器的`align-items`的值相同。另外，如果伸缩项目的任一个侧轴上的外边距为`auto`，则`align-self`没有效果。如果`align-self`的值为`auto`，则其计算值为伸缩项目的伸缩容器的`align-items`值，如果该伸缩项目没有伸缩容器，则计算值为`stretch`。
 
-* flex-grow： \<number\> 默认值为：0
-* flex-shrink： \<number\> 默认值为：1，此属性根据需要用来定义伸缩项目收缩的能力。
-* flex-basis： \<length\> | auto 默认值为： auto，此属性用来设置伸缩项目的伸缩基准值，伸缩容器的额外空间按比率进行伸缩。
+##### 7.堆栈伸缩行 _`align-content`_
 
-##### 显示顺序
+    align-content: flex-start | flex-end | center | space-between | space-around | stretch
 
-`order: <number>`
+`align-content`属性会更改`flex-wrapd`的行为。与`align-items`相似，主要用来调准__伸缩行__在伸缩容器里的对齐方式。
+
+|属性|描述 |
+|:--|:----|
+|flex-start|各行向伸缩容器的起点位置堆叠|
+|flex-end|各行向伸缩容器的结束位置堆叠|
+|center|各行向伸缩容器的中间位置堆叠|
+|space-between|各行向伸缩容器中平均分布|
+|space-around|各行向伸缩容器中平均分布，在两边各有一半的空间|
+|stretch|align-content的默认值，各行将会伸展以占用额外的空间|
+
+>这个属性只有伸缩项目有多行时才生效，这种情况只有`display`的`flex-wrap`为`wrap`时，并且没有足够的空间把伸缩项目行放在同一行中。也就是这个属性将对每一行起作用而不是每个伸缩项目。
+
+##### 8.伸缩性 _`flex`_
+
+    flex:none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+
+`flex`属性可以用来指定可伸缩长度的部件：扩展比率、收缩比率，以及伸缩基准值。当一个元素是伸缩项目时，`flex`属性将代替主轴长度属性决定元素的主轴长度。若元素不是伸缩项目，则`flex`属性没有效果。
+
+* `flex-grow: <number>` 默认值为：`0`，扩展比率
+* `flex-shrink: <number>` 默认值为：`1`，此属性根据需要用来定义伸缩项目收缩的能力。`<number>`部件可以用来设置`flex-shrink`长度并指定收缩比率，也就是额外空间是负值的时候，此收缩项目对于伸缩容器里其他伸缩项目能收缩的空间比例。若省略此部件，它会被设置为1。在收缩的时候收缩比率会以伸缩基准值加权。`flex-shrink`负值同样生效
+* `flex-basis: <length> | auto` 默认值为： `auto`，适用于伸缩项目，此属性用来设置伸缩项目的伸缩基准值，伸缩容器的额外空间按比率进行伸缩。若在`flex`缩写省略此部件，`flex-basis`的指定值是长度是`0`。若`flex-basis`的指定值是`auto`，则伸缩基准值的指定值是元素主轴长度属性的值。
+* `flex: none` 相当于 `flex: 0 0 auto`
+* `flex: auto` 相当于 `flex: 1 1 auto`
+
+##### 9.显示顺序
+
+    order: <number>
+
+默认状态下，元素是按照文档流的结构顺序排列。在Flexbox模型中，可以通过`order`属性来改变伸缩项目出现在源文档的次序。
 
 <a name="8-css3-多列布局"></a>
 ## 8. CSS3 多列布局
