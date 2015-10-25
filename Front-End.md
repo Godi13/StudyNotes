@@ -88,7 +88,7 @@
 `git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。  
 `git rebase -i origin/gh-pages` 合并最新版本到指定的指针所指版本之间所有的版本。
 
->参考视频教程：*HappyPeter* 老师的 [如何利用Git辅助本地项目开发](http://haoduoshipin.com/v/92) 和 [git使用技巧：小步快跑](http://qd.haoduoshipin.com/p/git-tricks)
+>参考视频教程：*HappyPeter* 老师的 [如何利用Git辅助本地项目开发](http://haoduoshipin.com/v/92)
 
 ***
 
