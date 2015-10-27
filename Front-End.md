@@ -24,16 +24,17 @@
     - [8. React组件复用](#8-react组件复用)
   - [Ubuntu](#ubuntu)
     - [1. .bashrc 添加](#1-bashrc-添加)
-    - [2.常用指令](#2常用指令)
-    - [3.Tmux](#3tmux)
+    - [2. 常用指令](#2-常用指令)
+    - [3. Tmux](#3-tmux)
+    - [4. bash脚本](#4-bash脚本)
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
   - [服务器相关](#服务器相关)
     - [1. 初步设置服务器](#1-初步设置服务器)
-    - [2.服务器相关指令](#2服务器相关指令)
-    - [3.本地SSH设置](#3本地ssh设置)
-    - [4.服务器本地同步脚本设置](#4服务器本地同步脚本设置)
+    - [2. 服务器相关指令](#2-服务器相关指令)
+    - [3. 本地SSH设置](#3-本地ssh设置)
+    - [4. 服务器本地同步脚本设置](#4-服务器本地同步脚本设置)
 
 <!-- /MarkdownTOC -->
 
@@ -626,8 +627,8 @@ module.exports = Action;
     --userconfig=$HOME/.cnpmrc "
 
 
-<a name="2常用指令"></a>
-#### 2.常用指令
+<a name="2-常用指令"></a>
+#### 2. 常用指令
 
 ###### 1. deb 包命令
 
@@ -644,15 +645,15 @@ module.exports = Action;
     修改用户组 sudo chgrp groupname filename
     修改拥有者 sudo chown ownername filename
 
-###### 3.其他
+###### 3. 其他
 
     wget -p -np -k -r url(你的网站入口)  //下载网站
     ifconfig                           //查看IP
     eog *                              //打开图片
     tar zxvf filename.tgz              //解压缩.tgz
 
-<a name="3tmux"></a>
-#### 3.Tmux
+<a name="3-tmux"></a>
+#### 3. Tmux
 
 |快捷键|说明|
 |:-----|:---|
@@ -678,6 +679,36 @@ module.exports = Action;
 
 >参考资料：[tmux的使用方法和个性配置](http://mingxinglai.com/cn/2012/09/tmux/)  
 >参考视频：[命令行操作神器 tmux](http://haoduoshipin.com/v/41)
+
+<a name="4-bash脚本"></a>
+#### 4. bash脚本
+
+`*.sh` 脚本需要添加执行权限才可执行，文件夹内执行需要文件名前添加`./`，如`./*.sh`
+
+###### if 语句
+
+    if ls
+    then
+       echo "hello"
+    fi
+
+>if 返回值为`0`时才执行后面的语句，输出`echo $?`可查看返回值
+
+###### for 循环
+
+    #!/usr/bin/env bash
+    for i in 1 2 a b
+    do
+        echo $i
+    done
+
+    #!/usr/bin/env bash
+    for i in `ls`
+    do
+        echo $i
+    done
+
+***
 
 <a name="css相关"></a>
 ## CSS相关
@@ -738,15 +769,18 @@ border：1px solid red;   //调式时可以先添加边框
 11. `cd /usr/share/nginx/html`
 12. `ls`查看确认
 
-<a name="2服务器相关指令"></a>
-#### 2.服务器相关指令
+<a name="2-服务器相关指令"></a>
+#### 2. 服务器相关指令
 1. `lsb_release -a` 查看服务器系统版本
-2. `scp filename/folder -r root@公网IP或域名:/usr/share/nginx/html/` 上传文件到服务器指定位置
-3. `logout` 退出回到本地终端
+2. `scp filename/folder -r root@公网IP 或 域名:/usr/share/nginx/html/` 上传文件到服务器指定位置
+3. `scp filename/folder -r root@公网IP 或 域名:/usr/share/nginx/html/ .` 下载文服务器上的文件到本地
+4. `rsync -r --delete filename/folder root@公网IP 或 域名:`同步本地与服务器的文件[rsync](https://rsync.samba.org/)
+5. `rsync -rv --dry-run --delete filename/folder root@公网IP 或 域名:`同步文件,`v`报告信息，`--dry-run`虚拟执行
+6. `logout` 退出回到本地终端
 
-<a name="3本地ssh设置"></a>
-#### 3.本地SSH设置
-1. `sudo vim /etc/hosts` 添加ip地址，设置别名如`127.0.0.1 loc`
+<a name="3-本地ssh设置"></a>
+#### 3. 本地SSH设置
+1. `sudo vim /etc/hosts` 添加ip地址，设置别名，如`127.0.0.1 loc`
 2. 不输密码登陆服务器设置步骤：
     * `ssh-keygen` 生成SSH密钥
     * `cd .ssh`
@@ -756,11 +790,11 @@ border：1px solid red;   //调式时可以先添加边框
     * `cd /bin`
     * 新建`sudo vim name_ssh`
     * 添加`ssh root@公网IP`后<kbd>Z</kbd><kbd>Z</kbd>
-    * `sudo chmod +x name_ssh`添加写权限
+    * `sudo chmod +x name_ssh`添加执行权限
     * 输入`name_ssh`即可登陆网站服务器
 
-<a name="4服务器本地同步脚本设置"></a>
-#### 4.服务器本地同步脚本设置
+<a name="4-服务器本地同步脚本设置"></a>
+#### 4. 服务器本地同步脚本设置
 
     bin cat filename.sh
     #!/bin bash
@@ -785,4 +819,18 @@ border：1px solid red;   //调式时可以先添加边框
 
     //注意：最后四句是Rails部署相关代码，可以忽略
 
->参考资料：[安装开发环境](http://book.haoduoshipin.com/go-responsive/c/chap-2.html)
+>[安装开发环境](http://book.haoduoshipin.com/go-responsive/c/chap-2.html)  
+>[browsersync使用说明](http://www.browsersync.cn/#install)
+
+    与服务器同步文件的脚本
+
+    #!/usr/bin/env bash
+    sync_server()
+    {
+        echo
+        rsync -arv  --exclude "css" --exclude ".git" --exclude "node_modules" --exclude "_site"  --delete ~/Desktop/res-demo/ peter@haoduoshipin.com:~/res-demo/
+        echo
+    }
+
+    sync_server
+
