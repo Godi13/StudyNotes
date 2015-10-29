@@ -71,3 +71,12 @@
             Display version information
         -t, --trace
             Display backtrace when an error occurs
+
+#### _config.yml 配置
+
+    defaults:
+      -
+        values:
+          layout: "default"
+
+    统一文件默认布局

@@ -626,7 +626,6 @@ module.exports = Action;
     --disturl=https://npm.taobao.org/dist \
     --userconfig=$HOME/.cnpmrc "
 
-
 <a name="2-常用指令"></a>
 #### 2. 常用指令
 
@@ -645,12 +644,28 @@ module.exports = Action;
     修改用户组 sudo chgrp groupname filename
     修改拥有者 sudo chown ownername filename
 
-###### 3. 其他
+###### 3. grep
+
+    grep -i xxx filename    //取消大小写敏感查找
+    grep -w xxx filename    //精确查找
+    grep -v xxx             //不匹配
+    grep '\<xxx' filename   //匹配xxx在前的
+    grep 'xxx\>' filename   //匹配xxx在后的
+
+>`find`专注文件查找，`grep`专注字符串查找
+
+###### 4. 其他
 
     wget -p -np -k -r url(你的网站入口)  //下载网站
     ifconfig                           //查看IP
     eog *                              //打开图片
     tar zxvf filename.tgz              //解压缩.tgz
+    sudo ln -s /usr/local/bin/python3.5m /usr/bin/python
+
+###### 5. 下载
+
+     sudo apt-get install axel
+     axel http://xxxxxx
 
 <a name="3-tmux"></a>
 #### 3. Tmux
@@ -797,7 +812,7 @@ border：1px solid red;   //调式时可以先添加边框
 #### 4. 服务器本地同步脚本设置
 
     bin cat filename.sh
-    #!/bin bash
+    #!/usr/bin/env bash
 
     cd ~/项目位置
     git add -A
