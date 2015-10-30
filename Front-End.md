@@ -27,6 +27,7 @@
     - [2. 常用指令](#2-常用指令)
     - [3. Tmux](#3-tmux)
     - [4. bash脚本](#4-bash脚本)
+    - [5. 强制关闭图形窗口](#5-强制关闭图形窗口)
   - [CSS相关](#css相关)
     - [1. .clearfix](#1-clearfix)
     - [2. 常用CSS](#2-常用css)
@@ -722,6 +723,11 @@ module.exports = Action;
     do
         echo $i
     done
+
+<a name="5-强制关闭图形窗口"></a>
+#### 5. 强制关闭图形窗口
+
+在`系统`-`键盘`中添加自定义快捷键，Name：`ForceQuit`，Command：`xkill`，快捷键<kbd>ctrl</kbd><kbd>alt</kbd><kbd>X</kbd>
 
 ***
 
