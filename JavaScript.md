@@ -19,6 +19,22 @@
     - [5. 加性操作符](#5-加性操作符)
     - [6. 关系操作符](#6-关系操作符)
     - [7. 相等操作符](#7-相等操作符)
+    - [8. 条件操作符](#8-条件操作符)
+    - [9. 赋值操作符](#9-赋值操作符)
+    - [10.逗号操作符](#10逗号操作符)
+  - [语句](#语句)
+    - [ 1. `if` 语句](#-1-if-语句)
+    - [2. `do-while` 语句](#2-do-while-语句)
+    - [3. `while` 语句](#3-while-语句)
+    - [4. `for` 语句](#4-for-语句)
+    - [5. `for-in` 语句](#5-for-in-语句)
+    - [6. `label` 语句](#6-label-语句)
+    - [7. `break` 和 `continue` 语句](#7-break-和-continue-语句)
+    - [8. `with` 语句](#8-with-语句)
+    - [ 9. `switch` 语句](#-9-switch-语句)
+  - [函数](#函数)
+    - [1. 理解参数](#1-理解参数)
+    - [2. 没有重载](#2-没有重载)
 
 <!-- /MarkdownTOC -->
 
@@ -248,6 +264,8 @@ _ECMAScript_ 中的对象其实就是一组数据和功能的集合。对象可�
 * `toLocaleString()` :返回对象的字符串表示,该字符串与执行环境的地区对应
 * `toString()` :返回对象的字符串表示
 * `valueOf()` :返回对象的字符串、数值或布尔值表示。通常与 `toString()` 方法的返回值相同
+
+***
 
 <a name="操作符"></a>
 ## 操作符
@@ -560,3 +578,131 @@ __全等__和__不全等__——仅比较而不转换
 
 由于相等和不相等操作符存在类型转换问题,而为了保持代码中数据类型的完整
 性,推荐使用全等和不全等操作符。
+
+<a name="8-条件操作符"></a>
+#### 8. 条件操作符
+
+    variable = boolean_expression ? true_value : false_value;
+
+<a name="9-赋值操作符"></a>
+#### 9. 赋值操作符
+
+简单的赋值操作符由等于号 <kbd>=</kbd> 表示,其作用就是把右侧的值赋给左侧的变量
+
+<a name="10逗号操作符"></a>
+#### 10.逗号操作符
+
+    var num1=1, num2=2, num3=3;
+
+逗号操作符多用于声明多个变量;但除此之外,逗号操作符还可以用于赋值。在用于赋值时,逗号操作符总会返回表达式中的最后一项
+
+    var num = (5, 1, 4, 8, 0);     // num 的值为 0
+
+***
+
+<a name="语句"></a>
+## 语句
+
+<a name="-1-if-语句"></a>
+####  1. `if` 语句
+
+    if (condition) statement1 else statement2
+    if (condition1) statement1 else if (condition2) statement2 else statement3
+
+<a name="2-do-while-语句"></a>
+#### 2. `do-while` 语句
+`do-while` 语句是一种后测试循环语句,即只有在循环体中的代码执行之后,才会测试出口条件。换句话说,在对条件表达式求值之前,循环体内的代码至少会被执行一次。
+
+    do {
+      statement
+    } while (expression);
+
+<a name="3-while-语句"></a>
+#### 3. `while` 语句
+`while` 语句属于前测试循环语句,也就是说,在循环体内的代码被执行之前,就会对出口条件求值。因此,循环体内的代码有可能永远不会被执行。
+
+    while(expression) statement
+
+<a name="4-for-语句"></a>
+#### 4. `for` 语句
+`for` 语句也是一种前测试循环语句,但它具有在执行循环之前初始化变量和定义循环后要执行的代码的能力。
+
+    for (initialization; expression; post-loop-expression) statement
+
+>使用 `while` 循环做不到的,使用 `for` 循环同样也做不到。也就是说, `for` 循环只是把与循环有关的代码集中在了一个位置。
+
+<a name="5-for-in-语句"></a>
+#### 5. `for-in` 语句
+`for-in` 语句是一种精准的迭代语句,可以用来枚举对象的属性。以下是 `for-in` 语句的语法:
+
+    for (property in expression) statement
+
+<a name="6-label-语句"></a>
+#### 6. `label` 语句
+使用 label 语句可以在代码中添加标签,以便将来使用。
+
+    label: statement
+
+加标签的语句一般都要与 for 语句等循环语句配合使用。
+
+<a name="7-break-和-continue-语句"></a>
+#### 7. `break` 和 `continue` 语句
+break 和 continue 语句都可以与 label 语句联合使用,从而返回代码中特定的位置。这种联合使用的情况多发生在循环嵌套的情况下,如下面的例子所示:
+
+```js
+var num = 0;
+
+outermost:
+for (var i=0; i < 10; i++) {
+  for (var j=0; j < 10; j++) {
+    if (i == 5 && j == 5) {
+      break outermost;
+    }
+    num++;
+  }
+}
+
+alert(num);   //55
+```
+
+<a name="8-with-语句"></a>
+#### 8. `with` 语句
+`with` 语句的作用是将代码的作用域设置到一个特定的对象中。 `with` 语句的语法如下:
+
+    with (expression) statement;
+
+>由于大量使用 with 语句会导致性能下降,同时也会给调试代码造成困难,因此在开发大型应用程序时,不建议使用 with 语句
+
+<a name="-9-switch-语句"></a>
+####  9. `switch` 语句
+
+    switch (expression) {
+      case value: statement
+        break;
+      case value: statement
+        break;
+      case value: statement
+        break;
+      case value: statement
+        break;
+          default: statement
+        }
+
+`switch` 语句中的每一种情形(`case`)的含义是:“如果表达式等于这个值 (`value`),则执行后面的语句 (`statement`)”
+
+>`switch` 语句在比较值时使用的是全等操作符,因此不会发生类型转换(例如,字符串 "10" 不等于数值 10)。
+
+***
+
+<a name="函数"></a>
+## 函数
+
+<a name="1-理解参数"></a>
+#### 1. 理解参数
+>* 命名的参数只提供便利,但不是必需的
+* 没有传递值的命名参数将自动被赋予 undefined 值
+
+<a name="2-没有重载"></a>
+#### 2. 没有重载
+
+
