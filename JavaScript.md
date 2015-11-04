@@ -3,40 +3,41 @@
 <!-- MarkdownTOC -->
 
 - [JavaScript](#javascript)
-  - [数据类型](#数据类型)
-    - [1. `typeof` 操作符](#1-typeof-操作符)
-    - [2. `undefined` 类型](#2-undefined-类型)
-    - [3. `Null` 类型](#3-null-类型)
-    - [4. `Boolean` 类型](#4-boolean-类型)
-    - [5. `Number` 类型](#5-number-类型)
-    - [6. `String` 类型](#6-string-类型)
-    - [7. `Object` 类型](#7-object-类型)
-  - [操作符](#操作符)
-    - [1. 一元操作符](#1-一元操作符)
-    - [2. 位操作符](#2-位操作符)
-    - [3. 布尔操作符](#3-布尔操作符)
-    - [4. 乘性操作符](#4-乘性操作符)
-    - [5. 加性操作符](#5-加性操作符)
-    - [6. 关系操作符](#6-关系操作符)
-    - [7. 相等操作符](#7-相等操作符)
-    - [8. 条件操作符](#8-条件操作符)
-    - [9. 赋值操作符](#9-赋值操作符)
-    - [10.逗号操作符](#10逗号操作符)
-  - [语句](#语句)
-    - [ 1. `if` 语句](#-1-if-语句)
-    - [2. `do-while` 语句](#2-do-while-语句)
-    - [3. `while` 语句](#3-while-语句)
-    - [4. `for` 语句](#4-for-语句)
-    - [5. `for-in` 语句](#5-for-in-语句)
-    - [6. `label` 语句](#6-label-语句)
-    - [7. `break` 和 `continue` 语句](#7-break-和-continue-语句)
-    - [8. `with` 语句](#8-with-语句)
-    - [ 9. `switch` 语句](#-9-switch-语句)
-  - [函数](#函数)
-    - [1. 理解参数](#1-理解参数)
-    - [2. 没有重载](#2-没有重载)
-  - [引用类型](#引用类型)
-    - [`Date` 类型](#date-类型)
+    - [第3章 语法、关键保留字及变量](#第3章-语法、关键保留字及变量)
+    - [第4章 数据类型](#第4章-数据类型)
+        - [1. `typeof` 操作符](#1-typeof-操作符)
+        - [2. `undefined` 类型](#2-undefined-类型)
+        - [3. `Null` 类型](#3-null-类型)
+        - [4. `Boolean` 类型](#4-boolean-类型)
+        - [5. `Number` 类型](#5-number-类型)
+        - [6. `String` 类型](#6-string-类型)
+        - [7. `Object` 类型](#7-object-类型)
+    - [操作符](#操作符)
+        - [1. 一元操作符](#1-一元操作符)
+        - [2. 位操作符](#2-位操作符)
+        - [3. 布尔操作符](#3-布尔操作符)
+        - [4. 乘性操作符](#4-乘性操作符)
+        - [5. 加性操作符](#5-加性操作符)
+        - [6. 关系操作符](#6-关系操作符)
+        - [7. 相等操作符](#7-相等操作符)
+        - [8. 条件操作符](#8-条件操作符)
+        - [9. 赋值操作符](#9-赋值操作符)
+        - [10.逗号操作符](#10逗号操作符)
+    - [语句](#语句)
+        - [ 1. `if` 语句](#-1-if-语句)
+        - [2. `do-while` 语句](#2-do-while-语句)
+        - [3. `while` 语句](#3-while-语句)
+        - [4. `for` 语句](#4-for-语句)
+        - [5. `for-in` 语句](#5-for-in-语句)
+        - [6. `label` 语句](#6-label-语句)
+        - [7. `break` 和 `continue` 语句](#7-break-和-continue-语句)
+        - [8. `with` 语句](#8-with-语句)
+        - [ 9. `switch` 语句](#-9-switch-语句)
+    - [函数](#函数)
+        - [1. 理解参数](#1-理解参数)
+        - [2. 没有重载](#2-没有重载)
+    - [引用类型](#引用类型)
+        - [`Date` 类型](#date-类型)
 
 <!-- /MarkdownTOC -->
 
@@ -49,8 +50,41 @@
 
 ***
 
-<a name="数据类型"></a>
-## 数据类型
+<a name="第3章-语法、关键保留字及变量"></a>
+## 第3章 语法、关键保留字及变量
+
+* 区分大小写： `text` 和 `Text` 是两种不同的标识符
+* 标识符组成开头： a（字母）、_ 、 $
+* 其他组成： a（字母）、_ 、 $、数字
+* 不能把关键字、保留字，如`true` `false` `null`作为标识符
+* 关键字 程序中已经开始使用的字符，如`var`
+
+|字面量|示例|
+|---|---|
+|数字字面量|100|
+|字符串字面量|'李'|
+|布尔值字面量|`false` `true`|
+|正则表达式|`/js/gi`|
+|对象字面量|`null`|
+|对象字面量表达式|{x:1,y:2}|
+|数组字面量表达式|[1,2,3,4,5]|
+
+变量
+
+* `var box` 声明变量
+* `var box = 100；` 声明变量并初始化
+* `alert(box)` 以弹窗的方式输出`box`的值
+* 不需要重复的使用`var`声明一个变量，只不过是一个赋值操作，并不会报错，但没必要这么做，如下：
+
+```js
+    var box = 100           var box = 100；
+    var box ='Lee'          box = 'Lee';
+```
+
+***
+
+<a name="第4章-数据类型"></a>
+## 第4章 数据类型
 
 ECMAScript 中有`5`种简单数据类型（也称为基本数据类型）：`Undefined`、`Null`、`Boolean`、`Number`、`String`  
 `1`种复杂数据类型——`Object`
@@ -58,20 +92,76 @@ ECMAScript 中有`5`种简单数据类型（也称为基本数据类型）：`Un
 <a name="1-typeof-操作符"></a>
 #### 1. `typeof` 操作符
 
-对一个值使用 `typeof` 操作符可能返回下列某个字符串:
+`typeof` 操作符是用来检测变量的数据类型。对于值或者变量使用`typeof`操作符会返回如下字符串:
 
-* `undefined` ——如果这个值未定义
-* `boolean` ——如果这个值是布尔值
-* `string` ——如果这个值是字符串
-* `number` ——如果这个值是数值
-* `object` ——如果这个值是对象或 `null`
-* `function` ——如果这个值是函数
+|字符串|描述|
+|---|:---:|
+| `undefined` |未定义       |
+| `boolean`   |布尔值       |
+| `string`    |字符串       |
+| `number`    |数值        |
+| `object`    |对象或`null`|
+| `function`  |函数        |
+
+
+```js
+var box；
+alert(typeof box);
+//box是 Undefined 类型，值是 undefined ，类型返回的字符串是 undefined
+
+var box = true；
+alert(typeof box);
+//box是 Boolean 类型，值是 true ，类型返回的字符串是 boolean
+
+var box = 'Lee';
+alert(typeof box);
+//box是 String 类型，值是 'Lee' ，类型返回的字符串是 string
+
+var box = 250;
+alert(typeof box);
+//box是 Number 类型，值是 250 ，类型返回的字符串是 number
+
+var box = {};
+alert(typeof box);
+//box是 Object 类型，值是 [object Object] ，类型返回的字符串是 object
+
+var box = new Object();
+alert(box);
+//box是 Object 类型，值是 [object Object] ，类型返回的字符串是 object
+
+var box = null;
+alert(typeof box);
+//box是 Null 类型，值是 null ，类型返回的字符串是 object
+
+function box() {
+
+}
+alert(typeof box);
+//box是 Function 类型，值是 function box() {} ，类型返回的字符串是 function
+
+alert(typeof new Object());
+//可以直接使用字面量
+```
+
+>空的对象：表示这个对象创建了，里面没有东西  
+空对象：表示没有创建，就是一个`null`
 
 <a name="2-undefined-类型"></a>
 #### 2. `undefined` 类型
 
 在使用 `var` 声明变量但未对其加以初始化时,
 这个变量的值就是 `undefined`
+
+>我们没有必要显式的给一个变量赋值为`undefined`，因为没有赋值的变量会隐式的（自动的）赋值为`undefined`；而`undefined`主要的目的是为了用于比较，_ECMAScript_第3版之前并没有引入这个值，引入之后为了正式区分空对象与未经初始化的变量。  
+未初始化的变量与根本不存在的变量（为声明的变量）也是不一样的。
+
+```js
+var box;
+alert(age);    //age is not defined
+alert(typeof box);
+alert(typeof age);
+```
+`typeof box` `typeof age` 都返回的 `undefined`。 从逻辑上思考，他们的值，一个是 `undefined`，一个报错；他们的类型，却都是`undefined`。所以，在定义变量的时候，尽可能的不要只声明，不赋值。
 
 <a name="3-null-类型"></a>
 #### 3. `Null` 类型
@@ -83,6 +173,31 @@ ECMAScript 中有`5`种简单数据类型（也称为基本数据类型）：`Un
 只要意在保存对象的变量还没有真正保存对象,就应该明确地让该变量保存 `null` 值。这样做不仅可以
 体现 `null` 作为空对象指针的惯例,而且也有助于进一步区分 `null` 和 `undefined`
 
+```js
+var box = null；
+//这个表示，你还没有创建对象，但先声明了对象引用而必须初始化的结果
+//还没来得及创建对象，先声明一个对象的变量放在那边，默认初始化为 null
+
+var box = null ;
+box = {
+  1:1
+};
+alert(box);
+
+var box = '';
+//创建一个字符串变量，一开始不知道初始化什么字符串，可以先给一个空字符串初始化
+
+var box = 0;
+//数值初始化，一般用0
+
+var box = false；
+//布尔值初始化，一般一开始用 false 或者 true
+
+alert(undefined == null);   //true
+alert(undefined === null);  //false
+alert(typeof undefined == typeof null);  //false
+```
+
 <a name="4-boolean-类型"></a>
 #### 4. `Boolean` 类型
 
@@ -93,13 +208,35 @@ ECMAScript 中有`5`种简单数据类型（也称为基本数据类型）：`Un
     var message = "Hello world!";
     var messageAsBoolean = Boolean(message);
 
+```js
+var box = true;
+alert(typeof box == typeof 1);    //true
+alert(typeof box === typeof 1);    //false
+
+var box = 'Lee';
+alert(Boolean(box));    //true
+var box = '';
+alert(Boolean(box));    //false
+//上面的 Boolean 是一种显示转换，属于强制性转换。
+
+//下面为 隐式转换，在 if 条件语句里面的条件判断，就存在隐式转换
+var box = '';
+if(box){        //条件语句里的()里必须是布尔值，true或者false
+  alert('true');
+}else{
+  alert('false');
+}
+```
+
+转换成`Boolean`类型的规则
+
 |数据类型|转换为true的值|转换为false的值|
-|-------|-------------|-------------|
+|----|-----|-----|
 |Boolean|true|false|
-|String |任何非空字符串 |""（空字符串）|
-|Number |任何非零数字值（包括无穷大）|0和NaN|
-|Object |任何对象      |null|
-|Undefined|n/a        |undefined    |
+|String|任何非空字符串|空字符串|
+|Number|任何非零数字值（包括无穷大）|0 和 NaN|
+|Object|任何对象|null|
+|Undefined| |undefined|
 
 <a name="5-number-类型"></a>
 #### 5. `Number` 类型
@@ -109,8 +246,8 @@ ECMAScript 中有`5`种简单数据类型（也称为基本数据类型）：`Un
 除了以十进制表示外,整数还可以通过八进制(以 8 为基数)或十六进制(以 16 为基数)的字面值来表示。其中,八进制字面值的第一位必须是零(0),然后是八进制数字序列(0~7)。如果字面值中的数值超出了范围,那么前导零将被忽略,后面的数值将被当作十进制数值解析。请看下面的例子:
 
     var octalNum1 = 070;     // 八进制的 56
-    var octalNum2 = 079;     // 无效的八进制数值——解析为 8
-    var octalNum3 = 08;      // 无效的八进制数值——解析为 79
+    var octalNum2 = 079;     // 无效的八进制数值——解析为 79
+    var octalNum3 = 08;      // 无效的八进制数值——解析为 8
 
 >八进制字面量在严格模式下是无效的,会导致支持的 JavaScript 引擎抛出错误。
 

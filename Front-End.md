@@ -90,6 +90,8 @@
 `git rebase -i HEAD~~` 合并最近的两个版本，将第二行的`pick`改为`s`即可压缩，版本留言时可以删除其他只留一个。  
 `git rebase -i origin/gh-pages` 合并最新版本到指定的指针所指版本之间所有的版本。
 
+`git push --force origin` 强制推送。
+
 >参考视频教程：*HappyPeter* 老师的 [如何利用Git辅助本地项目开发](http://haoduoshipin.com/v/92)
 
 ***
@@ -770,6 +772,8 @@ border：1px solid red;   //调式时可以先添加边框
   background: #91877b;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);  //喜欢的字体阴影
 }
+
+box-shadow: 0px 3px 8px #AAA, inset 0px 2px 3px #FFF;  //内外阴影，可做按钮效果
 ```
 
 <a name="服务器相关"></a>
