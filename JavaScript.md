@@ -33,9 +33,12 @@
         - [7. `break` 和 `continue` 语句](#7-break-和-continue-语句)
         - [8. `with` 语句](#8-with-语句)
         - [ 9. `switch` 语句](#-9-switch-语句)
-    - [函数](#函数)
-        - [1. 理解参数](#1-理解参数)
-        - [2. 没有重载](#2-没有重载)
+    - [第7章 函数](#第7章-函数)
+        - [1. 函数声明](#1-函数声明)
+        - [2. `return` 返回值](#2-return-返回值)
+        - [3. `arguments` 对象](#3-arguments-对象)
+    - [第8章 对象和数组](#第8章-对象和数组)
+        - [1. `Object` 类型](#1-object-类型)
     - [引用类型](#引用类型)
         - [`Date` 类型](#date-类型)
 
@@ -990,19 +993,124 @@ if(5 > 4) {
 <a name="第6章-流程控制语句"></a>
 ## 第6章 流程控制语句
 
+```js
+var box = 100;    //单行语句
+var age = 20;     //另一条单行语句
+
+{ //花括号包含的语句集合，叫做复合语句，单位一个，一般称为代码块
+    var height = 200;
+    var width = 300;
+} //一对花括号，表示一个复合语句，处理时可以当做一条单行语句来对待
+```
+
+##### 语句的种类
+
+<table>
+    <tr>
+        <th>类型</th>
+        <th>子类型</th>
+        <th>语法</th>
+    </tr>
+    <tr>
+        <td rowspan="2">声明语句</td>
+        <td>变量声明语句</td>
+        <td>var box = 100;</td>
+    </tr>
+    <tr>
+        <td>标签声明语句</td>
+        <td>label : box;</td>
+    </tr>
+    <tr>
+        <td rowspan="4">表达式语句</td>
+        <td>变量赋值语句</td>
+        <td>box = 100;</td>
+    </tr>
+    <tr>
+        <td>函数调用语句</td>
+        <td>box();</td>
+    </tr>
+    <tr>
+        <td>属性赋值语句</td>
+        <td>box.property = 100;</td>
+    </tr>
+    <tr>
+        <td>方法调用语句</td>
+        <td>box.method();</td>
+    </tr>
+    <tr>
+        <td rowspan="2">分支语句</td>
+        <td>条件分支语句</td>
+        <td>if () {} else {};</td>
+    </tr>
+    <tr>
+        <td>多重分支语句</td>
+        <td>switch () { case n : ...}</td>
+    </tr>
+    <tr>
+        <td rowspan="4">循环语句</td>
+        <td>for</td>
+        <td>for(;;;) {}</td>
+    </tr>
+    <tr>
+        <td>for ... in</td>
+        <td>for (x in x) {}</td>
+    </tr>
+    <tr>
+        <td>while</td>
+        <td>while () {};</td>
+    </tr>
+    <tr>
+        <td>do ... while</td>
+        <td>do {} while ();</td>
+    </tr>
+    <tr>
+        <td rowspan="5">控制结构</td>
+        <td>继续执行子句</td>
+        <td>continue;</td>
+    </tr>
+    <tr>
+        <td>终端执行子句</td>
+        <td>break;</td>
+    </tr>
+    <tr>
+        <td>函数返回子句</td>
+        <td>return;</td>
+    </tr>
+    <tr>
+        <td>异常触发子句</td>
+        <td>throw;</td>
+    </tr>
+    <tr>
+        <td>异常捕获与处理</td>
+        <td>try {} catch () {} finally {}</td>
+    </tr>
+    <tr>
+        <td rowspan="2">其他</td>
+        <td>空语句</td>
+        <td>;</td>
+    </tr>
+    <tr>
+        <td>with 语句</td>
+        <td>with () {}</td>
+    </tr>
+</table>
+
 <a name="-1-if-语句"></a>
 ####  1. `if` 语句
 
     if (condition) statement1 else statement2
     if (condition1) statement1 else if (condition2) statement2 else statement3
 
+>`if`里面的括号返回的结果转成布尔值是`true`的时候，只会执行后面的一条语句，如果有多条语句，那么必须使用复合语句把多条语句包含在内  
+如果返回的`false`，只会不执行后面的一条语句，除非包含在代码块中
+
 <a name="2-do-while-语句"></a>
 #### 2. `do-while` 语句
 `do-while` 语句是一种后测试循环语句,即只有在循环体中的代码执行之后,才会测试出口条件。换句话说,在对条件表达式求值之前,循环体内的代码至少会被执行一次。
 
-    do {
+    do {                    //先运行，再判断的循环体
       statement
-    } while (expression);
+    } while (expression);   //判断 expression，再运行 statement
 
 <a name="3-while-语句"></a>
 #### 3. `while` 语句
@@ -1023,6 +1131,17 @@ if(5 > 4) {
 `for-in` 语句是一种精准的迭代语句,可以用来枚举对象的属性。以下是 `for-in` 语句的语法:
 
     for (property in expression) statement
+
+```js
+var box = {
+    'name' : 'Lee',
+    'age' : 28,
+    'height' : 178
+};
+for (var p in box){
+    alert(p);
+}
+```
 
 <a name="6-label-语句"></a>
 #### 6. `label` 语句
@@ -1060,19 +1179,33 @@ alert(num);   //55
 
 >由于大量使用 with 语句会导致性能下降,同时也会给调试代码造成困难,因此在开发大型应用程序时,不建议使用 with 语句
 
+```js
+var box = {
+    'name' : 'Lee',
+    'age' : 28,
+    'height' : 178
+};
+with (box) {           //with(box) 可以将 box. 给省略掉
+    var n = name;      //这里的 name 相当于 box.name
+    var a = age;
+    var h = height;
+}
+alert(n+a+h);
+```
+
 <a name="-9-switch-语句"></a>
 ####  9. `switch` 语句
 
-    switch (expression) {
+    switch (expression) {      //expression 要比较的变量
+      case value: statement    //case value 相当于 if(expression == value)
+        break;                 //break 中途退出，防止穿透
       case value: statement
         break;
       case value: statement
         break;
       case value: statement
         break;
-      case value: statement
-        break;
-          default: statement
+          default: statement    //相当于 if 里的 else
         }
 
 `switch` 语句中的每一种情形(`case`)的含义是:“如果表达式等于这个值 (`value`),则执行后面的语句 (`statement`)”
@@ -1081,16 +1214,156 @@ alert(num);   //55
 
 ***
 
-<a name="函数"></a>
-## 函数
+<a name="第7章-函数"></a>
+## 第7章 函数
 
-<a name="1-理解参数"></a>
-#### 1. 理解参数
+函数是定义一次但却可以调用或执行任意多次的一段JS代码。函数有时会有参数，即函数被调用时指定了值的局部变量。函数常常使用这些参数来计算一个返回值，这个值也成为函数调用表达式的值。
+
+<a name="1-函数声明"></a>
+#### 1. 函数声明
+
+函数对任何语言来说都是一个核心的概念。通过函数可以封装任意多条语句，而且可以在任何地方、任何时候调用执行。ECMAScript中的函数使用function关键字来声明，后跟一组参数以及函数体。
+
+```js
+function box() {                           //声明没有参数的函数
+    alert('只有函数被调用才会被执行');        //函数本身没有运行功能
+}
+box();                                     //调用函数，可以放在函数前面调用
+
+function box(name, age){                   //带参数的函数
+    alert('姓名：' +name+', 年龄：'+age);
+}
+box('Lee',28);                             //调用函数，并传参
+```
+
+<a name="2-return-返回值"></a>
+#### 2. `return` 返回值
+
+带参和不带参的函数，都没有定义返回值，而是调用后直接执行的。实际上，任何函数都可以通过return语句跟后面的要返回的值来实现返回值。
+
+```js
+function box() {                         //没有参数的函数
+    return '返回值';                      //通过 return 把函数的最终值返回
+}
+alert(box());                            //打印函数调用的返回值
+
+function box(name,age){                  //有参数的函数
+    return '姓名：'+name+',年龄：'+age;    //通过 return 把函数的最终值返回
+}
+alert(box('Lee',28));                    //调用函数得到返回值，然后外面输出
+
+可以把函数的返回值赋给一个变量，然后通过变量进行操作
+function box(num1,num2) {
+    return num1 * num2;
+}
+var num = box(10,5);                     //函数得到的返回值赋给变量5
+alert(num);
+
+return语句还有一个功能就是退出当前函数，注意和break的区别
+function box(num) {
+    if(num < 5) return num;              //满足条件，就返回num
+    return 100;                          //返回之后，就不执行下面的语句
+}
+alert(box(10));
+```
+>break用在循环和switch分支语句里
+
+<a name="3-arguments-对象"></a>
+#### 3. `arguments` 对象
+
+ECMAScript函数不介意传递进来多少参数，也不会因为参数不统一而错误。实际上，函数体内可以通过`arguments`对象来接受传递进来的参数。
+
 >* 命名的参数只提供便利,但不是必需的
 * 没有传递值的命名参数将自动被赋予 undefined 值
 
-<a name="2-没有重载"></a>
-#### 2. 没有重载
+```js
+function box() {
+    return arguments[0]+'|'+arguments[1];  //得到每次参数的值
+}
+alert(box(1,2,3,4,5,6));                   //传递参数
+
+arguments 对象的 length 属性可以得到参数的数量
+function box() {
+    return arguments.length;               //得到6
+}
+alert(box(1,2,3,4,5,6));
+
+可以利用length这个属性，来只能的判断有多少参数，然后把参数进行合理的应用
+比如，要实现一个加法运算，将所有传进来的数字累加，而数字的个数又不确定
+function box() {
+    var sum = 0;
+    if(arguments.length == 0)return sum;         //如果没有参数，退出
+    for(var i = 0;i < arguments.length;i++) {    //如果有，就累加
+        sum = sum + arguments[i];
+    }
+    return sum;                                  //返回累加结果
+}
+alert(box(5,9,12));
+
+ECMAScript中的函数，没有像其他高级语言那种函数重载功能
+重载功能：根据不同的参数，选择调用相同的函数名而参数不同的函数
+function box(num,a) {
+    return num + 100;
+}
+function box(num) {             //会执行这个函数,第二个函数将第一个函数覆盖，不具备重载功能
+    return num + 200;
+}
+alert(box(50,20))               //返回结果 250
+```
+
+***
+
+<a name="第8章-对象和数组"></a>
+## 第8章 对象和数组
+
+__对象__，其实就是一种类型，即引用类型。而对象的值就是引用类型的实例。在ECMAScript中引用类型是一种数据结构，用于将数据和功能组织在一起。它也常被称为类，但ECMAscript中却没有这种东西。虽然ECMAScript是一门面向对象的语言，却不具备传统面向对象语言所支持的类和接口等基本结构。
+
+<a name="1-object-类型"></a>
+#### 1. `Object` 类型
+虽然`Object`的实例不具备多少功能，但对于在应用程序中的 _存储和传输数据_ 而言，它确实是非常理想的选择。  
+创建`Object`类型方法有两种：一种是使用new运算符，一种是字面量表示法。
+
+```js
+1.使用new运算符创建Object
+var box = new Object();      //new方式
+box.name = 'Lee';            //创建属性字段
+box.age = 28;                //创建属性字段
+
+2.new关键字可以省略
+var box = Object();          //省略了new关键字
+
+3.使用字面量方式创建Object
+var box = {                  //字面量方式
+    name : 'Lee',            //创建属性字段
+    age : 28
+};
+
+4.属性字段也可以使用字符串星矢
+var box = {
+    'name' : 'Lee',           //也可以用字符串形式
+    'age' : 28
+}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <a name="引用类型"></a>
 ## 引用类型
