@@ -22,7 +22,7 @@
         - [7. 相等运算符](#7-相等运算符)
         - [8. 条件运算符](#8-条件运算符)
         - [9. 赋值运算符](#9-赋值运算符)
-        - [10.逗号运算符](#10逗号运算符)
+        - [10. 逗号运算符](#10-逗号运算符)
     - [第6章 流程控制语句](#第6章-流程控制语句)
         - [ 1. `if` 语句](#-1-if-语句)
         - [2. `do-while` 语句](#2-do-while-语句)
@@ -47,6 +47,9 @@
         - [1. 什么是正则表达式](#1-什么是正则表达式)
         - [2. 创建正则表达式](#2-创建正则表达式)
         - [3. 获取控制](#3-获取控制)
+        - [4. 常用的正则](#4-常用的正则)
+    - [第11章 `Function` 类型](#第11章-function-类型)
+        - [1. 函数的声明方式](#1-函数的声明方式)
 
 <!-- /MarkdownTOC -->
 
@@ -950,7 +953,7 @@ var box = '' == 0;    //'' 字符串在比较的时候，会自动转换
 |null == 0|false|
 |"5" == 5|true|
 
-##### 2.全等和不全等
+##### 2. 全等和不全等
 除了在比较之前不转换操作数之外,全等和不全等运算符与相等和不相等运算符没有什么区别。  
 全等运算符由 3 个等于号 <kbd>===</kbd> 表示,它只在两个操作数未经转换就相等的情况下返回 `true`  
 不全等运算符由一个叹号后跟两个等于号 <kbd>!==</kbd> 表示,它在两个操作数未经转换就不相等的情况下返回 `true`
@@ -970,8 +973,8 @@ var box = '' == 0;    //'' 字符串在比较的时候，会自动转换
 
 简单的赋值运算符由等于号 <kbd>=</kbd> 表示,其作用就是把右侧的值赋给左侧的变量
 
-<a name="10逗号运算符"></a>
-#### 10.逗号运算符
+<a name="10-逗号运算符"></a>
+#### 10. 逗号运算符
 
 逗号运算符多用于声明多个变量;但除此之外,逗号运算符还可以用于赋值。在用于赋值时,逗号运算符总会返回表达式中的最后一项
 
@@ -1945,7 +1948,7 @@ document.write(result);
 
 var pattern = /(.*)\s(.*)/;
 var str = 'google baidu';
-var result = str.replace(pattern,'$2 $1');   //将两个分组的值替换输出
+var result = str.replace(pattern,'$2 $1');   //将两个分组的值替换输出，等同于交换位置
 document.write(result);
 ```
 
@@ -1957,6 +1960,177 @@ document.write(result);
 |{n}|{n}?|
 |{n,}|{n,}?|
 |{n,m}|{n,m}?|
+
+```js
+关于贪婪和惰性
+var pattern = /[a-z]+/;
+var str = 'abcdef';
+alert(str.replace(pattern,'1'));  //1
+
+var pattern = /[a-z]+?/;          //使用惰性模式
+var str = 'abcdef';
+alert(str.replace(pattern,'1'));  //1bcdef，只有第一个字符变成了1
+
+var pattern = /[a-z]+/g;
+var str = 'abcdef';
+alert(str.replace(pattern,'1'));  //1
+
+var pattern = /[a-z]+?/g;         //开启全局。并且使用惰性模式
+var str = 'abcdef';
+alert(str.replace(pattern,'1'));  //111111，每一个字母替换成了1
+
+var pattern = /8(.*)8/g;          //贪婪
+var str = 'This is 8google8, That is 8google8, There is 8google8';
+var result = str.replace(pattern,'<strong>$1</strong>');
+//匹配到了 google8, That is 8google8, There is 8google
+document.write(result);  //结果： This is <strong>google8, That is 8google8, There is 8google</strong>
+
+var pattern = /8(.+?)8/g;          //使用惰性，开启全局
+var str = 'This is 8google8, That is 8google8, There is 8google8';
+var result = str.replace(pattern,'<strong>$1</strong>');
+document.write(result);
+
+var pattern = /8([^8]*)8/g;        //另一种禁止贪婪，屏蔽了8的匹配，也就是两边包含字符
+var str = 'This is 8google8, That is 8google8, There is 8google8';
+var result = str.replace(pattern,'<strong>$1</strong>');
+document.write(result);
+
+使用exec返回数组
+var pattern = /^[a-z]+\s[0-9]{4}$/i;
+var str = 'google 2012';
+alert(pattern.exec(str));        //返回一个包含字符串的数组
+
+var pattern = /^[a-z]+/i;        //只匹配到字母
+var str = 'google 2012';
+alert(pattern.exec(str));        //只返回google的字符串数组
+
+var pattern = /^([a-z]+)\s([0-9]{4})$/i;   //使用了分组
+var str = 'google 2012';
+alert(pattern.exec(str)[0]);     //google 2012,返回匹配到的全部字符串
+alert(pattern.exec(str)[1]);     //google，返回匹配到的第一个分组字符串
+alert(pattern.exec(str)[2]);     //2012，返回匹配到的第二个分组字符串
+
+捕获性分组和非捕获性分组
+var pattern = /(\d+)([a-z])/;    //这个叫做捕获性分组，所有的分组都捕获返回
+var str = '123abc';
+alert(pattern.exec(str));        //123a，123，a
+
+var pattern = /(\d+)(?:[a-z])/;  //非捕获性分组，只要在不需要捕获返回的分组加上?:
+var str = '123abc';
+alert(pattern.exec(str));        //123a，123
+
+使用分组嵌套
+var pattern = /(A?(B?(C?)))/;    //嵌套分组，从外往内获取
+var str = 'ABC';
+alert(pattern.exec(str));        //ABC,ABC,BC,C
+//第一步：整个匹配到的字符串ABC
+//第二步：匹配第一个分组(A?(B?(C?)))，ABC
+//第三步：匹配第二个分组(B?(C?))，BC
+//第四步：匹配第三个分组(C?)，C
+
+使用前瞻捕获
+var pattern = /(goo(?=gle))/;     //goo 后面必须跟着 gle 才能捕获
+var str = 'google';
+alert(pattern.exec(str));         //goo,goo,没有则返回null
+
+使用特殊字符匹配
+var pattern = /\.\[\/b\]/;        //用\符号来转义正则里面的特殊字符，才能匹配
+var str = '.[/b]';
+alert(pattern.test(str));
+
+使用换行模式
+var pattern = /^\d+/gm;           //限定首匹配，并且开启换行模式
+var str = '1.baidu\n2.google\n3.bing';
+var result = str.replace(pattern,'#');
+alert(result);
+```
+
+<a name="4-常用的正则"></a>
+#### 4. 常用的正则
+```js
+1.检查邮政编码
+var pattern = /[1-9][0-9]{5}/;
+var str = '224000';
+alert(pattern.test(str));
+
+2.检查文件压缩包
+var pattern = /^[\w\-]+\.(zip|rar|gz)$/;    // | 选择符必须用分组符号包含起来
+var str = '123.zip';
+alert(pattern.exec(str));
+
+3.删除多余空格
+var pattern = /\s/g;
+var str = '111 222 333';
+var result = str.replace(pattern,'');
+alert(result);
+
+4.删除首尾空格
+var pattern = /^\s+/;
+var str = '    goo    gle   ';
+var result = str.replace(pattern,'');
+pattern = /\s+$/;
+result = result.replace(pattern,'');
+alert('|'+result+'|');
+
+var pattern = /^\s*(.+?)\s*$/;              //使用非贪婪捕获，即惰性模式
+var str = '     google   ';
+alert('|'+pattern.exec(str)[1]+'|');
+
+var pattern = /^\s*(.+?)\s*$/;
+var str = '      googel    ';
+alert('|'+str.replace(pattern,'$1')+'|');   //使用分组获取
+
+5.简单的电子邮件验证
+var pattern = /^([a-zA-Z0-9_\.\-]+)@([a-zA-Z0-9_\.\-]+)\.([a-zA-Z]{2,4})$/;
+var str = 'yc60.com@gmail.com';
+alert(pattern.test(str));
+
+var pattern = /^([\w\.\-]+)@([\w\.\-]+)\.([\w]{2,4})$/;
+var str = 'yc60.com@gmail.com';
+alert(pattern.test(str));
+
+PS: 以上是简单电子邮件验证，复杂的要比这个复杂很多
+```
+
+<a name="第11章-function-类型"></a>
+## 第11章 `Function` 类型
+
+在ECMAScript中，`Function`（函数）类型实际上是对象。每个函数都是`Function`类型的实例，而且都与其他引用类型一样具有属性和方法。由于函数是对象，因此函数名实际上也是一个指向函数对象的指针。
+
+<a name="1-函数的声明方式"></a>
+#### 1. 函数的声明方式
+
+##### 普通的函数声明
+```js
+function box(num1,num2) {
+    return num1 + num2;
+}
+```
+
+##### 使用变量初始化函数
+```js
+var box = function box(num1,num2) {
+    return num1 + num2;
+}
+```
+
+##### 普通的函数声明
+```js
+var box = new Function box('num1','num2','return num1 + num2');
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
