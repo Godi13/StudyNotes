@@ -39,8 +39,14 @@
         - [3. `arguments` 对象](#3-arguments-对象)
     - [第8章 对象和数组](#第8章-对象和数组)
         - [1. `Object` 类型](#1-object-类型)
-    - [引用类型](#引用类型)
-        - [`Date` 类型](#date-类型)
+        - [2. `Array` 类型](#2-array-类型)
+        - [3. 对象中的方法](#3-对象中的方法)
+    - [第9章 时间与日期](#第9章-时间与日期)
+        - [1. `Date` 类型](#1-date-类型)
+    - [第10章 正则表达式](#第10章-正则表达式)
+        - [1. 什么是正则表达式](#1-什么是正则表达式)
+        - [2. 创建正则表达式](#2-创建正则表达式)
+        - [3. 获取控制](#3-获取控制)
 
 <!-- /MarkdownTOC -->
 
@@ -82,7 +88,7 @@
 
 ```js
     var box = 100           var box = 100；
-    var box ='Lee'          box = 'Lee';
+    var box ='LEE'          box = 'LEE';
 ```
 
 ***
@@ -117,9 +123,9 @@ var box = true；
 alert(typeof box);
 //box是 Boolean 类型，值是 true ，类型返回的字符串是 boolean
 
-var box = 'Lee';
+var box = 'LEE';
 alert(typeof box);
-//box是 String 类型，值是 'Lee' ，类型返回的字符串是 string
+//box是 String 类型，值是 'LEE' ，类型返回的字符串是 string
 
 var box = 250;
 alert(typeof box);
@@ -217,7 +223,7 @@ var box = true;
 alert(typeof box == typeof 1);    //true
 alert(typeof box === typeof 1);    //false
 
-var box = 'Lee';
+var box = 'LEE';
 alert(Boolean(box));    //true
 var box = '';
 alert(Boolean(box));    //false
@@ -340,7 +346,7 @@ alert(isNaN(true));     //false（可以被转换成数值1）
 ```js
 var box = {
     toString:function(){
-        return 'Lee';
+        return 'LEE';
     }
 };
 alert(isNaN(box));
@@ -386,16 +392,16 @@ alert(Number(undefined));   //NaN，undefined返回NaN
 * 如果字符串中的第一个字符是数字字符, `parseInt()` 也能够识别出各种整数格式(即十进制、八进制和十六进制数)。也就是说,如果字符串以 "0x" 开头且后跟数字字符,就会将其当作一个十六进制整数;如果字符串以 "0" 开头且后跟数字字符,则会将其当作一个八进制数来解析。
 
 ```js
-alert(parseInt('456Lee'));        //456，会返回整数部分
-alert(parseInt('Lee456Lee'));     //NaN，如果第一个不是数值，就返回NaN
-alert(parseInt('12Lee56Lee'));    //12，从第一数值开始取，到最后一个连续数值结束
+alert(parseInt('456LEE'));        //456，会返回整数部分
+alert(parseInt('LEE456LEE'));     //NaN，如果第一个不是数值，就返回NaN
+alert(parseInt('12LEE56LEE'));    //12，从第一数值开始取，到最后一个连续数值结束
 alert(parseInt('56.12'));         //56，小数点不是数值，会被去掉
 alert(parseInt(''));              //NaN，空返回NaN
 
 //parseInt() 除了能够识别十进制数值，也可以识别八进制和十六进制
 alert(parseInt('0xA'));           //10，十六进制
 alert(parseInt('070'));           //56，八进制
-alert(parseInt('0xALee'));        //100，十六进制，Lee被自动过滤掉
+alert(parseInt('0xALEE'));        //100，十六进制，LEE被自动过滤掉
 
 //ECMAScript 为 parseInt() 提供了第二个参数，用于解决各种进制的转换
 alert(parseInt('0xAF'));          //175，十六进制
@@ -415,7 +421,7 @@ alert(parseInt('70',8));          //56，八进制转换
 * 最后还要注意一点:如果字符串包含的是一个可解析为整数的数(没有小数点,或者小数点后都是零), `parseFloat()` 会返回整数。
 
 ```js
-alert(parseFloat('123Lee'));       //123，去掉不是别的部分
+alert(parseFloat('123LEE'));       //123，去掉不是别的部分
 alert(parseFloat('0xA'));          //0，不认十六进制
 alert(parseFloat('123.4.5'));      //123.4，只认一个小数点
 alert(parseFloat('0123.400'));     //123.4，去掉前后导
@@ -794,7 +800,7 @@ var box = Infinity / Infinity;   //NaN
 var box = 0 / 0;                 //NaN
 var box = 100 / '';              //Infinity, ''转换成了0， 除数不能为0
 var box = 100 / null;            //Infinity, null转换成了0， 除数不能为0
-var box = 100 / 'Lee';           //NaN
+var box = 100 / 'LEE';           //NaN
 ```
 
 ##### 3. 求模
@@ -813,7 +819,7 @@ var box = Infinity % Infinity;   //NaN
 var box = 0 % 0;                 //NaN
 var box = 100 % '';              //NaN
 var box = 100 % null;            //NaN
-var box = 100 % 'Lee';           //NaN
+var box = 100 % 'LEE';           //NaN
 var box = 100 % true;            //0
 var box = 100 % false;           //NaN
 ```
@@ -879,7 +885,7 @@ var box = 100 - true;         //99, true转成数值为1
 var box = 100 - '';           //100, ''转成数值为0
 var box = 100 - null;         //100, null转成数值为0
 var box = 100 - '70';         //30, '70'转成数值70
-var box = 100 - 'Lee';        //NaN, Lee 转成 NaN
+var box = 100 - 'LEE';        //NaN, LEE 转成 NaN
 ```
 
 <a name="6-关系运算符"></a>
@@ -1134,7 +1140,7 @@ var age = 20;     //另一条单行语句
 
 ```js
 var box = {
-    'name' : 'Lee',
+    'name' : 'LEE',
     'age' : 28,
     'height' : 178
 };
@@ -1181,7 +1187,7 @@ alert(num);   //55
 
 ```js
 var box = {
-    'name' : 'Lee',
+    'name' : 'LEE',
     'age' : 28,
     'height' : 178
 };
@@ -1233,7 +1239,7 @@ box();                                     //调用函数，可以放在函数�
 function box(name, age){                   //带参数的函数
     alert('姓名：' +name+', 年龄：'+age);
 }
-box('Lee',28);                             //调用函数，并传参
+box('LEE',28);                             //调用函数，并传参
 ```
 
 <a name="2-return-返回值"></a>
@@ -1250,7 +1256,7 @@ alert(box());                            //打印函数调用的返回值
 function box(name,age){                  //有参数的函数
     return '姓名：'+name+',年龄：'+age;    //通过 return 把函数的最终值返回
 }
-alert(box('Lee',28));                    //调用函数得到返回值，然后外面输出
+alert(box('LEE',28));                    //调用函数得到返回值，然后外面输出
 
 可以把函数的返回值赋给一个变量，然后通过变量进行操作
 function box(num1,num2) {
@@ -1321,55 +1327,279 @@ __对象__，其实就是一种类型，即引用类型。而对象的值就是�
 <a name="1-object-类型"></a>
 #### 1. `Object` 类型
 虽然`Object`的实例不具备多少功能，但对于在应用程序中的 _存储和传输数据_ 而言，它确实是非常理想的选择。  
-创建`Object`类型方法有两种：一种是使用new运算符，一种是字面量表示法。
+创建`Object`类型方法有两种：一种是使用new运算符，一种是字面量表示法。  
+对象包含的元素：1.属性（字段）；2.方法（函数）；
 
 ```js
 1.使用new运算符创建Object
 var box = new Object();      //new方式
-box.name = 'Lee';            //创建属性字段
+box.name = 'LEE';            //创建属性字段
 box.age = 28;                //创建属性字段
 
 2.new关键字可以省略
 var box = Object();          //省略了new关键字
 
 3.使用字面量方式创建Object
-var box = {                  //字面量方式
-    name : 'Lee',            //创建属性字段
+var box = {                  //字面量方式封装数据
+    name : 'LEE',            //创建属性字段
     age : 28
 };
 
-4.属性字段也可以使用字符串星矢
+4.属性字段也可以使用字符串
 var box = {
-    'name' : 'Lee',           //也可以用字符串形式
+    'name' : 'LEE',           //也可以用字符串形式
     'age' : 28
 }
 
+5.使用字面量及传统赋值方式
+var box = {};                 //字面量方式声明空的对象
+box.name = 'LEE';             //点符号给属性赋值
+box.age = 28;
 
+6.两种属性输出方式
+alert(box.age);               //点表示法输出
+alert(box['age']);            //中括号表示法输出，注意引号
 
+PS:　在使用字面量声明Object对象时，不会调用Object()构造函数（Firefox除外）
+
+7.给对象创建方法
+var box = {
+    run : function() {         //对象中的方法,匿名函数
+        return '运行';
+    }
+}
+alert(box.run());              //调用对象中的方法（函数），如果不加括号，会打印代码
+
+8.使用delete删除对象属性
+delete box.name;               //删除属性
+
+在实际开发过程中，一般更喜欢字面量的声明方式。  
+因为它清晰，语法代码少，而且还给人一种封装的感觉。  
+字面量也是向函数传递大量可选参数的首选方式。
+
+function box(obj) {            //参数是一个对象
+    if (obj.name != undefined) alert(obj.name);
+    if (obj.age != undefined) alert(obj.age);
+}
+box({                          //匿名对象
+    name : 'LEE',
+    age : 28
+});
 ```
 
+<a name="2-array-类型"></a>
+#### 2. `Array` 类型
+虽然数组都是有序排列，但ECMAScript中的数组每个元素可以保存任何类型。ECMAScript中数组的大小也是可以调整的。  
+创建`Array`类型有两种方式：第一种是`new`运算符，第二种是字面量
 
+```js
+1.使用new关键字创建数组
+var box = new Array();         //声明一个数组，空数组
+alert(typeof box);             //数组属于object类型
 
+var box = new Array(10);       //创建一个包含10个元素的数组，必须是一个数字
+var box = new Array('LEE',28); //创建一个数组并分配元素
 
+2.以上三种方法，可以省略new关键字
+var box = Array();             //省略了new关键字
 
+3.使用字面量方式创建数组
+var box = [];                  //创建一个空的数组
+var box = ['LEE',28];          //创建包含元素的数组
+var box = [1,2,];              //禁止这么做，额外的逗号会让IE获取到，而参数错误
+var box = [,,,,];              //不允许，会造成浏览器不兼容
 
+PS: 和object一样，字面量的写法不会调用Array()构造函数。(Firefox除外)
 
+4.使用索引下标来读取数组的值
+alert(box[2]);                 //获取第3个元素
+box[2] = 'AGE';                //修改第3个元素
+box[4] = 'HI';                 //增加第5个元素
 
+var box = [];
+box['name'] = 'LEE';
+box['age'] = 28;
+alert(box['name']);            //如果是字符串下标，不会体现在数组上，要单独打印
+alert(box);                    //空数组
 
+var box = [];
+box[0] = 'LEE';
+box[1] = 28;
+alert(box);                    //如果是索引下标，就会在数组上体现出来
 
+5.使用length属性获取数组元素量
+alert(box.length);             //获取元素个数
+box.length = 10;               //强制元素个数
+box[box.length] = 'AGE';       //通过length给数组增加一个元素
 
+6.创建一个稍微复杂一点的数组
+var box = [
+    {
+        name : 'LEE',         //第一个元素是一个对象
+        age : 28,
+        run : function() {
+            return 'run';
+        }
+    },
+    ['WANG','ZHENG',new Object()],  //第二个元素是数组
+    'YANG',                   //第三个元素是字符串
+    25+25,                    //第四个元素是数值
+    new Array(1,2,3)          //第五个元素是数组
+];
+alert(box);                   //[object Object],WANG,ZHENG,[object Object],YANG,50,1,2,3
+alert(box[0].name);           //LEE
+alert(box[0]['name']);        //LEE
 
+PS: 数组最多可包含 4294967295 个元素，超出即会发生异常
+```
 
+<a name="3-对象中的方法"></a>
+#### 3. 对象中的方法
 
+##### 转换方法
+对象或数组都具有`toLocaleString()`、`toString()`和`valueOf()`方法。其中`toString()`和`valueOf()`无论重写了谁，都会返回相同的值。数组会讲每个值进行字符串形式的拼接，以逗号隔开。
 
+```js
+var box = ['LEE',28,new Date()];
+alert(box);                  //LEE,28,Thu Nov 05 2015 15:18:52 GMT+0800 (CST)
+alert(box.toString());       //LEE,28,Thu Nov 05 2015 15:18:52 GMT+0800 (CST)
+alert(box.valueOf());        //LEE,28,Thu Nov 05 2015 15:18:52 GMT+0800 (CST)
+alert(box.toLocaleString()); //LEE,28,11/5/2015, 3:18:52 PM,本地格式区域字符串
+```
+默认情况下，数组字符创都会以逗号隔开。如果使用`join()`方法，则可以使用不同的分隔符来构建这个字符串。
 
+```js
+var box = ['LEE',28];
+alert(box.join('|'));        //LEE|28，方法运行过后返回按|分割的字符串
+alert(typeof box.join('|')); //string
+alert(typeof box);           //原数组没有任何变化，类型还是object
+```
 
+##### 栈方法
+ECMAScript数组提供了一种让数组的行为类似于其他数据结构的方法。也就是说，可以让数组像栈一样，可以限制插入和删除项的数据结构。栈是一种数据结构（后进先出），也就是说最新添加的元素最早被移除。而栈中元素的插入（或叫推入）和移除（或叫弹出），只发生在一个位置——栈的顶部。ECMAScript为数组专门提供了`push()`和`pop()`方法。
 
-<a name="引用类型"></a>
-## 引用类型
+`push()`方法可以接收任意数量的参数，把它们逐个添加到数组的末尾，并返回修改该后数组的长度。而`pop()`方法则从数组末尾移除最后一个元素，减少数组的`length`值，然后返回移除的元素。
 
-<a name="date-类型"></a>
-#### `Date` 类型
+```js
+var box = ['LEE',28,'AGE'];   //字面量声明
+alert(box.push('NUM',13));    //在数组末尾添加元素，并返回数组的最新长度
+alert(box);
+alert(box.pop());             //移除数组最后的元素，并且返回移除的元素
+alert(box);
+```
+
+##### 队列方法
+栈方法是后进先出，而队列方法就是先进先出。队列在数组的末端添加元素，从数组的前端移除元素。通过`push()`向数组末端添加一个元素，然后通过`shift()`方法从数组前端移除一个元素。
+
+```js
+var box = ['LEE',28,'AGE'];   //字面量声明
+alert(box.push('NUM',13));    //在数组末尾添加元素，并返回数组的最新长度
+alert(box);
+alert(box.shift());           //移除数组开头的一个元素，并且返回这个元素
+alert(box);
+```
+
+ECMAScript还为数组提供了一个`unshift()`方法，它和`shift()`方法的功能完全相反。`unshift()`方法为数组的前端添加一个元素。
+
+```js
+var box = ['LEE',28,'AGE'];   //字面量声明
+alert(box.unshift('NUM',13)); //在数组前端添加元素，并返回数组的最新长度
+alert(box);
+
+PS: IE浏览器对 unshift() 方法总是返回 undefined 而不是数组的新长度。
+```
+
+##### 重排序方法
+数组中已经存在两个可以直接用来排序的方法：`reverse()`和`sort()`
+
+```js
+reverse() 逆向排序
+var box = [1,2,3,4,5];         //数组
+alert(box.reverse());          //5,4,3,2,1，逆向排序方法，返回排序后的数组
+alert(box);                    //5,4,3,2,1,原数组也被逆向排序了，说明是引用
+
+sort() 从小到大排序
+var box = [4,1,7,3,9,2];       //数组
+alert(box.sort());             //1,2,3,4,7,9，从小到大排序，返回排序后的数组
+alert(box);                    //1,2,3,4,7,9，原数组也被从小到大排序了
+
+sort 方法的默认排序在数字排序上有些问题，因为数字排序和数字字符串排序的算法是一样的。
+我们必须修改这一特征，修改的方式，就是给sort(参数)方法传递一个函数参数。
+
+function compare(value1,value2){    //数字排序的函数参数
+    if(value1 < value2) {           //小于，返回负数
+        return -1;
+    }else if(value1 > value2){      //大于，返回正数
+        return 1;
+    }else{                          //其他，返回0
+        return 0;
+    }
+}
+var box = [0,1,5,10,15];            //验证数字字符串，和数字的区别
+alert(box.sort(compare));           //传参
+
+PS:如果要反向操作，即从大到小排序，正负颠倒即可。当然，如果要逆序用reverse()更加方便。
+```
+
+##### 操作方法
+ECMAScript为操作已经包含在数组中的元素提供了很多方法。  
+`concat()`方法可以基于当前数组创建一个新数组。
+
+```js
+var box = ['LEE',28];         //当前数组
+var box2 = box.concat('AGE'); //创键新数组，并添加新元素
+alert(box2);                  //LEE,28,AGE，输出新数组
+alert(box);                   //当前数组没有任何变化
+```
+`slice()`方法可以基于当前数组获取指定区域元素并创建一个新数组。  
+
+```js
+var box = [1,2,3,4,5,6];      //当前数组
+var box1 = box.slice(1);      //从第1个位置取到最后
+var box2 = box.slice(1,4);    //从第1个位置取到第3个位置
+alert(box1);                  //2,3,4,5,6
+alert(box2);                  //2,3,4
+```
+`splice()`主要用途是向数组的中部插入元素。
+
+```js
+splice中的刪除功能
+var box = ['LEE',28,'AGE'];   //当前数组
+var box2= box.splice(0,2);    //表示从第0个位置截取2个元素，而不是从第0个位置取到第2个位置
+alert(box2);                  //LEE,28，返回截取的元素
+alert(box);                   //AGE，当前数组被截取的元素被删除
+
+splice中的插入功能
+var box = ['LEE',28,'AGE'];   //当前数组
+var box2= box.splice(1,0,'HI','A');  //从第1个位置插入元素，0表示不截取任何元素，插入后面的元素
+alert(box2);                  //返回空
+alert(box);                   //LEE,HI,A,28,AGE
+
+splice中的替换功能
+var box = ['LEE',28,'AGE'];   //当前数组
+var box2= box.splice(1,1,100);//从第1个位置，截取1个元素，插入后面的元素
+alert(box2);                  //28，返回截取的元素
+alert(box);                   //LEE,100,AGE
+```
+
+***
+
+<a name="第9章-时间与日期"></a>
+## 第9章 时间与日期
+
+<a name="1-date-类型"></a>
+#### 1. `Date` 类型
+创键一个日期对象，使用`new`运算符和`Date`构造方法（构造函数）即可。
+
+```js
+var box = new Date();     //创键一个日期对象
+```
+
+在调用`Date`构造方法而不传递参数的情况下，新建的对象自动获取当前的时间和日期。
+
+```js
+alert(box);               //不同的浏览器显示不同
+```
 
 ###### 日期/时间组件方法
 
@@ -1408,3 +1638,335 @@ var box = {
 |setMilliseconds( 毫秒 )|设置日期中的毫秒数|
 |setUTCMilliseconds( 毫秒 )|设置UTC日期中的毫秒数|
 |getTimezoneOffset()|返回本地时间与UTC时间相差的分钟数。例如,美国东部标准时间返回300。在某地进入夏令时的情况下,这个值会有所变化|
+
+***
+
+<a name="第10章-正则表达式"></a>
+## 第10章 正则表达式
+
+假设用户需要在HTML表单中填写姓名、地址、出生日期等，那么在将表单提交到服务器进一步处理前，JavaScript程序会检查表单以确认用户确实输入了信息并且这些信息是符合要求的。
+
+<a name="1-什么是正则表达式"></a>
+#### 1. 什么是正则表达式
+正则表达式（regular expression）是一个描述字符模式的对象。ECMAScript 的 `RegExp` 类表示正则表达式，而 `String` 和 `RegExp` 都定义了使用正则表达式进行强大的模式匹配和文本检索与替换的函数。  
+正则表达式主要用来验证客户端的输入数据。用户填写完表单单击按钮之后，表单就会被发送到服务器，在服务器i通常都会用 PHP、ASP.NET 等服务器脚本对其进行进一步处理，因为客户端验证，可以节约大量的服务器端的系统资源，并且提供更好的用户体验。
+
+<a name="2-创建正则表达式"></a>
+#### 2. 创建正则表达式
+创建正则表达式和创建字符串类似，创建正则表达式提供了两种方法，一种是采用 new 运算符，另一个是采用字面量方式。
+
+##### 两种创建方式
+
+```js
+var box = new RegExp('box');       //必须有一个参数，第一个参数是模式字符串
+alert(box);                        // /box/ 两个反斜杠是正则表达式的字面量表示法
+var box = new RegExp('box','gi');  //第二个参数为可选，模式修饰符
+alert(box);                        // /box/gi
+```
+模式修饰符的可选参数
+
+|参数|含义|
+|:--:|:--:|
+|i|忽略大小写|
+|g|全局匹配|
+|m|多行匹配|
+
+```js
+var box = /box/;       //使用字面量的正则表达式
+var box = /box/gi;     //使用字面量带修饰符的正则表达式
+```
+
+##### 测试正则表达式
+`RegExp` 对象包含两个方法:`test()`和`exec()`,功能基本相似，用于测试字符串匹配。`test()`方法在字符串查找是否存在指定的正则表达式并返回布尔值，如果存在则返回`true`，不存在则返回`false`。`exec()`方法也用于在字符串中查找指定正则表达式，如果`ecec()`方法执行成功，则返回包含该查找字符串的相关信息数组。如果执行失败，则返回`null`。
+
+RegExp对象的方法
+
+|方法|功能|
+|:-:|:-:|
+|test|在字符串中测试模式匹配，返回true或false|
+|exec|在字符串中执行匹配搜索，返回结果数组|
+
+
+```js
+使用 new 运算符的 test 方法示例
+var pattern = new RegExp('Box');     //模式
+var str = 'This is a box';
+alert(pattern.test(str));            //false
+
+var pattern = new RegExp('Box','i'); //忽略大小写
+var str = 'This is a box';
+alert(pattern.test(str));            //true
+
+
+使用字面量方式的 test 方法示例
+var pattern = /Box/i;                //忽略大小写
+var str = 'This is a box';
+alert(pattern.test(str));            //true
+
+
+使用一条语句实现正则匹配
+alert(/Box/i.test('box'));           //true
+
+
+使用 exec 返回匹配数组
+var pattern = /Box/i;                //忽略大小写
+var str = 'This is a box';
+alert(pattern.exec(str));            //box，没有就返回null
+alert(typeof pattern.exec(str));     //object，返回的是数组
+```
+
+##### 使用字符串的正则表达式方法
+除了 `test()` 和 `exec()` 方法，`String`对象也提供了4个使用正则表达式的方法。
+
+String对象中的正则表达式方法
+
+|方法|含义|
+|:-:|:-:|
+|match(pattern)|返回 pattern 中的字串或 null|
+|replace(pattern,replacement)|用 replacement 替换 pattern|
+|search(pattern)|返回字符串中 pattern 开始位置|
+|split(pattern)|返回字符串按指定 pattern 拆分的数组|
+
+```js
+使用 match 方法获取匹配的数组
+var pattern = /Box/i;
+var str = 'This is a box! That is a Box too!';
+alert(str.match(pattern));          //box,Box,找不到匹配，返回-1
+
+使用 replace 方法替换匹配数组
+var pattern = /Box/i;               //未开全局，匹配一个即停止
+var str = 'This is a Box! That is a Box too!';
+alert(str.replace(pattern,'Tom'));  //This is a Tom! That is a Box too! 返回替换后的字符串，只限第一个
+
+var pattern = /Box/gi;              //全局，所有匹配都替换
+var str = 'This is a Box! That is a Box too!';
+alert(str.replace(pattern,'Tom'));  //This is a Tom! That is a Tom too! 返回替换后的字符串
+
+使用 split 拆分成字符串数组
+var pattern = /!/gi;                //以！为基准拆分
+var str = 'This is a Box! That is a Box too!';
+alert(str.split(pattern));          //This is a Tom,That is a Tom too,
+alert(str.split(pattern).length);   //数组数量为3个,最后有个空数组
+```
+
+RegExp 对象的静态属性
+
+|属性|短名|含义|
+|:-:|:-:|:-:|
+|input|$_|当前被匹配的字符串|
+|lastMatch|$&|最后一个匹配字符串|
+|lastParen|$+|最后一对圆括号内的匹配字串|
+|leftContext|$`|最后一次匹配前的字串|
+|multiline|$*|用于指定是否所有的表达式都用于多行的布尔值|
+|rightContext|$'|在上次匹配之后的字串|
+
+```js
+使用静态属性
+var pattern = /(g)oogle/;
+var str = 'This is google!';
+pattern.test(str);            //或者exec()，必须执行一下静态属性才有效
+alert(RegExp.input);           //This is google!
+alert(RegExp.lastMatch);       //google
+alert(RegExp.lastParen);       //g
+alert(RegExp.leftContext);     //This is
+alert(RegExp.multiline);       //false
+alert(RegExp.rightContext);    //!
+
+PS: Opera 不支持 input、lastMatch、lastParen 和 multiline属性，IE 不支持 multiline属性。
+所有的属性可以使用短名来操作：
+RegExp.input 可以改写成 RegExp['$_']，以此类推，但 RegExp.input 比较特殊，还可以写成 RegExp.$_
+```
+
+RegExp 对象的实例属性
+
+|属性|含义|
+|:-:|:-:|
+|global|Boolean值，表示g是否已设置|
+|ignoreCase|Boolean值，表示i是否已设置|
+|lastIndex|整数，代表下次匹配将从哪里字符位置开始|
+|multiline|Boolean值，表示m是否已设置|
+|Source|正则表达式的原字符串形式|
+
+```js
+var pattern = /google/gi;
+alert(pattern.global);          //true
+alert(pattern.ignoreCase);      //true
+alert(pattern.lastIndex);       //0
+alert(pattern.multiline);       //false
+alert(pattern.Source)           //google
+
+var pattern = /google/g;
+var str = 'google google google!';
+pattern.test(str);              //google,匹配第一次
+alert(pattern.lastIndex);       //6，第二次匹配的位
+
+PS:以上基本没什么用，并且 lastIndex 在获取下次匹配位置上IE和其他浏览器有偏差，主要表现在非全局匹配上。
+lastIndex 还支持手动设置，直接赋值操作。
+```
+
+<a name="3-获取控制"></a>
+#### 3. 获取控制
+正则表达式元字符是包含特殊含义的字符。它们有一些特殊，可以控制匹配模式的方式。反斜杠后的元字符将失去其特殊含义。
+
+##### 字符类：单个字符和数字
+|元字符/元符号|匹配情况|
+|-----|----|
+|.|匹配除换行符外的任意字符|
+|[a-z0-9]|匹配括号中的字符集中的任意字符|
+|[^a-z0-9]|匹配任意不在括号中的字符集中的字符|
+|\d|匹配数字|
+|\D|匹配非数字，同[^0-9]相同|
+|\w|匹配字母和数字及_|
+|\W|匹配非字母和数字及_|
+
+##### 字符类：空白字符
+|元字符/元符号|匹配情况|
+|-----|----|
+|\0|匹配 null 字符|
+|\b|匹配空格字符，用于检测是否到达边界|
+|\f|匹配进纸字符|
+|\n|匹配换行符|
+|\r|匹配回车字符|
+|\t|匹配制表符|
+|\s|匹配空白字符、空格、制表符和换行符|
+|\S|匹配非空白字符|
+
+##### 字符类：锚字符
+|元字符/元符号|匹配情况|
+|-----|----|
+|^|行首匹配|
+|$|行尾匹配|
+|\A|只有匹配字符串开始处|
+|\b|匹配单词边界，词在[]内时无效|
+|\B|匹配非单词边界|
+|\G|匹配当前搜索的开始位置|
+|\Z|匹配字符串结束处或行尾|
+|\z|只匹配字符串结束处|
+
+##### 字符类：重复字符
+|元字符/元符号|匹配情况|
+|-----|----|
+|x?|匹配0个或1个x|
+|x*|匹配0个或任意多个x|
+|x+|匹配至少一个x|
+|(xyz)+|匹配至少一个(xyz)|
+|x{m}|匹配m个x，不能多也不能少|
+|x{m,}|匹配m个或以上个x|
+|x{m,n}|匹配最少m个、最多n个x|
+
+##### 字符类：替代字符
+`this|where|logo` 匹配`this`或`where`或`logo`中任意一个，匹配概念非相等，包含的意思
+
+##### 字符类：记录字符
+|元字符/元符号|匹配情况|
+|-----|----|
+|(string)|用于反向引用的分组|
+|\1 或 $1|匹配第一个分组中的内容|
+|\2 或 $2|匹配第二个分组中的内容|
+|\3 或 $3|匹配第三个分组中的内容|
+
+```js
+使用点元字符
+var pattern = /g..gle/;           //. 匹配除换行符外的任意字符
+var str = 'google';
+alert(pattern.test(str));
+
+重复匹配
+var pattern = /g.*gle/;           //.* 匹配0个1个或多个.
+var str = 'google';               //*,?,+,{n,m}
+alert(pattern.test(str));
+
+var pattern = /go{2-4}gle/;       //o{2-4}表示匹配o2-4次，包含2和4
+var str = 'google';
+alert(pattern.test(str));         //true
+
+使用字符类匹配
+var pattern = /g[a-zA-Z_]*gle/;   //[a-zA-Z_]* 表示任意个a-zA-Z_中的字符
+var str = 'google';
+alert(pattern.test(str));
+
+var pattern = /g[^0-9]*gle/;      //[^0-9]* 表示任意个非0-9中的字符
+var str = 'google';
+alert(pattern.test(str));
+
+var pattern = /[a-z][A-Z]+/;      //[A-Z]+ 表示 A-Z 一次或多次
+var str = 'gOOGLE';
+alert(pattern.test(str));
+
+var pattern = /^[0-9]+oogle/;      //^[0-9]+ 行首至少一个[0-9]
+var str = '444oogle';
+alert(pattern.test(str));
+
+使用元符号匹配
+var pattern = /g\w*gle/;           // \w* 匹配任意多个所有字母数字
+var str = 'google';
+alert(pattern.test(str));
+
+var pattern = /google\d*/;         // \d* 匹配任意多个数字
+var str = 'google666';
+alert(pattern.test(str));
+
+var pattern = /\D{7,}/;            // \D{7,} 匹配至少7个非数字
+var str = 'google8';
+alert(pattern.test(str));
+
+使用锚元字符匹配
+var pattern = /^google$/;          // ^从开头匹配，$从结尾开始匹配
+var str = 'google';
+alert(pattern.test(str));
+
+var pattern = /goo\sgle/;          // \s 可以匹配到空格
+var str = 'goo gle';
+alert(pattern.test(str));
+
+var pattern = /google\b/;          // \b 可以匹配是否到了边界
+var str = 'google';
+alert(pattern.test(str));
+
+使用或模式匹配
+var pattern = /google|baidu|bing/; // 匹配三种其中一种字符串
+var str = 'google';
+alert(pattern.test(str));
+
+使用分组模式匹配
+var pattern = /(google){4,8}/;     // 匹配分组里的字符串 4-8 次
+var str = 'googlegooglegooglegoogle';
+alert(pattern.test(str));          //true
+
+var pattern = /8(.*)8/;            // 获取 8..8之间的任意字符
+var str = 'This is 8google8';
+str.match(pattern);                //8google8,google
+alert(RegExp.$1);                  //google，RegExp.$1 表示获取模式中第一个分组对应的匹配字符串
+
+var pattern = /8(.*)8/;            // 获取 8..8之间的任意字符
+var str = 'This is 8google8';
+var　result = str.replace(pattern,'<strong>$1</strong>');  //得到替换的字符串输出，$1表示分组获取字符串匹配到的内容
+document.write(result);
+
+var pattern = /(.*)\s(.*)/;
+var str = 'google baidu';
+var result = str.replace(pattern,'$2 $1');   //将两个分组的值替换输出
+document.write(result);
+```
+
+|贪婪|惰性|
+|:-:|:-:|
+|+|+?|
+|?|??|
+|* |*?|
+|{n}|{n}?|
+|{n,}|{n,}?|
+|{n,m}|{n,m}?|
+
+
+
+
+***
+
+
+
+
+
+
+
+
