@@ -66,6 +66,7 @@
         - [2. `Math`对象](#2-math对象)
     - [第15章 面向对象与原型](#第15章-面向对象与原型)
         - [1. 创建对象](#1-创建对象)
+        - [2. 原型](#2-原型)
 
 <!-- /MarkdownTOC -->
 
@@ -2931,9 +2932,9 @@ ECMAScript中可以采用构造函数（构造方法）可用来创建特定的�
 
 ```js
 function Box(name,age) {               //构造函数模式
-    this.name = name;
+    this.name = name;                  //实例属性
     this.age = age;
-    this.run = function() {
+    this.run = function() {            //实例方法
         return this.name + this.age + 'running...';
     };
 };
@@ -2969,11 +2970,201 @@ alert(box2 instanceof Box);            //true
 
 关于`this`的使用，`this`其实就是代表当前作用域对象的引用。如果在全局范围`this`就代表`window`对象，如果在构造函数体内，就代表当前的构造函数所声明的对象。
 
+>全局变量尽量不用`name`变量名，容易出现问题。
+
 构造函数和普通函数的唯一区别，就是它们调用的方式不同。只不过，构造函数也是函数，必须用`new`运算符来调用，否则就是普通函数。
 
 ```js
-var box = new Box('Lee',100);
+var box = new Box('Lee',100);    //构造模式调用
 alert(box.run());
 
-Box('')
+Box('Lee',20);                   //普通模式调用，无效
+
+var o = new Object();
+Box.call(o,'Jack',200);          //对象冒充调用
+alert(o,run());
+```
+探讨构造函数内部的方法（或函数）的问题，首先看下两个实例化后的属性或方法是否相等。
+
+```js
+var box1 = new Box('Lee',100);   //实例化后地址为1
+var box2 = new Box('Lee',100);   //实例化后地址为2
+alert(box1.name == box2.name);   //true，属性的值相等
+alert(box1.run == box2.run);     //false，比较的是引用地址
+alert(box1.run() == box2.run()); //true，方法的值相等，因为传参一致
+```
+可以把构造函数里的方法（或函数）用`new Function()`方法来代替，得到一样的效果，更加证明，它们最终判断的是引用地址，唯一性
+
+```js
+function Box(name,age) {
+    this.name = name;
+    this.age = age;
+    this.run = new Function(
+        "return this.name + this.age + 'running...'"
+        );
+};
+```
+我们可以通过构造函数外面绑定同一个函数的方法来保证引用地址的一致性，但这种做法没什么必要，只是加深学习了解：
+
+```js
+function Box(name,age) {
+    this.name = name;
+    this.age = age;
+    this.run = run;
+};
+function run() {     //把构造函数内部的方法通过全局调用，实现引用地址一致
+    return this.name + this.age + 'running...'
+}
+```
+虽然使用了全局的函数`run()`来解决了保证引用地址一致的问题，但这种方式又带来了一个新的问题，全局中的`this`在对象调用的时候是`Box`本身，而当做普通函数调用的时候，`this`又代表`window`
+
+<a name="2-原型"></a>
+#### 2. 原型
+我们创建的每个函数都有一个`prototype`（原型）属性，这个属性是一个对象，它的用途是包含可以特定类型的所有实例共享的属性和方法。逻辑上可以这么理解：`prototype`通过调用构造函数而创建的那个对象的原型对象。使用原型的好处可以让所有对象实例共享它所包含的属性和方法。也就是说，不必在构造函数中定义对象信息，而是可以直接将这些信息添加到原型中。
+
+```js
+function Box() {}                  //声明一个构造函数
+
+Box.prototype.name = 'Lee';        //在原型中添加属性
+Box.prototype.age = 100;           //原型属性
+Box.prototype.run = function() {   //在原型里添加方法
+    return this.name + this.age + 'running...';
+};
+//如果是实例方法，不同的实例化，它们的方法地址是不一样的，是唯一的
+//如果是原型方法，那么它们地址是共享的，大家都一样
+var box1 = new Box();
+var box2 = new Box();
+alert(box1.run == box2.run);        //true
+```
+在原型模式声明中，多了两个属性，这两个属性都是创建对象时自动生成的。  
+`__proto__`属性是实例指向原型对象的一个指针，它的作用就是指向构造函数的原型属性`constructor`。通过这两个属性，就可以访问到原型里的属性和方法了。  
+PS: IE浏览器在脚本访问`__proto__`会不能识别，火狐和谷歌浏览器及其他某些浏览器均能识别。虽然可以输出，但无法获取内部信息。
+
+```js
+alert(box1.prototype);   //这个属性是一个对象，访问不到
+alert(box1.__proto__);   //[object Object],这个属性是一个指针指向prototype原型对象
+alert(Box.prototype);    //[object Object],使用构造函数名（对象名）访问prototype
+alert(box1.constructor); //构造属性，可以获取构造函数本身，
+//作用是被原型指针定位，然后得到构造函数本身，其实就对象实例对应的原型对象的作用
+```
+判断一个对象是否指向了该构造函数的原型对象，可以使用`isPrototypeOf()`方法来测试：
+
+    alert(Box.prototype.isPrototypeOf(box));  //只要实例化对象，即都会指向
+
+原型模式的执行流程：
+
+    1.先查找构造函数实例里的属性或方法，如果有，立刻返回；
+    2.如果构造函数实例里没有，则去它的原型对象里找，如果有，就返回；
+虽然我们可以通过对象实例访问保存在原型中的值，但却不能访问通过对象实例重写原型中的值。
+
+```js
+var box1 = new Box();
+alert(box1.name);           //Lee，原型里的值
+box1.name = 'Jack';         //实例属性，并没有重写原型属性
+alert(box1.name);           //Jack，就近原则
+
+var box2 = new Box();
+alert(box2.name);           //Lee，原型里的值，没有被box1修改，实例属性不会共享
+```
+如果向要`box1`也能在后面继续访问到原型里的值，可以把构造函数里的属性删除即可，具体如下：
+
+```js
+delete box1.name;            //删除实例中的属性
+alert(box1.name);            //Lee
+delete Box.prototype.name;   //删除原型中的属性
+Box.prototype.name = 'Tom';  //覆盖原型中的属性
+```
+如何判断属性是在构造函数的实例里，还是在原型里？可以使用`hasOwnProperty()`函数来判断实例中是否存在指定属性：
+
+    alert(box.hasOwnProperty('name'));  //实例里有返回true，否则返回false
+
+`in`操作符会在通过对象能够访问给定属性时返回`true`，无论该属性存在于实例中还是原型中。
+
+    alert('name' in box);    //true，存在实例中或原型中
+
+我们可以通过`hasOwnProperty()`方法检测属性是否存在实例中，也可以通过`in`来判断实例或原型中存在属性。那么结合两种方法，可以判断原型中是否存在属性。
+
+```js
+function isProperty(object,property) {
+    return !object.hasOwnProperty(property) && (property in object);
+}
+var box = new Box();
+alert(isProperty(box,'name'));     //true，如果原型有
+```
+为了让属性和方法更好的体现封装的效果，并且减少不必要的输入，原型的创建可以使用字面量的方式：
+
+```js
+function Person() {};    //使用字面量的方式创建原型对象，这里{}就是对象
+Person.prototype = {     //是Object，new Object就相当于{}
+    name : 'Lee',
+    age : 100,
+    run : function() {
+        return this.name + this.age + 'running...';
+    }
+};
+```
+使用构造函数创建原型对象和使用字面量创建对象在使用上基本相同，但还是有一些区别，字面量创建的方式使用`constructor`属性不会指向实例，而会指向`Object`，构造函数创建的方式则相反。
+
+```js
+var box = new Box();
+alert(box instanceof Box);         //true
+alert(box instanceof Object);      //true
+alert(box.constructor == Box);     //字面量方式，返回false，否则，true
+alert(box.constructor == Object);  //字面量方式，返回true，否则，false
+```
+如果想让字面量方式的`constructor`指向实例对象，那么可以这么做：
+
+```js
+Box.prototype = {
+    constructor : Box,             //直接强制指向即可
+};
+```
+PS: 字面量方式为什么`constructor`会指向`Object`？因为`Box.prototype={};`这种写法其实就是创建一个新对象。而每创建一个函数，就会同时创建它的`prototype`，这个对象也会自动获取`constructor`属性。所以，新对象的`constructor`重写了`Box`原来的`constructor`，因此会指向新对象，那个新对象没有指定构造函数，那么就默认为`Object`
+
+原型的声明是有先后顺序的，所以，重写的原型会切断之前的原型
+
+```js
+function Box() {};
+Box.prototype = {               //原型被重写了
+    constructor : Box,
+    name : 'Lee',
+    age : 100,
+    run : function() {
+        return this.name + this.age + 'running...';
+    }
+};
+Box.prototype = {
+    age : 200       //这里不会保留之前原型的任何信息，把原来的原型对象和构造函数对象实例之间的关系切断了
+}
+var box = new Box();
+alert(box.run());   //run被切断消失了
+```
+原型对象不仅仅可以在自定义对象的情况下使用，而ECMAScript内置的引用类型都可以使用这种方式，并且内置的引用类型本身也使用了原型。
+
+```js
+alert(Array.prototype.sort);              //sort 是Array 类型的原型方法
+alert(String.prototype.substring);        //substring 是 String 类型的方法
+//内置引用类型的功能扩展
+String.prototype.addstring = function() { //给String 类型添加一个方法
+    return this + ',被添加了！';           //this 代表调用的字符串
+};
+alert('Lee'.addstring());                 //使用这个方法
+```
+PS: 尽管给原生的内置引用类型添加方法使用起来特别方便，但不推荐使用这种方法，因为它可能会导致命名冲突，不利于代码维护
+
+原型模式创建对象也有自己的缺点，它省略了构造函数传参初始化这一过程，带来的缺点就是初始化的值都是一致的。而原型最大的缺点就是它最大的优点，那就是共享。  
+原型中所有属性是被很多实例共享的，共享对于函数非常合适，对于包含基本之的属性也还可以。但如果属性包含引用类型，就存在一定问题：
+
+```js
+function Box() {};
+Box.prototype = {
+    constructor : Box,
+    name : 'Lee',
+    age : 100,
+    family : ['father','mother','sister'],    //添加一个数组属性
+    run : function() {
+        return this.name + this.age + this.family;
+    }
+}
+var box1 = new Box();
 ```
