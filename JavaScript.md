@@ -55,6 +55,17 @@
         - [4. 函数属性和方法](#4-函数属性和方法)
     - [第12章 变量、作用域及内存](#第12章-变量、作用域及内存)
         - [1. 变量及作用域](#1-变量及作用域)
+        - [2. 内存问题](#2-内存问题)
+    - [第13章 基本包装类型](#第13章-基本包装类型)
+        - [1.基本包装类型概述](#1基本包装类型概述)
+        - [`Boolean` 类型](#boolean-类型)
+        - [`Number` 类型](#number-类型)
+        - [`String` 类型](#string-类型)
+    - [第14章 内置对象](#第14章-内置对象)
+        - [1. `Global` 对象](#1-global-对象)
+        - [2. `Math`对象](#2-math对象)
+    - [第15章 面向对象与原型](#第15章-面向对象与原型)
+        - [1. 创建对象](#1-创建对象)
 
 <!-- /MarkdownTOC -->
 
@@ -2362,11 +2373,607 @@ alert(typeof box);               //string
 这时我们应该采用`instanceof`运算符来查看。
 
 ```js
-var box = [1,2,3];
-alert(box instanceof Array);     //是否是数组
+var box1 = [1,2,3];
+alert(box1 instanceof Array);     //是否是数组
 var box2 = {};
-alert(box instanceof Object);    //是否是对象
+alert(box2 instanceof Object);    //是否是对象
 var box3 = /g/;
-alert(box instanceof RegExp);    //是否是正则表达式
+alert(box3 instanceof RegExp);    //是否是正则表达式
+var box4 = new String('LEE');
+alert(box4 instanceof String);    //是否是字符串对象
+```
+PS: 当使用`instanceof`检查基本类型的值时，它会返回`false`
+
+##### 执行环境及作用域
+执行环境是HavaScript中最为重要的一个概念。执行环境定义了变量或函数有权访问的其他数据，决定了它们各自的行为。  
+全局执行环境是最外围的执行环境。在 Web 浏览器中，全局执行环境被认为是`window`对象。因此所有的全局变量和函数都是作为`window`对象的属性和方法创建的。
+
+```js
+var box = 'blue';       //声明一个全局变量
+function setBox() {
+    alert(box);         //全局变量可以在函数里访问
+}
+setBox();               //执行函数
+```
+全局的变量和函数，都是`window`对象的属性和方法。
+
+```js
+var box = 'blue';
+function setBox() {
+    alert(window.box);  //全局变量即window的属性
+}
+window.setBox();        //全局函数即window的方法
+```
+PS: 当执行环境中的所有代码执行完毕后，该环境被销毁，保存在其中的所有变量和函数定义也随之销毁。如果是全局环境下，需要程序执行完毕，或者网页被关闭才会销毁。  
+PS: 每个执行环境（作用域）都有一个与之关联的变量对象，就好比全局的`window`可以调用变量和属性一样。局部的环境也有一个类似`window`的变量对象，环境中的定义的所有变量和函数都保存在这个对象中。（我们无法访问这个变量对象，但解析器会处理数据时后台使用它）
+
+函数里的局部作用域里的变量替换全局变量，但作用域仅限在函数体内这个局部环境。
+
+```js
+var box = 'blue';
+function setBox() {
+    var box = 'red';     //这个是局部变量，它的范围在setBox()里，出来就不认识了，去掉 var 就变成全局变量了
+    alert(box);
+}
+setBox();                //red
+alert(box);              //blue
+
+```
+通过传参，可以替换函数体内的局部变量，但作用域仅限在函数体内这个局部环境。
+
+```js
+var box = 'blue';
+function setBox(box) {   //通过传参，也是局部变量，作用域在setBox()范围下
+    alert(box);
+}
+setBox('red');           //red
+alert(box);              //blue
+```
+函数体内还包含着函数，只有这个函数才可以访问内一层的函数。
+
+```js
+var box = 'blue';
+function setBox() {
+    function setColor() {  //setColor()方法的作用域在setBox()内
+        return 123;
+    }
+    return setColor();     //setColor()的执行环境在setBox()内
+}
+setBox();
+
+var box = 'blue';
+function setBox() {
+    function setColor() {  //setColor()方法的作用域在setBox()内
+        var b = 'orange';  //b 的作用域在setColor()内
+        alert(box);
+        alert(b);
+    }
+    setColor();            //setColor()的执行环境在setBox()内
+}
+setBox();
+```
+PS: 每个函数被调用时都会创建自己的执行环境。当执行到这个函数时，函数的环境就会被推到环境栈中去执行，而执行后又在环境栈中弹出（退出），把控制权交给上一级的执行环境。  
+PS: 当代码在一个环境中执行时，就会形成一种叫做作用域链的东西。它的用途就是保证对执行环境中有访问权限的变量和函数进行有序访问。作用域链的前端，就是执行环境的变量对象。
+
+##### 没有块级作用域
+块级作用域表示诸如`if`语句等有花括号封闭的代码块，所以，支持条件判断来定义变量。
+
+```js
+if(true) {                      //if语句代码块没有局部作用域
+    var box = 'LEE';
+}
+alert(box);
+```
+`for`循环语句也是如此
+
+```js
+for (var i = 0;i < 10;i++) {    //没有局部作用域
+    var box = 'LEE';
+}
+alert(i);
+alert(box);
+```
+`var`关键字在函数里的区别
+
+```js
+function box(num1, num2) {
+    var sum = num1 + num2;       //如果去掉 var 就是全局变量
+    return sum;
+}
+alert(box(10,10));
+alert(sum);                      //报错
+```
+PS:非常不建议不使用`var`就初始化变量，因为这种方法会导致各种意外发生。所以初始化变量的时候一定要加上`var`。
+
+一般确定变量都是通过搜索来确定该标识符实际代表什么。
+
+```js
+var box = 'blue';
+function getBox() {
+    return box;                   //代表全局 box
+}                                 //如果加上函数体内加上 var box = 'red'
+alert(getBox());                  //那么最后返回值就是 red
+```
+PS: 变量查询中，访问局部变量要比全局变量更快，因为不需要向上搜索作用域链。
+
+<a name="2-内存问题"></a>
+#### 2. 内存问题
+JavaScript 具有自动垃圾收集机制，也就是说，执行环境会负责管理代码执行过程中使用的内存。其他语言比如 C 和 C++ ，必须手工跟踪内存使用情况，适时的释放，否则会造成很多问题。而 JavaScript 则不需要这样，它会自行管理内存分配及无用内存回收。  
+JavaScript 最常用的垃圾收集方式是__标记清除__。垃圾收集器会在运行的时候给存储在内存中的变量加上标记。然后它会去掉环境中正在使用变量的标记，而没有被去掉标记的变量将被视为准备删除的变量。最后，垃圾收集器完成内存清理工作，销毁那些带标记的值并回收他们所占用的内存空间。  
+垃圾收集器是周期性运行的，这样会导致整个程序的性能问题。比如IE7以前的版本，它的垃圾收集器是根据内存分配量运行的，比如 256 个变量就开始运行垃圾收集器，这样就不得不频繁地运行，从而降低了性能。  
+一般来说，确保占用最少的内存可以让页面获得更好的性能。那么优化内存的最佳方案，就是一旦数据不再有用，那么就将其设置为`null`来释放引用，这个做法叫做解除引用。这以做法适用于大多数全局变量和全局对象。
+
+```js
+var o = {
+    name : 'LEE'
+};
+o = null;                  //解除对象引用，等待垃圾收集器回收
 ```
 
+***
+
+<a name="第13章-基本包装类型"></a>
+## 第13章 基本包装类型
+
+为了便于惭怍基本类型值，ECMAScript提供了3个特殊的引用类型：`Boolean`、`Number`、`String`。这些类型与其他引用类型相似，但同时也具有与各自的基本类型相应的特殊行为。实际上，每当读取一个基本类型值的时候，后台就会创键一个对应的基本包装类型的对象，从而能够调用一些方法来操作这些数据。
+
+<a name="1基本包装类型概述"></a>
+#### 1.基本包装类型概述
+
+```js
+var box = 'Mr. LEE';          //定义一个字符串，基本类型
+var box2 = box.substring(2);  //截掉字符串前两位，索引0开始，从第2个位置开始截取到末尾的字符串输出
+//对象.方法（参数），这种写法明显是引用类型的写法，调用系统内置的方法，称为基本包装类型
+alert(box2);                  //输出新字符串
+```
+变量`box`是一个字符串类型，而`box.substring(2)`
+又说明它是一个对象（PS: 只有对象才会调用方法），最后把处理结果赋值给`box2`.`Mr. LEE`是一个字符串类型的值，按道理它不应该是对象，不应该会有自己的方法，比如：
+
+```js
+alert('Mr. LEE'.substring(2)); //直接通过值来调用方法
+```
+
+```js
+字面量写法
+var box = 'Mr. LEE';            //字面量
+box.name = 'LEE';               //无效属性，给基本类型加属性
+box.age = function() {          //无效方法，给基本类型加方法
+    return 100;
+};
+alert(box);                     //Mr.LEE
+alert(box.substring(2));        // .LEE
+alert(typeof box);              //string
+alert(box.name);                //undefined，打印不出来
+alert(box.age());               //错误
+//基本类型是无法给自己创建属性和方法的，但是可以调用系统内置的属性和方法
+
+new 运算符写法
+var box = new String('Mr. LEE');//new 运算符，String的引用类型
+box.name = 'LEE';               //有效属性
+box.age = function() {          //有效方法操作
+    return 100;
+};
+alert(box);                     //Mr. LEE
+alert(box.substring(2));        // .LEE
+alert(typeof box);              //object
+alert(box.name);                //LEE，自定义属性有效
+alert(box.age());               //100，自定义方法有效
+```
+以上字面量声明和`new`运算符声明很好的展示了他们之间的区别。但有一点还是可以肯定的，那就是不管字面量形式还是`new`运算符形式，都可以使用它的内置方法。并且`Boolean`和`Number`特性与`String`相同，三种类型可以称为基本包装类型。  
+PS: 在使用`new`运算符创建以上三种类型的对象时，可以给自己添加属性和方法，但建议不要这样使用，因为这样会导致根本分不清到底是基本类型值还是引用类型值。
+
+<a name="boolean-类型"></a>
+#### `Boolean` 类型
+`Boolean`类型没有特定的属性或者方法。
+
+<a name="number-类型"></a>
+#### `Number` 类型
+`Number`类型有一些静态属性（直接通过`Number`调用的属性，而无须`new`运算符）和方法。
+
+`Number`静态属性
+
+|属性|描述|
+|:-:|:-:|
+|MAX_VALUE|表示最大数|
+|MIN_VALUE|表示最小值|
+|NaN|非数值|
+|NEGATIVE_INFINITY|负无穷大，溢出返回该值|
+|POSITIVE_INFINITY|无穷大，溢出返回该值|
+|prototype|原型，用于增加新属性和方法|
+
+`Number`对象的方法
+
+|方法|描述|
+|:-:|:-:|
+|toString()|将数值转化为字符串，并且可以转换进制|
+|toLocaleString()|根据本地数字格式转换为字符串|
+|toFixed()|将数字保留小数点后指定位数并转化为字符串，四舍五入|
+|toExponential()|将数字以指数形式表示，保留小数点后指定位数并转化为字符串|
+|toPrecision()|根据传参来决定指数形式或点形式表述数，保留小数点后面指定位数并转化为字符串|
+
+<a name="string-类型"></a>
+#### `String` 类型
+
+`String`类型包含了三个属性和大量的可用的内置方法。
+
+String 对象属性
+
+|属性|描述|
+|:-:|:-:|
+|length|返回字符串的字符长度|
+|constructor|返回创建String对象的函数|
+|prototype|通过添加属性和方法扩展字符串定义|
+
+`String`也包含对象的通用方法，比如`valueOf()`、`toLocaleString()`和`toString()`方法，但这些方法都返回字符串的基本值。
+
+##### 字符方法
+|方法|描述|
+|:-:|:-:|
+|charAt(n)|返回指定索引位置的字符|
+|charCodeAt(n)|以 Unicode 编码形式返回指定索引位置的字符|
+
+```js
+var box = 'Mr. LEE';
+alert(box.charAt(1));           //r
+alert(box.charCodeAt(1));       //114
+alert(box[1]);                  //r，通过数组方式截取
+```
+PS: `box[1]`在IE浏览器会显示`undefined`，所以使用时要慎重。
+
+##### 字符串操作方法
+|方法|描述|
+|:-:|:-:|
+|concat(str1...str2)|将字符串参数串联到调用该方法的字符串|
+|slice(n,m)|返回字符串n到m之间位置的字符串|
+|substring(n,m)|同上|
+|substr(n,m)|返回字符串n开始的m个字符串|
+
+```js
+var box = 'Mr.LEE';
+alert(box.concat(' is',' Teacher','!'));  //Mr. LEE is Teacher!
+alert(box.slice(3));                      //LEE
+alert(box.slice(3,5));                    //L
+alert(box.substring(3));                  //LEE
+alert(box.substring(3,5));                //L
+alert(box.substr(3));                     //LEE
+alert(box.substr(3,2));                   //L
+
+var box = 'Mr.LEE';
+alert(box.slice(-3));                     //LEE，6+(-3)=4 位开始
+alert(box.substring(-3));                 //Mr. LEE，负数返回全部字符串
+alert(box.substr(-3));                     //LEE，6+(-3)=4 位开始
+
+var box = 'Mr.LEE';
+alert(box.slice(3,-1));                   //LE，6+(-1)=5,(3,5)
+alert(box.substring(3,-1));               //Mr.，第二参为负，直接转 0，并且方法会把较小的数字提前，(0,3)
+alert(box.substr(3,-1));                  //空，第二参数为负，直接转0，(3,0)
+```
+PS: IE的JavaScript实现在处理向`substr()`方法传递负值的情况下存在问题，它会返回原始字符串，使用时要切记。
+
+##### 字符串位置方法
+|方法|描述|
+|:-:|:-:|
+|indexOf(str,n)|从n开始搜索的第一个str，并将搜索的索引值返回|
+|lastIndexOf(str,n)|从n开始搜索的最后一个str，并将搜索的索引值返回|
+
+```js
+var box = 'Mr.LEE is LEE';
+alert(box.indexOf('L'));             //3
+alert(box.indexOf('L',5));           //10
+alert(box.lastIndexOf('L'));         //10
+alert(box.lastIndexOf('L',5));       //3
+
+PS: 如果没有找到想要的字符串，则返回-1
+
+示例：找出全部的L
+
+var box = 'Mr.LEE is LEE';            //包含两个 L 的字符串
+var boxarr = [];                      //存放 L 位置的数组
+var pos = box.indexOf('L');           //先获取第一个 L 的位置
+while(pos > -1) {                     //如果位置大于 -1，说明还存在 L
+    boxarr.push(pos);                 //添加到数组
+    pos = box.indexOf('L',pos + 1);   //从新赋值 pos 目前的位置
+}
+alert(boxarr);                        //输出
+```
+##### 大小写转换方法
+|方法|描述|
+|:-:|:-:|
+|toLowerCase(str)|将字符串全部转换为小写|
+|toUpperCase(str)|将字符串全部转换为大写|
+|toLocaleLowerCase(str)|将字符串全部转换为小写，并且本地化|
+|toLocaleUpperCase(str)|将字符串全部转换为大写，比且本地化|
+
+```js
+var box = 'Mr.Lee is Lee';
+alert(box.toLowerCase());
+alert(box.toUpperCase());
+alert(box.toLocaleLowerCase());
+alert(box.toLocaleUpperCase());
+
+PS: 只用几种语言（如土耳其语）具有地方特有的大小写本地性，一般来说，是否本地化效果都是一致的。
+```
+##### 字符串的模式匹配方法
+|方法|描述|
+|:-:|:-:|
+|match(pattern)|返回pattern中子串或null|
+|replace(pattern,replacement)|用replacement替换pattern|
+|search(pattern)|返回字符串中pattern开始位置|
+|split(pattern)|返回字符串按指定pattern拆分的数组|
+
+正则表达式在字符串中的应用，在前面的章节已经描述探讨过，这里就不再赘述了。  
+以上中`match()`、`replace()`、`search()`、`split()`在普通字符串中也可以使用。
+
+```js
+var box = 'Mr.Lee is Lee';
+alert(box.match('L'));          //L，找到返回L，否则返回null
+alert(box.search('L'));         //3,找到L的位置，和indexOf类型
+alert(box.replace('L','Q'));    //Mr.Qee is Lee，把L替换成Q
+alert(box.split(' '));          //Mr.Lee，is，Lee，以空格分割成字符串
+```
+##### 其他方法
+|方法|描述|
+|:-:|:-:|
+|fromCharCode(ascii)|静态方法，输出Ascii码对应值|
+|localeCompare(str1,str2)|比较两个字符串，并返回相应的值|
+
+    alert(String.fromCharCode(76));    //L，输出Ascii码对应值
+
+localeCompare(str1,str2)方法详解：比较两个字符串并放回一下值中的一个：  
+1. 如果字符串在字母表中应该排在字符串参数之前，则返回一个负数。（多数为-1）  
+2. 如果字符串等于字符串参数，则返回0  
+3. 如果字符串在自附表中应该排在字符串参数之后，则返回一个整数。（多数1）
+
+```js
+var box = 'LEE';
+alert(box.localeCompare('apple'));    //1，a在l之前
+alert(box.localeCompare('LEE'));      //0,一样返回0
+alert(box.localeCompare('zoo'));      //-1，z在l之后
+```
+##### `HTML`方法
+
+|方法|描述|
+|:-:|:-:|
+|anchor(name)|`<a name="name">str</a>`|
+|big()|`<big>str</big>`|
+|blink()|`<blink>str</blink>`|
+|bold()|`<b>Str</b>`|
+|fixed()|`<tt>Str</tt>`|
+|fontcolor(color)|`<font color="color">str</font>`|
+|fontsize(size)|`<font size="size">str</font>`|
+|link(URL)|`<a href="URL">str</a>`|
+|small()|`<small>str</small>`|
+|strike()|`<strike>str</strike>`|
+|italics()|`<i>italics</i>`|
+|sub()|`<sub>str</sub>`|
+|sup()|`<sup>str</sup>`|
+
+以上是通过JS生成一个html标签，根据经验，没什么太大用处，做个了解。
+
+```js
+var box = 'LEE';
+alert(box.link('http://'));
+```
+
+<a name="第14章-内置对象"></a>
+## 第14章 内置对象
+ECMAScript对内置对象的定义是：“有ECMAScript实现提供、不依赖宿主环境的对象，这些对象在ECMAScript程序执行之前就已经存在了。”意思就是说，开发人员不必显示地实例化内置对象；因为它们已经实例化了。ECMA-262只定义了两个内置对象：`Global`和`Math`
+
+<a name="1-global-对象"></a>
+#### 1. `Global` 对象
+`Global`（全局）对象是ECMAScript中一个特别的对象，因为这个对象是不存在的。在ECMAScript中不属于任何其他对象的属性和方法，都属于它的属性和方法。所以，事实上，并不存在全局变量和全局函数；所有在全局作用域定义的变量和函数，都是`Global`对象的属性和方法。  
+PS: 因为ECMAScript没有定义怎么调用`Global`对象，所以，`Global.属性`或者`Global.方法()`都是无效的。（Web浏览器将`Global`作为`window`对象的一部分加以实现）
+
+##### `Global`对象有一些内置的属性和方法：
+1.`URI`编码方法
+
+`URI`编码可以对链接进行编码，以便发送给浏览器。它们采用特殊的`UTF-8`编码替换所有无效字符，从而让浏览器能够接受和理解。  
+`encodeURI()`不会对本身属于`URI`的特殊字符进行编码，例如冒号、正斜杠、问号和#号；而`encodeURIComponent()`则会对它发现的任何非标准字符进行编码
+
+```js
+var box = '//Lee 李';
+alert(encodeURI(box));            //只编码中文
+
+var box = '//Lee 李';
+alert(encodeURIComponent(box));   //特殊字符和中文编码
+```
+PS: 因为`encodeURIComponent()`编码比`encodeURI()`编码来的更加彻底，一般来说`encodeURIComponent()`使用频率要高一些。
+
+使用了`URI`编码过后，还可以进行编码，通过`decodeURI()`和`decodeURIComponent()`来进行编码
+
+```js
+var box = '//Lee 李';
+alert(decodeURI(encodeURI(box)));                    //还原
+alert(decodeURIComponent(encodeURIComponent(box)));  //还原
+```
+PS: `URI`方法如上所述的四种，用于代替已经被ECMA-262第3版废弃的`escape()`和`unescape()`方法。`URI`方法能够编码所有的`Unicode`字符，而原来的只能正确地编码`ASCII`字符。所以建议不要再使用`escape()`和`unescape()`方法。
+
+2.`eval()`方法
+
+`eval()`方法主要担当一个字符串解析器的作用，他只接受一个参数，而这个参数就是要执行的JavaScript代码的字符串
+
+```js
+eval('var box = 100');        //解析了字符串代码
+alert(box);
+eval('alert(100)');
+eval('function box() {return 123}');
+alert(box());
+```
+`eval()`方法的功能非常强大，但也非常危险。因此使用的时候必须极为谨慎。特别是在用户输入数据的情况下，非常有可能导致程序的安全性，比如代码注入等等。
+
+3.`Global`对象属性
+
+`Global`对象包含了一些属性：`undefined`、`NaN`、`Object`、`Array`、`Function`等等。
+
+```js
+alert(Array);                 //返回构造函数
+```
+
+4.`window`对象
+
+之前已经说明，`Global`没有办法直接访问，而Web浏览器可以只用`window`对象来实现全局访问。
+
+```js
+alert(window.Array);          //返回构造函数
+```
+
+<a name="2-math对象"></a>
+#### 2. `Math`对象
+ECMAScript为保存数学公式和信息提供了一个对象，即`Math`对象。与我们在JavaScript直接编写计算功能相比，`Math`对象提供的计算功能执行起来要快得多。
+
+1.`Math`对象的属性
+
+`Math`对象包含的属性大都是数学计算中可能会用到的一些特殊值。
+
+|方法|描述|
+|:-:|:-:|
+|Math.E|自然对数的底数，即常量e的值|
+|Math.LN10|10的自然对数|
+|Math.LN2|2的自然对数|
+|Math.LOG2E|以2为底e的对数|
+|Math.LOG10E|以10为底e的对数|
+|Math.PI|圆周率|
+|Math.SQRT1_2|1/2的平方根|
+|Math.SQRT2|2的平方根|
+
+2.`min()`和`max()`方法
+
+`Math.min()`用于确定一组数值中的最小值。`Math.max()`用于确定一组数值中的最大值。
+
+```js
+alert(Math.min(2,4,3,6,5,8,0,1,3));    //0
+alert(Math.max(2,4,3,6,5,8,0,1,3));    //8
+```
+
+3.舍入方法
+
+`Math.ceil()`执行向上舍入，即它总是将数值向上舍入为最接近的整数；  
+`Math.floor()`执行向下舍入，即它总是将数值向下舍入为最接近的整数；  
+`Math.round()`执行标准舍入，即它总是将数值四舍五入为最接近的整数；
+
+4.`random()`方法
+
+`Math.random()`方法返回介于0到1之间随机数，不包括0和1，如果想大于这个范围的话，可以套用一下公式：  
+`值 = Math.floor(Math.random() * 总数 + 第一个值)`
+
+```js
+alert(Math.floor(Math.random() * 10 + 1));    //随机产生1-10之间的任意数
+
+for (var i = 0;i < 10;i++) {
+    document.write(Math.floor(Math.random() * 6 + 5));  //5-10(6+5-1=10)
+    document.write('<br />');
+}
+
+为了更加方便的传递想要范围，可以写成函数：
+function selectFrom(lower,upper) {
+    var sum = upper - lower + 1;         //总数=第二个数-第一个数+1
+    return Math.floor(Math.random() * sum + lower);
+}
+```
+
+5.其他方法
+
+|方法|说明|
+|:-:|:-:|
+|Math.abs(num)|返回num的绝对值|
+|Math.exp(num)|返回Math.E的num次幂|
+|Math.log(num)|返回num的自然对数|
+|Math.pow(num,power)|返回num的power次幂|
+|Math.sqrt(num)|返回num的平方根|
+|Math.acos(x)|返回x的反余弦值|
+|Math.asin(x)|返回x的正余弦值|
+|Math.atan(x)|返回x的反正切值|
+|Math.atan2(y,x)|返回y/x的反正切值|
+|Math.cos(x)|返回x的余弦值|
+|Math.sin(x)|返回x的正弦值|
+|Math.tan(x)|返回x的正切值|
+
+***
+
+<a name="第15章-面向对象与原型"></a>
+## 第15章 面向对象与原型
+
+ECMAScript有两种开发模式：1.函数式（过程化），2.面向对象（OOP）。面向对象的语言有一个标志，那就是类的概念，而通过类可以创建任意多个具有相同属性的方法和对象。但是，ECMAScript没有类的概念，因此它的对象也与基于类的语言中的对象有所不同。
+
+<a name="1-创建对象"></a>
+#### 1. 创建对象
+```js
+var box = new Object();
+box.name = 'Lee';
+box.age = 100;
+box.run = function() {
+    return this.name + this.age + 'running...';
+};  //this表示当前作用域下的对象，new Object()实例化出来的那个对象
+//this要放在一个作用域下，比如box.run(){}，这个box作用域下的方法，方可用this，来表示box本身
+alert(box.run());
+```
+上面创建了一个对象，并且创键属性和方法，在`run()`方法里的`this`，就是代表`box`对象本身。这种是JavaScript创建对象最基本的方法，但有个缺点，想创建一个类似的对象，就会产生大量的代码。  
+为了解决多个类似对象声明的问题，我们可以使用一种叫做工厂模式的方法，这种方法就是为了解决实例化对象产生大量重复的问题。
+
+```js
+function createObject(name,age) {      //集中实例化的函数
+    var obj = new Object();            //创建对象
+    obj.name = name;                   //添加属性
+    obj.age = age;
+    obj.run = function() {             //添加方法
+        return this.name + this.age + 'running...';
+    };
+    return obj;                        //返回对象引用
+}
+var box1 = createObject('Lee',100);    //创建第一个对象
+var box2 = createObject('Tom',200);    //创建第二个对象
+alert(box1.run());                     //打印第一个对象实例的run()方法
+alert(box2.run());                     //打印第二个对象实例的run()方法
+```
+工厂模式解决了重复实例化的问题，但还有一个问题，那就是识别问题，因为根本无法搞清楚它们到底是哪个对象的实例。
+
+ECMAScript中可以采用构造函数（构造方法）可用来创建特定的对象。类型于`Object`对象。
+
+```js
+function Box(name,age) {               //构造函数模式
+    this.name = name;
+    this.age = age;
+    this.run = function() {
+        return this.name + this.age + 'running...';
+    };
+};
+var box1 = new Box('Lee',100);         //实例化
+var box2 = new Box('Tom',200);         //实例化
+alert(box1.run());
+alert(box2.run());
+//1.构造函数没有new Object，但它后台会自动 var obj = new Object()
+//2.this 就相当于 obj
+//3.构造函数不需要返回对象引用，它是后台自动返回的
+alert(box1 instanceof Box);            //true
+alert(box2 instanceof Box);            //true
+```
+
+使用构造函数的方法，即解决了重复实例化的问题，又解决了对象识别的问题，但问题是，这里并没有`new Object()`，为什么可以实例化`Box()`，这个又是哪里来的呢？  
+使用构造函数的方法，和使用工程模式的方法，不同之处如下：
+
+    1.构造函数方法没有显示的创建对象（new Object()）
+    2.直接将属性和方法赋给 this 对象
+    3.没有 return 语句
+
+构造函数的方法有一些规范：
+
+    1.函数名和实例化构造名相同且大写，（PS: 非强制，但这么写有助于区分构造函数和普通函数）
+    2.通过构造函数创建对象，必须使用 new 运算符
+
+既然通过构造函数可以创建对象，那么这个对象是哪里来的，`new Object()`在什么地方执行了？执行的过程如下：
+
+    1.当使用了构造函数，并且 new 构造函数()，那么就后台执行了 new Object()
+    2.将构造函数的作用域给新对象，（即 new Object() 创建出的对象），而函数体内的 this 就代表 new Object() 出来的对象
+    3.执行构造函数内的代码
+    4.返回新对象（后台直接返回）
+
+关于`this`的使用，`this`其实就是代表当前作用域对象的引用。如果在全局范围`this`就代表`window`对象，如果在构造函数体内，就代表当前的构造函数所声明的对象。
+
+构造函数和普通函数的唯一区别，就是它们调用的方式不同。只不过，构造函数也是函数，必须用`new`运算符来调用，否则就是普通函数。
+
+```js
+var box = new Box('Lee',100);
+alert(box.run());
+
+Box('')
+```
