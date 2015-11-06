@@ -50,6 +50,11 @@
         - [4. 常用的正则](#4-常用的正则)
     - [第11章 `Function` 类型](#第11章-function-类型)
         - [1. 函数的声明方式](#1-函数的声明方式)
+        - [2. 作为值的函数](#2-作为值的函数)
+        - [3. 函数内部属性](#3-函数内部属性)
+        - [4. 函数属性和方法](#4-函数属性和方法)
+    - [第12章 变量、作用域及内存](#第12章-变量、作用域及内存)
+        - [1. 变量及作用域](#1-变量及作用域)
 
 <!-- /MarkdownTOC -->
 
@@ -2100,47 +2105,268 @@ PS: 以上是简单电子邮件验证，复杂的要比这个复杂很多
 <a name="1-函数的声明方式"></a>
 #### 1. 函数的声明方式
 
-##### 普通的函数声明
 ```js
+普通的函数声明
 function box(num1,num2) {
     return num1 + num2;
 }
-```
 
-##### 使用变量初始化函数
-```js
-var box = function box(num1,num2) {
+使用变量初始化函数
+var box = function(num1,num2) {
     return num1 + num2;
 }
+
+构造函数声明
+var box = new Function('num1','num2','return num1 + num2');
+alert(typeof box);    //function
+
+PS: 第三种方式我们不推荐，因为这种语法会导致解析两次代码，从而影响性能。
+（第一次解析常规ECMAScript代码，第二次是解析传入构造函数中的字符串）
+但我们可以通过这种语法来理解“函数是对象，函数名是指针”的概念
 ```
 
-##### 普通的函数声明
+<a name="2-作为值的函数"></a>
+#### 2. 作为值的函数
+ECMAScript中的函数名本身就是变量，所以函数也可以作为值来使用。也就是说，不仅可以像传递参数一样把一个函数传递给另一个函数，而且可以将一个函数作为另一个函数的结果返回。
+
 ```js
-var box = new Function box('num1','num2','return num1 + num2');
+下面的例子很普通，不是作为函数来传递的，而是作为函数的返回值来传递的
+function box(sum,num) {
+    return sum + num;
+}
+function sum(num) {
+    return num + 10;
+}
+var result = box(sum(10),10);  //sum(10)这里传递的是函数的返回值，和普通的变量一样，没区别
+alert(result);                 //30
+
+要把函数本身作为参数传递，而不是函数的结果
+function box(sum,num) {
+    return sum(num);
+}
+function sum(num) {
+    return num + 10;
+}
+var result = box(sum,10);      //这里sum是一个函数，当做参数传递到另外一个函数里，而不是函数的返回值
+alert(result);                 //20
 ```
 
+<a name="3-函数内部属性"></a>
+#### 3. 函数内部属性
+在函数内部，有两个特殊的对象：`arguments`和`this`。`arguments`是一个类数组对象，包含着传入函数中的所有参数，主要用途是保存函数参数。但这个对象还有一个名叫`callee`的属性，该属性是一个指针，指向拥有这个`arguments`对象的函数。
+
+```js
+function box(num) {
+    if (num <= 1) {
+        return 1;
+    } else {
+        return num * box(num - 1);         //一个简单的递归
+    }
+}
+```
+对于阶乘函数一般要用递归算法，所以函数内部一定会调用自身；如果函数名不改变是没有问题的，但一旦改变函数名，内部的自身调用需要逐一修改。为了解决这个问题，我们可以使用`arguments.callee`来代替。
+
+```js
+function box(num) {
+    if(num <= 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num-1); //使用callee来执行自身
+    }
+}
+```
+函数内部另一个特殊对象是`this`，其行为与Java和C#中的`this`大致相似。换句话说，`this`引用的是函数以执行操作的对象，或者说函数调用语句所处的那个作用域。__PS:__ 当在全局作用域中调用函数时，`this`对象引用的就是`window`。`window`是JS里面最外围最大的对象。
+
+```js
+alert(typeof window);       //window是对象，类型是对象，表示全局
+alert(this);                //[object Window] 因为在window的范围下，this目前表示的是window
+alert(typeof this);         //和window一模一样，所以this就是window
+
+var color = 'red';          //这里color就是全局变量，而这个变量又是window的属性
+alert(window.color);        //red
+
+window.color = '红色的';     //相当于 var color = '红色的'，全局的
+alert(this.color);          //打印全局的 color
 
 
+var box = {
+    color : '蓝色的',        //局部的 color
+    sayColor : function() {
+        alert(this.color);  //此时的 this 只能 box 里的 color
+    }
+};
+box.sayColor();             //打印局部的 color
+alert(this.color);          //还是全局的
 
+window.color = '红色的';
+function sayColor() {
+    alert(this.color);      //这里执行的时候是动态的，第一在window下，第二次在box下
+}
+sayColor();                 //这里调用sayColor，其实范围还是在window下
+var box = {
+    color : '蓝色的'
+};
+box.sayColor = sayColor;    //这端代码相当于 sayColor : function() { alert(this.color);  }
+box.sayColor();             //这里执行的是box里面的this.color
+```
 
+<a name="4-函数属性和方法"></a>
+#### 4. 函数属性和方法
+ECMAScript中的函数是对象，因此函数也有属性和方法。每个函数都包含两个属性：`length`和`prototype`。其中，`length`属性表示函数希望接收的命名参数的个数。
 
+```js
+function box (name, age) {
+    alert(name + age);
+}
+alert(box.length);           //2
+```
+PS:对于`prototype`属性，它是保存所有实例方法的真正所在，也就是原型。这个属性，我们将在面向对象一章详细介绍。而`prototype`下两个方法：`apply()`和`call()`，每个函数都包含这两个非继承而来的方法。这两个方法的用途都在特定的作用域中调用函数，实际上等于设置函数体内`this`对象的值。
 
+```js
+function box (num1, num2) {
+    return num1 + num2;
+}
+function sayBox (num1, num2) {
+    return box.apply(this,[num1,num2]);  //apply和call可以冒充另外一个函数
+}   //this 表示 window 作用域，[]表示传递的参数
+function sayBox2(num1,num2) {
+    return box.apply(this,arguments);
+}
+alert(sayBox(10,10));         //20
+alert(sayBox2(10,10));        //20
+```
+`call()`方法于`apply()`方法相同，他们的区别仅仅在于接收参数的方式不同。对于`call()`方法而言，第一个参数是作用域，没有变化，变化只是其余的参数都是直接传递给函数的。
 
+```js
+function box(num1, num2) {
+    return num1 +num2;
+}
+function callBox(num1, num2) {
+    return box.call(this,num1,num2);  //和 apply 区别在于后面的传参
+}
+alert(callBox(10,10));
+```
+事实上，传递参数并不是`apply()`和`call()`方法正真的用武之地；它们经常使用的地方是能够扩展函数赖以运行的作用域。
 
-
-
-
-
-
-
-
+```js
+var color = '红色的';        //或者 window.color = '红色的';也行
+var box = {
+    color : '蓝色的'
+};
+function sayColor() {
+    alert(this.color);
+}
+sayColor();                 //作用域在window
+//用call来实现对象冒充，冒充box下，冒充window下
+sayColor.call(this);        //作用域在window
+sayColor.call(window);      //作用域在window
+sayColor.call(box);         //蓝色的，作用域在box,对象冒充
+```
+这个例子是之前作用域理解的例子修改而成，我们可以发现当我们使用`call(box)`方法的时候，`sayColor()`方法的运行环境已经变成了`box`对象里了。  
+使用`call()`或者`apply()`来扩充作用域的最大好处，就是对象不需要与方法发生任何耦合关系（耦合，就是互相关联的意思，扩展和维护会发生连锁反应）。也就是说，`box`对象和`sayColor`方法之间不会有多余的关联操作，比如 `box.sayColor = sayColor;`
 
 ***
 
+<a name="第12章-变量、作用域及内存"></a>
+## 第12章 变量、作用域及内存
 
+JavaScript的变量与其他语言的变量有很大的区别。JavaScript变量是松散型的（不强制类型）本质，决定了它只是在特定时间用于保存特定值的一个名字而已。由于不存在定义某个变量必须要保存何种数据类型值的规则，变量的值及其数据类型可以在脚本的生命周期内改变。
 
+<a name="1-变量及作用域"></a>
+#### 1. 变量及作用域
+##### 基本类型和引用类型的值
+ECMAScript变量可能包含两种不同的数据类型的值：基本类型值和引用类型值。基本类型值指的是那些保存在栈内存中的简单数据段，即这种值完全保存在内存中的一个位置，而引用类型值则是指那些保存在堆内存中的对象，意思是变量中保存的实际上只是一个指针，这个指针指向内存中的另一个位置，该位置保存对象。  
+将一个值赋给变量时，解析器必须确定这个值是基本类型值，还是引用类型至。基本类型值有一下几种：`Undefined`、`Null`、`Boolean`、`Number`、`String`。这些类型在内存中分别占有固定大小的空间，他们的值保存在栈空间，我们通过按值来访问的。  
+PS: 在某些语言中，字符串以对象的形式来表示，因此被认为是引用类型。ECMAScript放弃这一传统。  
+如果赋值的是引用类型的值，则必须在堆内存中为这个值分配空间。由于这种值的大小不固定，因此不能把它们保存到栈内存中。但内存地址大小是固定的，因此可以将内存地址保存在栈内存中。这样，当查询引用类型的变量时，先从栈中读取内存地址，然后再通过地址找到堆中的值。对于这种，我们把它叫做按__引用访问__。
 
+##### 动态属性
+定义基本类型值和引用类型值的方式是相似的：创建一个变量并为该变量赋值。但是，当这个值保存到变量中该以后，对不同类型值可以执行的操作则大相径庭。
 
+```js
+var box = new Object();      //创建引用类型
+box.name = 'LEE';            //新增一个属性
+alert(box.name);             //输出
+```
+如果是基本类型的值添加属性的话，就会出现问题了。
 
+```js
+var box = 'LEE';             //创建一个基本类型
+box.age = 27;                //给基本类型添加属性
+alert(box.age);              //undefined，不是引用类型，无法输出
+```
 
+##### 复制变量值
+在变量复制方面，基本类型和引用类型也有所不同。基本类型复制的是值本身，而引用类型复制的是地址。
+
+```js
+var box = 'LEE';             //在栈内存生成一个box'LEE'
+var box2 = box;              //在栈内存再生成一个box2 'LEE'
+```
+`box2`虽然是`box1`的一个副本。但从图示可以看出，它是完全独立的。也就是说，两个变量分别操作时胡不影响。
+
+```js
+var box = new Object();       //创建一个引用类型
+box.name = 'LEE';             //新增一个属性
+var box2 = box;               //把引用地址赋值给box2
+```
+在引用类型中，`box2`其实就是`box`，因为他们指向的是同一个对象。如果这个对象中的`name`属性被修改了，`box2.name`和`box.name`输出的值都会被相应修改掉了。
+
+##### 传递参数
+ECMAScript中所有函数的参数都是按值传递的，言下之意就是说，参数不会按引用传递，虽然变量有基本类型和引用类型之分。
+
+```js
+function box(num) {           //按值传递
+    num += 10;
+    return num;
+}
+var num = 50;
+var result = box(num);
+alert(result);                //60
+alert(num);                   //50，如果是按引用传递，那么函数里的num会称为类似全局变量，最后输出60
+```
+PS: 以上的代码中，传递的参数是一个基本类型的值。而函数里的`num`是一个局部变量，和外面的`num`没有任何联系。
+
+下面给出一个参数作为引用类型的例子。
+
+```js
+function box(obj) {            //按值传递，传递的参数是引用类型，但不是按引用传递
+    obj.name = 'LEE';
+    var obj = new Object();    //所以，JS没有引用传参的功能，切记，不能把传递引用参数当做按引用传参
+    obj.name = 'kkk';
+}
+var obj = new Object();
+box(obj);
+alert(obj.name);
+```
+PS: 如果存在按引用传递的话，那么函数里的那个变量将会是全局变量，在外部也可以访问。比如PHP中，必须在参数前面加上&符号表示按引用传递。而ECMAScript没有这些，只能是局部变量。可以在PHP中了解一下。  
+PS: 所以按引用传递和传递引用类型是两个不同的概念。
+
+```js
+function box(obj) {
+    obj.name = 'LEE';
+    var obj = new Object();     //函数内部又创建了一个对象
+    obj.name = 'Mr.';           //并没有替换掉原来的obj
+}
+```
+最后得出结论，ECMAScript的函数参数都将是局部变量，也就是说，__没有按引用传递__。
+
+##### 检测类型
+要检测一个变量的类型，我们可以通过`typeof`运算符来判别。诸如：
+
+```js
+var box = 'LEE';
+alert(typeof box);               //string
+```
+虽然`typeof`运算符在检查基本数据类型的时候非常好用，但检测引用类型的时候，它就不是那么好用了。通常，我们并不想知道它是不是对象，而是想知道他到底是什么类型的对象。因为数组也是`object`，`null`也是`Object`等等。  
+这时我们应该采用`instanceof`运算符来查看。
+
+```js
+var box = [1,2,3];
+alert(box instanceof Array);     //是否是数组
+var box2 = {};
+alert(box instanceof Object);    //是否是对象
+var box3 = /g/;
+alert(box instanceof RegExp);    //是否是正则表达式
+```
 
