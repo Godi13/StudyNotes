@@ -57,16 +57,17 @@
         - [1. 变量及作用域](#1-变量及作用域)
         - [2. 内存问题](#2-内存问题)
     - [第13章 基本包装类型](#第13章-基本包装类型)
-        - [1.基本包装类型概述](#1基本包装类型概述)
-        - [`Boolean` 类型](#boolean-类型)
-        - [`Number` 类型](#number-类型)
-        - [`String` 类型](#string-类型)
+        - [1. 基本包装类型概述](#1-基本包装类型概述)
+        - [2. `Boolean` 类型](#2-boolean-类型)
+        - [3. `Number` 类型](#3-number-类型)
+        - [4. `String` 类型](#4-string-类型)
     - [第14章 内置对象](#第14章-内置对象)
         - [1. `Global` 对象](#1-global-对象)
         - [2. `Math`对象](#2-math对象)
     - [第15章 面向对象与原型](#第15章-面向对象与原型)
         - [1. 创建对象](#1-创建对象)
         - [2. 原型](#2-原型)
+        - [3. 继承](#3-继承)
 
 <!-- /MarkdownTOC -->
 
@@ -2518,8 +2519,8 @@ o = null;                  //解除对象引用，等待垃圾收集器回收
 
 为了便于惭怍基本类型值，ECMAScript提供了3个特殊的引用类型：`Boolean`、`Number`、`String`。这些类型与其他引用类型相似，但同时也具有与各自的基本类型相应的特殊行为。实际上，每当读取一个基本类型值的时候，后台就会创键一个对应的基本包装类型的对象，从而能够调用一些方法来操作这些数据。
 
-<a name="1基本包装类型概述"></a>
-#### 1.基本包装类型概述
+<a name="1-基本包装类型概述"></a>
+#### 1. 基本包装类型概述
 
 ```js
 var box = 'Mr. LEE';          //定义一个字符串，基本类型
@@ -2563,12 +2564,12 @@ alert(box.age());               //100，自定义方法有效
 以上字面量声明和`new`运算符声明很好的展示了他们之间的区别。但有一点还是可以肯定的，那就是不管字面量形式还是`new`运算符形式，都可以使用它的内置方法。并且`Boolean`和`Number`特性与`String`相同，三种类型可以称为基本包装类型。  
 PS: 在使用`new`运算符创建以上三种类型的对象时，可以给自己添加属性和方法，但建议不要这样使用，因为这样会导致根本分不清到底是基本类型值还是引用类型值。
 
-<a name="boolean-类型"></a>
-#### `Boolean` 类型
+<a name="2-boolean-类型"></a>
+#### 2. `Boolean` 类型
 `Boolean`类型没有特定的属性或者方法。
 
-<a name="number-类型"></a>
-#### `Number` 类型
+<a name="3-number-类型"></a>
+#### 3. `Number` 类型
 `Number`类型有一些静态属性（直接通过`Number`调用的属性，而无须`new`运算符）和方法。
 
 `Number`静态属性
@@ -2592,8 +2593,8 @@ PS: 在使用`new`运算符创建以上三种类型的对象时，可以给自�
 |toExponential()|将数字以指数形式表示，保留小数点后指定位数并转化为字符串|
 |toPrecision()|根据传参来决定指数形式或点形式表述数，保留小数点后面指定位数并转化为字符串|
 
-<a name="string-类型"></a>
-#### `String` 类型
+<a name="4-string-类型"></a>
+#### 4. `String` 类型
 
 `String`类型包含了三个属性和大量的可用的内置方法。
 
@@ -3153,7 +3154,7 @@ alert('Lee'.addstring());                 //使用这个方法
 PS: 尽管给原生的内置引用类型添加方法使用起来特别方便，但不推荐使用这种方法，因为它可能会导致命名冲突，不利于代码维护
 
 原型模式创建对象也有自己的缺点，它省略了构造函数传参初始化这一过程，带来的缺点就是初始化的值都是一致的。而原型最大的缺点就是它最大的优点，那就是共享。  
-原型中所有属性是被很多实例共享的，共享对于函数非常合适，对于包含基本之的属性也还可以。但如果属性包含引用类型，就存在一定问题：
+原型中所有属性是被很多实例共享的，共享对于函数非常合适，对于包含基本值的属性也还可以。但如果属性包含引用类型，就存在一定问题：
 
 ```js
 function Box() {};
@@ -3161,10 +3162,191 @@ Box.prototype = {
     constructor : Box,
     name : 'Lee',
     age : 100,
-    family : ['father','mother','sister'],    //添加一个数组属性
+    family : ['father','mother','sister'], //添加一个数组属性
     run : function() {
         return this.name + this.age + this.family;
     }
 }
 var box1 = new Box();
+box1.family.push('brother');               //在实力中添加'brother''
+alert(box1.run());
+
+var box2 = new Box();
+alert(box2.run());                         //共享带来的麻烦，也有'brother'了
+```
+PS: 数据共享的缘故导致很多开发者放弃使用原型，因为每次实例化出的数据需要保留自己的特征，而不能共享。
+
+为了解决构造传参和共享问题，可以组合构造函数+原型模式：
+
+```js
+function Box(name,age) {        //不共享的使用构造函数
+    this.name = name;
+    this.age = age;
+    this.family = ['father','mother','sister'];
+};
+Box.prototype = {
+    constructor : Box,
+    run : function() {          //共享的使用原型模式
+        return this.name + this.age + this.family;
+    }
+};
+```
+PS: 这种混合模式很好的解决了传参和引用共享的大难题。是创建对象比较好的方法。
+
+原型模式，不管你是否调用了原型中的共享方法，它都会初始化原型中的方法，并且在声明一个对象时，构造函数+原型部分让人感觉又很怪异，最好就是把构造函数和原型封装到一起。为了解决这个问题，我们可以使用__动态原型模式__。
+
+```js
+function Box(name,age) {                  //将所有信息封装到函数体内
+    this.name = name;
+    this.age = age;
+    //原型的初始化，只要第一次初始化，
+    if(typeof this.run != 'function') {   //仅在第一次调用的初始化
+        Box.prototype.run = function() {
+            return this.name + this.age + 'running...',
+        };
+    }
+}
+var box = new Box('Lee',100);
+alert(box.run());
+```
+当第一次调用构造函数时，`run()`方法发现不存在，然后初始化原型。当第二次调用，就不会初始化，并且第二次创建新对象，原型也不会再初始化了。这样及得到了封装，又实现了原型方法共享，并且属性都保持独立。
+
+PS: 使用动态原型模式，要注意一点，不可以再使用字面量的方式重写原型，因为会切断实例和新原型之间的联系。
+
+以上讲解了各种方式对象创建的方法，如果这几种方式都不能满足需求，可以使用一开始那种模式：寄生构造函数。
+
+```js
+function Box(name,age) {
+    var obj = new Object();
+    obj.name = name;
+    obj.age = age;
+    obj.run = function() {
+        return this.name + this.age + 'running...';
+    };
+    return obj;
+}
+```
+寄生构造函数，其实就是工厂模式+构造函数模式。这种模式比较通用，但不能确定对象关系，所以，在可以使用之前所说的模式时，不建议使用此模式。
+
+在什么情况下使用寄生构造函数比较合适呢？假设要创建一个具有额外方法的引用类型。由于之前说明不建议直接`String.prototype.addstring`，可以通过寄生构造的方式添加。
+
+```js
+function myString(string) {
+    var str = new String(string);
+    str.addstring = function() {
+        return this + '，被添加了！';
+    };
+    return str;
+}
+var box = new myString('Lee');      //比直接在引用原型添加要繁琐好多
+alert(box.addstring());
+```
+在一些安全的环境中，比如禁止使用`this`和`new`，这里的`this`是构造函数里不使用`this`，这里的`new`是在外部实例化构造函数时不使用`new`。这种创建方式叫做__稳妥构造函数__。
+
+```js
+function Box(name,age) {
+    var obj = new Object();
+    obj.run = function() {
+        return name + age + 'running...';   //直接打印参数即可
+    };
+    return obj;
+}
+var box = Box('Lee',100);                    //直接调用函数
+alert(box.run());
+```
+PS: 稳定构造函数和寄生类似。
+
+<a name="3-继承"></a>
+#### 3. 继承
+继承是面对对象中一个比较核心的概念。其他正统面对对象语言都会用两种方式实现继承：一个是接口实现，一个是继承。而ECMAScript只支持继承，不支持借口实现，而实现继承的方法依靠原型链完成。
+
+```js
+function Box() {            //Box 构造，被继承的函数叫做超类型（父类，基类）
+    this.name = 'Lee';
+}
+
+function Desk() {           //Desk 构造，继承的函数交过子类型（子类，派生类）
+    this.age = 100;
+}
+//通过原型链继承，超类型实例化后的对象实例，赋值给子类型的原型属性
+//new Box() 会将 Box 构造里的信息和原型里的信息都交给 Desk
+//Desk 的原型得到的是 Box的构造+原型里面的信息
+Desk.prototype = new Box(); //Desc 继承了 Box，通过原型，形成链条
+
+var desk = new Desk();
+alert(desk.age);
+alert(desk.name);           //得到被继承的属性
+
+function Table() {          //Table 构造
+    this.level = 'AAAAA';
+}
+
+Table.prototype = new Desk();  //继续原型链继承
+
+var table = new Table();
+alert(table.name);          //继承了 Box 和 Desk
+```
+如果要实例化`table`，那么`Desk`实例中有`age = 100`，原型中增加相同的属性`age = 200`，最后结果是多少呢？
+
+```js
+Desk.prototype.age = 200;   //实例和原型中均包含age
+alert(table.age);           //100,就近原则，实例里有，就返回，没有就去查找原型
+```
+PS: 以上原型链继承还缺少一环，那就是`Object`，所有的构造函数都继承自`Object`。而继承`Object`是自动完成，并不需要程序程序员手动继承。
+
+经过继承后的实例，它们的从属会怎样呢？
+
+```js
+alert(table instanceof Object);    //true，子类型从属于自己或者它的超类型
+alert(desk instanceof Tbale);      //false，desk 是 table 的超类
+alert(table instanceof Desk);      //true
+alert(table instanceof Box);       //true
+```
+在JavaScript里，被继承的函数称为超类型（父类，基类也行，其他语言叫法），继承的函数称为子类型（子类，派生类）。继承也有之前问题，比如字面量重写原型会中断关系，使用引用类型的原型，并且子类型还无法给超类型传递参数。
+为了解决引用共享的超类型无法传参的问题，我们采用一种叫__借用构造函数__的技术，或者称为对象冒充（伪造对象、经典继承）的技术来解决这两种问题。
+
+```js
+function Box(age) {
+    this.name = ['Lee','Jack','Hello'];   //引用类型，放在构造里就不会被共享
+    this.age = age;
+}
+function Desk(age) {
+    Box.call(this,age);             //对象冒充，给超类型传参
+}                                   //对象冒充只能继承构造里的信息
+var desk = new Desk(200);
+alert(desk.age);
+alert(desk.name);
+desk.name.push('AAA');              //添加的新数据，只给desk
+alert(desk.name);
+```
+借用构造函数虽然解决了刚才两种问题，但没有原型，复用则无从谈起。所以，我们需要原型链+借用构造函数的模式，这种模式称为__组合继承__。
+
+```js
+function Box(age) {
+    this.name = ['Lee','Jack','Hello'];
+    this.age = age;
+}
+
+//构造函数里的方法，放在构造里，每次实例化，都会分配一个内存地址，浪费，所以最好放在原型里，保证多次实例化，只有一个地址
+Box.prototype.run = function() {
+    return this.name + this.age;
+}
+
+function Desk(age) {
+    Box.call(this,age);          //对象冒充
+}
+
+Desk.prototype = new Box();      //原型链继承
+
+var desk = new Desk(100);
+alert(desk.run());
+```
+还有一种继承模式叫做：原型式继承：这种继承借助原型并基于已有的对象创建新对象，同时还不必因此创建自定义类型。
+
+```js
+function obj(o) {               //传递一个字面量函数
+    function F() {}             //创建一个构造函数
+    F.prototype = o;            //把字面量函数赋值给构造函数的原型
+    return new F();             //最终返回出实例化的构造函数
+}
 ```
