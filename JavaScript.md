@@ -68,6 +68,11 @@
         - [1. 创建对象](#1-创建对象)
         - [2. 原型](#2-原型)
         - [3. 继承](#3-继承)
+    - [第16章 匿名函数和闭包](#第16章-匿名函数和闭包)
+        - [1. 匿名函数](#1-匿名函数)
+        - [2. 闭包](#2-闭包)
+        - [3. 内存泄露](#3-内存泄露)
+    - [第17章 BOM](#第17章-bom)
 
 <!-- /MarkdownTOC -->
 
@@ -3341,12 +3346,521 @@ Desk.prototype = new Box();      //原型链继承
 var desk = new Desk(100);
 alert(desk.run());
 ```
-还有一种继承模式叫做：原型式继承：这种继承借助原型并基于已有的对象创建新对象，同时还不必因此创建自定义类型。
+还有一种继承模式叫做：__原型式继承__：这种继承借助原型并基于已有的对象创建新对象，同时还不必因此创建自定义类型。
 
 ```js
+//临时中转函数，o 表示将要传递进入的一个对象
 function obj(o) {               //传递一个字面量函数
-    function F() {}             //创建一个构造函数
-    F.prototype = o;            //把字面量函数赋值给构造函数的原型
-    return new F();             //最终返回出实例化的构造函数
+    function F() {}             //创建一个构造函数，F 构造是一个临时新建的对象，用来存储传递过来的对象
+    F.prototype = o;            //把 o 对象实例赋值给 F 构造函数的原型
+    return new F();             //最终返回这个得到传递过来对象的对象实例
+}
+//F.prototype = o 其实就相当于 Desk.prototype = new Box();
+
+var box = {                     //字面量的声明方式，相当于 var box = new Box()
+    name : 'Lee',
+    arr : ['brother','sister','father']
+};
+
+var box1 = obj(box);            //传递，box1就等于new F()
+alert(box1.arr);
+box1.arr.push('mother');
+alert(box1.arr);
+
+var box2 = obj(box);
+alert(box2.arr);                //引用类型的属性共享了
+```
+__寄生式继承__把原型式+工厂模式结合而来，目的是为了封装创建对象的过程。
+
+```js
+//临时中转函数
+function obj(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+//寄生函数
+function create(o) {            //封装创建过程
+    var f = obj(o);
+    f.run = function() {
+        return this.arr;        //同样，会共享引用
+    };
+    return f;
+}
+
+var box = {
+    name : 'Lee',
+    age : 100,
+    arr : ['brother','sister','father']
+};
+
+var box1 = create(box);
+alert(box1.run());
+```
+__组合式继承__是JavaScript最常用的继承模式；但，组合式继承也有一点小问题，就是超类型在使用工程中会被调用两次：一次是创建子类型的时候，另一次是在子类型构造函数的内部。
+
+```js
+function Box(name) {
+    this.name = name;
+    this.arr = ['brother','sister','parents'];
+}
+
+Box.prototype.run = function() {
+    return this.name;
+};
+
+function Desk(name,age) {
+    Box.call(this,name);        //第二次调用Box
+    this.age = age;
+}
+
+Desk.prototype = new Box();     //第一次调用Box
+```
+以上代码是之前的组合继承，那么__寄生组合继承__，解决了两次调用的问题。
+
+```js
+//临时中转函数
+function obj(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+//寄生函数
+function create(box,desk) {
+    var f = obj(box.prototype);
+    f.constructor = desk;          //调整原型构造指针
+    desk.prototype = f;
+}
+
+function Box(name,age) {
+    this.name = name;
+    this.age = age;
+}
+
+Box.prototype.run = function() {
+    return this.name + this.age + 'running...';
+}
+
+function Desk(name,age) {
+    Box.call(this,name,age);      //对象冒充
+}
+
+//通过寄生组合继承来实现继承
+create(Box,Desk);                 //这句话用来替代Desk.prototype = new Box();
+
+var desk = new Desk('Lee',100);
+alert(desk.run());
+alert(desk.constructor);
+```
+
+***
+
+<a name="第16章-匿名函数和闭包"></a>
+## 第16章 匿名函数和闭包
+
+匿名函数就是没有名字的函数，闭包是可访问一个函数作用域里变量的函数。
+
+<a name="1-匿名函数"></a>
+#### 1. 匿名函数
+
+```js
+//普通函数
+function box() {                   //函数名是box
+    return 'Lee';
+}
+
+//匿名函数
+function () {                      //单独的匿名函数，会报错，无法运行
+    return 'Lee';                  //就算能运行，也无法调用，因为没有名称
+}
+
+//通过表达式自我执行
+(function box() {                  //封装表达式，(匿名函数)()，第一个圆括号放匿名函数，第二个圆括号执行
+    alert('Lee');
+})();                              //()表达执行函数，并且传参
+
+//把匿名函数赋值给变量
+var box = function() {             //将匿名函数赋给变量
+    return 'Lee';
+};
+alert(box());                      //调用方式和函数调用相似
+
+//函数里的匿名函数
+function box() {
+    return function(){             //函数里的匿名函数，产生闭包
+        return 'Lee';
+    }
+}
+alert(box()());                    //调用匿名函数
+var b =box();
+alert(b());
+```
+
+<a name="2-闭包"></a>
+#### 2. 闭包
+闭包是指有权访问另一个函数作用域中的变量的函数，创建闭包的常见的方式，就是在一个函数内部创建另一个函数，通过另一个函数访问这个函数的局部变量。
+
+```js
+//通过闭包可以返回局部变量
+function box() {
+    var user = 'Lee';
+    return function () {           //通过匿名函数返回box()局部变量
+        return user;
+    };
+}
+alert(box()());                    //通过box()()来直接调用匿名函数返回值
+
+var b = box();
+alert(b());                        //另一种调用匿名函数返回值
+```
+使用闭包有一个优点，也是它的缺点：就是可以把局部变量主流在内存中，可以避免使用全局变量。（全局变量污染导致应用程序不可预测性，每个模块都可调用必将引来灾难，所以推荐使用私有的，封装的局部变量）。
+
+```js
+//通过全局变量来累加
+var age = 100;                    //全局变量
+function box() {
+    age ++;                       //模块级可以调用全局变量，进行累加
+}
+box();                            //执行函数，累加了
+alert(age);                       //输出全局变量
+
+//通过局部变量无法实现累加
+function box() {
+    var age = 100;
+    age ++;                       //累加
+    return age;
+}
+alert(box());                     //101
+alert(box());                     //101，无法实现，因为又被初始化了
+
+//使用匿名函数实现局部变量驻留内存中从而累加
+function box() {
+    var age = 100;
+    return function () {
+        age++;
+        return age;
+    };
+}
+var b = box();
+alert(b());                        //101
+alert(b());                        //102
+b = null;                          //解除引用，等待垃圾回收
+```
+PS：由于闭包作用域返回的局部变量资源不会立刻销毁回收，所以可能会占用更多的内存。过度使用闭包会导致性能下降，讲义在肥城有必要的时候才使用闭包。
+
+作用域链的机制导致一个问题，在循环中里的匿名函数取得的任何变量都是最后一个值。
+
+```js
+//循环里包含匿名函数的取值问题
+function box() {
+    var arr = [];
+    for (var i = 0;i < 5;i++) {
+        arr[i] = function() {
+            return i;
+        };
+    }
+    return arr;
+}
+var b = box();                     //得到函数数组
+alert(b.length);                   //得到函数集合长度
+for(var i = 0;i < b.length;i++) {
+    alert(b[i]());                 //输出每个函数的值，都是最后一个值
 }
 ```
+上面的例子输出的结果都是5.也就是循环后得到的最大的i值。因为`box()`最终返回`arr`匿名函数数组，`b[0]-b[4]`表示5个循环返回的函数，本以为会按照`0，1，2，3，4`的返回，但结果都是5。而`b[0]-b[4]`的作用域在`box()`内，所以最终得到的i是循环之后的5。
+
+```js
+function box() {
+    var arr = [];
+    for (var i = 0;i < 5;i++) {
+        arr[i] = (function(num) {  //自我执行
+            return num;
+        })(i);                     //并且传参
+    }
+    return arr;
+}
+var b = box();
+for(var i = 0;i < b.length;i++) {
+    alert(b[i]);                   //这里返回的是数组，直接打印即可
+}
+```
+上例中，我们让匿名函数进行自我执行，导致最终返回值给`a[i]`的是数组而不是函数了。最终导致`b[0]-b[4]`中保留了`0,1,2,3，4`的值。
+
+```js
+function box() {
+    var arr = [];
+    for (var i = 0;i < 5;i++) {
+        arr[i] = (function(num) {  //闭包可以将变量驻留在内存中
+            return function() {
+                return num;
+            }
+        })(i);
+    }
+    return arr;
+}
+var b = box();
+for (var i = 0;i < b.length;i++) {
+    alert(b[i]());
+}
+
+//匿名函数去掉括号
+function box() {
+    var arr = [];
+    for (var i = 0;i < 5;i++) {
+        arr[i] = function(num) {
+            return function() {
+                return num;
+            }
+        }(i);                       //括号中赋值即可去掉之前的括号
+    }
+    return arr;
+}
+var b = box();
+for (var i = 0;i < b.length;i++) {
+    alert(b[i]());
+}
+```
+在上面的例子中，我们通过匿名函数自我执行，立即把结果复制给`a[i]`。每一个`i`，是调用方通过按值传递的，所以最终返回的都是指定的递增的`i`。而不是`box()`函数里的`i`。
+
+关于`this`对象
+在闭包中使用`this`对象也可能会导致一些问题，`this`对象是在运行时基于函数的执行环境绑定的，如果`this`在全局范围就是`window`，如果在对象内部就指向这个对象。而闭包却在运行时指向`window`的，因为闭包并不属于这个对象的属性或方法。
+
+```js
+var user = 'The Window';
+
+var obj = {
+    user : 'The Object',
+    getUserFunction : function() {
+        return function() {         //闭包不属于obj，里面的this指向window
+            return this.user;
+        };
+    }
+};
+alert(obj.getUserFunction()());
+
+//对象冒充
+alert(obj.getUserFunction().call(obj));
+
+var user = 'The Window';
+var obj = {
+    user : 'The Object',
+    getUserFunction : function() {
+        //这里的this作用域是obj
+        var that = this;
+        return function() {
+            //这里的this作用域是window
+            return that.user;
+        };
+    }
+};
+alert(obj.getUserFunction()());
+```
+
+<a name="3-内存泄露"></a>
+#### 3. 内存泄露
+由于IE的JScript对象和DOM对象使用不同的垃圾收集方式，因此闭包在IE中会导致一些问题。就是内存泄露的问题，也就是无法销毁驻留在内存中的元素。
+
+```js
+function box() {
+    var oDiv = document.getElementById('oDiv'); //oDiv用完之后一直驻留在内存
+    oDiv.onclick = function() {
+        alert(oDiv.innerHTML);   //这里用 oDiv 导致内存泄露
+    };
+}
+box();
+```
+那么在最后应该将oDiv解除引用来避免内存泄露。
+
+```js
+function box() {
+    var oDiv = document.getElementById('oDiv');
+    var test = oDiv.innerHTML;
+    oDiv.onclick = function() {
+        alert(text);
+    };
+    oDiv = null;                 //解除引用，等待垃圾回收
+}
+
+PS: 如果并没有使用解除引用，那么需要等到浏览器关闭才得以释放。
+```
+
+模仿块级作用域
+JavaScript没有块级作用域的概念。
+
+```js
+function box(count) {
+    for (var i = 0;i < count;i++) {}
+    alert(i);                    //i不会因为离开了for块就失效
+}
+box(2);
+
+function box(count) {
+    for (var i = 0;i < count;i++) {}
+    var i;                       //就算重新声明，也不会影响前面的值
+    alert(i);
+}
+box(2);
+```
+以上两个例子，说明JavaScript没有块级语句的作用域，`if(){} for(){}`等没有作用域，如果有，出了这个范围i就应该销毁了。就算重新声明同一个变量也不会改变它的值。
+
+
+JavaScript不会提醒你是否多次声明了同一个变量：遇到这种情况，它只会对后续的声明视而不见（如果初始化了，当然还会执行的）。使用模仿块级作用域可避免这个问题。
+
+```js
+//模仿块级作用域（私有作用域）
+(function() {
+    //这里是块级作用域
+})();
+
+//使用块级作用域（私有作用域）改写
+function box(count) {
+    (function() {                //包含自我执行的匿名函数，就可以实现私有作用域
+        for (var i = 0;i < count;i++) {}
+    })();                        //出了私有作用域，变量立即被销毁
+    alert(i);                    //报错，无法访问
+}
+box(2);
+```
+使用了块级作用域（私有作用域）后，匿名函数中定义的任何变量，都会在执行结束时被销毁。这种技术经常在全局作用域中被用在函数外部，从而限制向全局作用域中添加过多的变量和函数。一般来说，我们都应该尽可能少向全局作用域中添加变量和函数。在大型项目中，多人开发的时候，过多的全局变量和函数很容易导致命名冲突，引起灾难性的后果。如果采用块级作用域（私有作用域），每个开发者既可以使用自己的变量，又不必担心搞乱全局作用域。
+
+```js
+(function() {
+    var box = [1,2,3,4];
+    alert(box);                  //box 出来就不认识了
+})();
+```
+在全局作用域中使用块级作用域可以减少闭包占用的内存问题，因为没有指向匿名函数的引用。只要函数执行完毕，就可以立即销毁其作用域链了。
+
+私有变量
+JavaScript没有私有属性的概念；所有的对象属性都有公有的。不过，却有一个私有变量的概念。任何在函数中定义的变量，都可以认为是私有变量，因为不能在函数的外部访问这些变量。
+
+```js
+function box() {
+    var age = 100;              //私有变量，外部无法访问
+}
+```
+而通过函数内部创建一个闭包，那么闭包通过自己的作用域链也可以访问这些变量。而利用这一点，可以创建用于访问私有变量的公有方法。
+
+```js
+function Box() {
+    var age = 100;              //私有变量
+    function run() {            //私有函数
+        return 'running...';
+    }
+    this.get = function() {     //对外公共的特权方法
+        return age + run();
+    };
+}
+var box = new Box();
+alert(box.get());
+```
+可以通过构造方法传参来访问私有变量。
+
+```js
+function Person(value) {
+    var user = value;           //这句其实可以省略
+    this.getUser = function() {
+        return user;
+    };
+    this.setUser = function(value) {
+        user = value;
+    };
+}
+```
+但是对象的方法，在多次调用的时候，会多次创建。可以使用静态私有变量来避免这个问题。
+
+静态私有变量
+通过块级作用域（私有作用域）中定义私有变量或函数，同样可以创建对公共的特权方法。
+
+```js
+(function() {
+    var age = 100;
+    function run() {
+        return 'running...';
+    }
+    Box = function() {}                    //构造方法
+    Box.prototype.go = function() {        //原型方法
+        return age + run();
+    };
+})();
+
+var box = new Box();
+alert(box.go());
+```
+上面的对象声明，采用的是`Box = function() {}`而不是`function Box() {}`因为如果用后面这种，就变成私有函数了，无法在全局访问到了，所以使用了前面这种。
+
+```js
+(function() {
+    var user = '';
+    Person = function(value) {          //全局构造函数
+        user = value;
+    };
+    Person.prototype.getUser = function() {
+        return user;
+    };
+    Person.prototype.setUser = function(value) {
+        user = value;
+    }
+})();
+```
+使用了`prototype`导致方法共享了，而`user`也就变成了静态属性了。（所谓静态属性，即共享于不同对象中的属性）。
+
+模块模式
+之前采用的都是构造函数的方式来创建私有变量的特权方法。那么对象字面量方式就采用模块模式来创建。
+
+```js
+var box = {                         //字面量对象，也是单例对象，单例就是永远只实例化一次
+    age : 100,                      //这是公有属性，将要改成私有
+    run : function() {              //这是公有函数，将要改成私有
+        return 'running...';
+    };
+};
+
+私有化变量和函数：
+var box = function() {
+    var age = 100;
+    function run() {
+        return 'running...';
+    }
+    return {                        //直接返回对象
+        go : function() {
+            return age + run();
+        }
+    };
+}();
+
+上面的直接返回对象的例子，也可以这么写：
+var box = function() {
+    var age = 100;
+    function run() {
+        return 'running...';
+    }
+    var obj = {                     //创建字面量对象
+        go : function() {
+            return age + run();
+        }
+    };
+    return obj;
+}();
+```
+字面量的对象声明，其实在设计模式中可以看做是一种单例模式，所谓单例模式，就是永远保持对象的一个实例。  
+增强的模块模式，这种模式适合返回自定义对象，也就是构造函数。
+
+```js
+function Desk() {};
+var box = function() {
+    var age = 100;
+    function run() {
+        return 'running...';
+    }
+    var desk = new Desk();         //可以实例化特定的对象
+    desk.go = function() {
+        return age + run();
+    };
+    return desk;
+}();
+alert(box.go());
+```
+
+<a name="第17章-bom"></a>
+## 第17章 BOM
