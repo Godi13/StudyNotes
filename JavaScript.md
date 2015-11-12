@@ -73,6 +73,12 @@
         - [2. 闭包](#2-闭包)
         - [3. 内存泄露](#3-内存泄露)
     - [第17章 BOM](#第17章-bom)
+        - [1. `window`对象](#1-window对象)
+        - [2. `location`对象](#2-location对象)
+        - [3. `history`对象](#3-history对象)
+    - [第18章 浏览器检测](#第18章-浏览器检测)
+        - [1. `navigator`对象](#1-navigator对象)
+        - [2. 客户端检测](#2-客户端检测)
 
 <!-- /MarkdownTOC -->
 
@@ -3864,3 +3870,365 @@ alert(box.go());
 
 <a name="第17章-bom"></a>
 ## 第17章 BOM
+
+<a name="1-window对象"></a>
+#### 1. `window`对象
+* `window`对象是最顶层的对象
+* `window`对象有六大属性，这六大属性本身也是对象
+* `window`对象旗下的`document`属性，也是对象，并且`document`对象旗下有五大属性
+* `document`对象旗下有五大属性又是对象，总结，都是对象
+
+##### 对象的属性和方法
+`window`对象有一系列的属性，这些属性本身也是对象
+
+|属性|含义|
+|:-:|:-:|
+|closed|当窗口关闭时为真|
+|defaultStatus|窗口底部状态栏显示的默认状态消息|
+|document|窗口中当前显示的文档对象|
+|frames|窗口中的框架对象数组|
+|history|保存有窗口最近加载的URL|
+|length|窗口中的框架数|
+|location|当前窗口的URL|
+|name|窗口名|
+|offscreenBuffering|用于绘制新窗口内容并在完成后赋值已存在的内容，控制屏幕更新|
+|opener|打开当前窗口的窗口|
+|parent|指向包含另一个窗口的窗口（由框架使用）|
+|screen|显示屏幕相关信息，如高度、宽度（以像素为单位）|
+|self|指示当前窗口|
+|status|描述由用户交互导致的状态栏的临时消息|
+|top|包含特定窗口的最顶层窗口（由框架使用）|
+|window|指示当前窗口，与self等效|
+
+window对象的方法
+
+|方法|功能|
+|:-:|:-:|
+|alert(text)|创建一个警告对话框，显示一条信息|
+|blur()|将焦点从窗口移除|
+|clearInterval(interbal)|清楚之前设置的定时器间隔|
+|clearTimeOut(timer)|清楚之前设置的超时|
+|close()|关闭窗口|
+|confirm()|创建一个需要用户确认的对话框|
+|focus()|将焦点移至窗口|
+|open(url,name,[options])|打开一个新窗口并返回新window对象|
+|prompt(text,defaultInput)|创建一个对话框要求用户输入信息|
+|scroll(x,y)|在窗口中滚动到一个像素点的位置|
+|setInterval(expression,milliseconds)|经过指定时间间隔计算一个表达式|
+|setInterval(function,milliseconds,[arguments])|经过指定时间间隔后调用一个函数|
+|setTimeout(expression,milliseconds)|在定时器超过后计算一个表达式|
+|setTimeout(expression,milliseconds,[arguments])|在定时器超过后计算一个函数|
+|print()|调出打印对话框|
+|find()|调出查找对话框|
+
+`window`的属性和方法的调用：`window.属性`，`window.方法()`，也可以直接`属性`，`方法()`  
+如果是某个浏览器独有的属性或者方法，那么在其他浏览器可能会不识别，当做普通变量或者当做普通函数
+
+    closed = '123';               //如果有浏览器不认识，就当做变量了
+    强制性的操作
+    window.closed;                //强制性
+
+##### 系统对话框
+浏览器通过`alert()`、`confirm()`、和`prompt()`方法可以调用系统对话框向用户显示信息。系统对话框与浏览器中显示的网页没有关系，也不包含HTML。
+
+```js
+//弹出警告
+alert('Lee');                        //直接弹出警告
+
+//确定和取消
+confirm('请确定或者取消');             //这里按哪个都无效
+if(confirm('请确定或者取消')){         //confirm本身有返回值
+    alert('您按了确定！');             //按确定返回true
+}else{
+    alert('您按了取消！');             //按取消返回false
+}
+
+//输入提示框
+var num = prompt('请输入一个数字',0);  //两个参数，一个提示，一个值，返回输入的值
+alert(num);                          //返回值可以得到
+
+//调出打印及查找对话框
+print();                             //打印
+find();                              //查找
+
+defaultStatus = '状态栏默认文本';      //浏览器底部状态栏初始默认值
+status = '状态栏文本';                //浏览器底部状态栏设置值
+```
+
+##### 新建窗口
+使用`window.open()`方法可以导航到一个特定的URL，也可以打开一个新的浏览器窗口，它可以接受四个参数：1.要加载的URL；2.窗口的名称或窗口目标；3.一个特性字符串；4.一个表示新页面是否取代浏览器记录中当前加载页面的布尔值。
+
+```js
+open('https://www.baidu.com/');            //新建页面并打开百度
+open('https://www.baidu.com/','baidu');    //新建页面并命名窗口，打开百度
+open('https://www.baidu.com/','_parent');  //在本页窗口打开百度，_blank是新建
+```
+PS: 不命名会每次打开新窗口，命名的第一次打开新窗口，之后在这个窗口中加载。窗口目标是提供页面的打开的方式，比如本页面，还是新建。
+
+第三字符串参数
+
+|设置|值|说明|
+|:-:|:-:|:-:|
+|width|数值|新窗口的宽度，不能小于100|
+|height|数值|新窗口的高度，不能小于100|
+|top|数值|新窗口的Y坐标，不能是负值|
+|left|数值|新窗口的X坐标，不能是负值|
+|location|yes或no|是否在浏览器窗口中显示地址栏，不同浏览器默认值不同|
+|menubar|yes或no|是否在浏览器窗口显示菜单栏，默认为no|
+|resizable|yes或no|是否可以通过拖动浏览器窗口的边框改变大小，默认为no|
+|scrollbars|yes或no|如果内容在页面中显示不下，是否允许滚动，默认为no|
+|status|yes或no|是否在浏览器窗口显示状态栏，默认为no|
+|toolbar|yes或no|是否在浏览器窗口显示工具栏，默认为no|
+|fullscreen|yes或no|浏览器窗口是否最大化，仅限IE|
+
+```js
+//第三参数字符串
+open('https://www.baidu.com/','baidu','width=400,height=400,top=200,left=200,toolbar=yes');
+
+//open本身返回window对象
+var box = open();
+box.alert('');              //可以指定弹出的窗口执行alert();
+
+//子窗口操作父窗口
+document.onclick = function() {
+    opener.document.write('子窗口让我输出的！');
+}
+```
+
+##### 窗口的位置和大小
+```js
+//跨浏览器的方法
+var leftX = (typeof screenLeft == 'number') ? screenLeft : screenX;
+var topY = (typeof screenTop == 'number') ? screenTop : screenY;
+
+alert(innerWidth);         //页面长度
+alert(innerHeight);        //页面高度
+alert(outerWidth);         //页面长度+边框
+alert(outerHeight);        //页面高度+边框
+
+PS: 在 Chrome 中，innerWidth = outerWidth、innerHeight = outerHeight;
+```
+
+##### 间歇调用和超时调用
+JavaScript是单线程语言，但它允许通过设置超时值和间歇时间值来调度代码在特定的时刻执行。前者在指定的时间过后执行代码，而后者则是每隔指定的时间就执行一次代码。  
+超时调用需要使用`window`对象的`setTimeout()`方法，它接受两个参数：要执行的代码和毫秒数的超时时间。
+
+```js
+//setTimeout第一个参数可以是字符串，而里面可以是代码块，因为它有解析功能，所以引号里面还是可以执行
+setTimeout("alert('Lee')",1000);        //不建议直接使用字符串
+
+function box() {
+    alert('Lee');
+}
+setTimeout(box,1000);                   //直接传入函数名即可
+
+setTimeout(function() {                 //推荐做法
+    alert('Lee');
+},1000);
+
+PS: 直接使用函数传入的方法，扩展性好，性能更佳。
+```
+调用`setTimeout()`之后，该方法会返回一个数值ID，表示超时调用。这个超时调用的ID是计划执行代码的唯一标识符，可以通过它来取消超时调用。  
+要取消尚未执行的超时调用计划，可以调用`clearTimeOut()`方法并将相应的超时调用ID作为参数传递给它。
+
+```js
+var box = setTimeout(function() {       //把超时调用的ID复制给box
+    alert('Lee');
+},1000);
+
+clearTimeout(box);                      //把ID传入，取消超时调用
+```
+间歇调用与超时调用类似，只不过它会按照指定的时间间隔重复执行代码，直至间歇调用被取消或者页面被卸载。设置间歇调用的方法是`setInterval()`，它接受的参数与`setTimeout()`相同：要执行的代码和每次执行之前需要等待的毫秒数。
+
+```js
+setInterval(function() {                //间歇调用，重复不停执行
+    alert('Lee');
+},1000);
+```
+取消间歇调用方法和取消超时调用类似，使用`clearInterval()`方法。但取消间歇调用的重要性要远远高于取消超时调用，因为在不加干涉的情况下，间歇调用将会一直执行到页面关闭。
+
+```js
+var box = setInterval(function() {      //获取间歇调用的ID
+    alert('Lee');
+},1000);
+
+clearInterval(box);                     //取消间歇调用
+```
+但上面的代码是没有意义的，我们需要一个能设置5秒的定时器，需要如下代码：
+
+```js
+var num = 0;                    //设置起始秒
+var max = 5;                    //设置最终秒
+var id = null;
+
+function box() {                //间歇调用
+    num++;                      //递增num
+    if(num == max) {            //如果得到5秒
+        clearInterval(id);      //取消间歇调用
+        alert('5秒后弹窗！');
+    }
+}
+
+id = setInterval(box,1000);
+```
+一般认为，使用超时调用来模拟间歇调用是一种最佳模式。在开发环境下，很少使用真正的间歇调用，因为需要根据情况来取消ID，并且可能造成同步的一些问题，我们建议不使用间歇调用，而去使用超时调用。
+
+```js
+var num = 0;
+var max = 5;
+function box() {
+    num++;
+    if(num == max) {
+        alert('5秒后结束!');
+    }else{
+        setTimeout(box,1000);
+    }
+}
+setTimeout(box,1000);         //执行定时器
+```
+PS: 在使用超时调用时，没必要跟踪超时调用ID，因为每次执行代码之后，如果不再设置另一次超时调用，调用就会自行停止。
+
+<a name="2-location对象"></a>
+#### 2. `location`对象
+`location`是BOM对象之一，它提供了与当前窗口中加载的文档有关的信息，还提供了一些导航功能。事实上，`location`对象是`window`对象的属性，也是`document`对象的属性；所以`window.location`和`document.location`等效。
+
+    alert(location);        //获取当前页面URL
+
+|属性|描述的URL内容|
+|:-:|:-:|
+|hash|如果该部分存在，表示锚点部分|
+|host|主机名：端口号|
+|hostname|主机名|
+|href|整个URL|
+|pathname|路径名|
+|port|端口号|
+|protocol|协议部分|
+|search|查询字符串|
+
+location对象的方法
+
+|方法|功能|
+|:-:|:-:|
+|assign()|跳转到指定页面，与href等效|
+|reload()|重载当前URL|
+|replace()|用新的URL替换当前页面|
+
+```js
+location.hash = '#1';               //设置#后的字符串，并跳转
+alert(location.hash);               //获取#后的字符串
+
+location.port = 8888;               //设置端口号，并跳转
+alert(location.port);               //获取当前端口号
+
+location.hostname = 'Lee';          //设置主机名，并跳转
+alert(location.hostname);           //获取当前主机名
+
+location.pathname = 'Lee';          //设置当前路径，并跳转
+alert(location.pathname);           //获取当前路径
+
+location.protocol = 'ftp';          //设置协议，并跳转
+alert(location.protocol);           //获取当前协议
+
+location.search = '?id=5';          //设置?后的字符串，并跳转，死循环
+alert(location.search);             //获取?后的字符串
+
+location.href = 'http://www.baidu.com';    //设置跳转的URL，并跳转
+alert(location.href);               //获取当前的URL
+
+在WEB开发中，我们经常需要获取诸如 ?id=5&search=ok 这种类型的URL的键值对，那么通过location，我们可以写一个函数，来一一获取。
+
+function getArgs() {
+    //创建一个存放键值对的数组
+    var args = [];
+    //去除?号
+    var qs = location.search.length > 0?location.search.substring(1):'';
+    //按&字符串拆分数组
+    var items = qs.split('&');
+    var item = null,name = null,value = null;
+    //遍历
+    for(var i = 0;i < items.length;i++) {
+        item = items[i].split('=');
+        name = item[0];
+        value = item[1];
+        //把键值对存放到数组中去
+        args[name] = value;
+    }
+    return args;
+}
+var args = getArgs();
+alert(args['id']);
+alert(args['search']);
+
+location.assign('http://www.baidu.com');  //跳转到指定的URL
+
+location.reload();                        //最有效的重新加载，有可能从缓存加载
+location.reload(true);                    //强制加载，从服务器源头重新加载
+
+location.replace('http://www.baidu.com'); //可以避免产生跳转前的历史记录
+```
+
+<a name="3-history对象"></a>
+#### 3. `history`对象
+`history`对象是`window`对象的属性，它保存着用户上网的记录，从窗口被打开的那一刻算起。
+
+`history`对象的属性
+
+|属性|描述URL中的哪部分|
+|:-:|:-:|
+|length|history对象中记录数|
+
+`history`对象的方法
+
+|属性|描述URL中的哪部分|
+|:-:|:-:|
+|back()|前往浏览器历史目前一个URL，类似后退|
+|forward()|前往浏览器历史目下一个URL，类似前进|
+|go(num)|浏览器在history对象中向前或向后|
+
+***
+
+<a name="第18章-浏览器检测"></a>
+## 第18章 浏览器检测
+
+<a name="1-navigator对象"></a>
+#### 1. `navigator`对象
+`navigator`对象的属性或方法
+
+##### 浏览器及版本号
+不同的浏览器支持的功能、属性和方法各有不同。
+
+```js
+alert('浏览器名称：'+ navigator.appName);         //不能精确的取到浏览器名称
+alert('浏览器版本：'+ navigator.appVersion);
+alert('浏览器用户代理字符串：'+ navigator.userAgent);  //表示浏览器信息
+alert('浏览器所在的系统：'+ navigator.platform);
+```
+
+##### 浏览器嗅探器
+##### 检测插件
+插件是一类特殊的程序，它可以扩展浏览器的功能，通过下载安装完成。比如，在线音乐、视频动画等等插件。  
+`navigator`对象的`plugins`属性，这是一个数组。存储在浏览器已安装插件的完整列表。
+
+```js
+for(var i = 0;i < navigator.plugins.length;i++) {
+    document.write('插件名： ' + navigator.plugins[i].name + '<br />');
+    document.write('文件名： ' + navigator.plugins[i].filename + '<br />');
+    document.write('描述： ' + navigator.plugins[i].description + '<br />');
+    document.write('br /');
+}
+```
+##### `ActiveX`
+```js
+function hasIEPlugins(name) {
+    try {         //这里叫做尝试着去执行一段代码，如果有误，就去执行catch
+        new ActiveXObject(name)     //这里的name必须是空间的唯一标识符ID
+        return true;        //如果new成功了，没有产生错误，那么就不去执行catch
+    }catch(e){
+        return false;       //如果new失败了，就执行catch里面的语句
+    }
+}
+```
+
+<a name="2-客户端检测"></a>
+#### 2. 客户端检测
+客户端检测一共分为三种，分别为：能力检测、怪癖检测和用户代理检测，通过这三种检测方案，我们可以充分的链接当前浏览器所处系统、所支持的语法、所具有的特殊性能。
