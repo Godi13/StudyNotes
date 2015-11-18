@@ -79,6 +79,7 @@
     - [第18章 浏览器检测](#第18章-浏览器检测)
         - [1. `navigator`对象](#1-navigator对象)
         - [2. 客户端检测](#2-客户端检测)
+    - [第29章 `Cookie`与存储](#第29章-cookie与存储)
 
 <!-- /MarkdownTOC -->
 
@@ -4232,3 +4233,32 @@ function hasIEPlugins(name) {
 <a name="2-客户端检测"></a>
 #### 2. 客户端检测
 客户端检测一共分为三种，分别为：能力检测、怪癖检测和用户代理检测，通过这三种检测方案，我们可以充分的链接当前浏览器所处系统、所支持的语法、所具有的特殊性能。
+
+
+<a name="第29章-cookie与存储"></a>
+## 第29章 `Cookie`与存储
+
+```js
+//向本地磁盘写入cookie
+ducument.cookie = 'user = Godi13';
+alert(document.cookie);
+
+//PS: 本地不存在域名，所以域就为空
+
+//编码
+document.cookie = 'user=' + encodeURIComponent('Godi13');
+alert(decodeURIComponent(document.cookie));
+
+//完整形式
+documeng.cookie = 'user=值; [expires=失效时间; path=路径访问; domain=域名访问; secure=安全的https限制通信]'
+
+//手动删除cookie的方法：设置当前时间为之前的时间，即可
+var date = new Date();
+date.setDate(date.getDate() - 1);  //真正的删除
+document.cookie = 'user=' + encodeURIComponent('Godi13') + ';expires =' + date;
+
+//另一种删除的方法
+document.cookie = 'user=' + encodeURIComponent('Godi13') + ';expires =' + new Date(0);
+
+PS: 设置域名，必须在当前域名绑定的服务器上设置，如果在服务器上随意设置其他域名，则会无法创建cookie
+```

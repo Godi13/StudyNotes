@@ -774,6 +774,8 @@ border：1px solid red;   //调式时可以先添加边框
 }
 
 box-shadow: 0px 3px 8px #AAA, inset 0px 2px 3px #FFF;  //内外阴影，可做按钮效果
+
+ul>li[title=$#]*{$#}*    //$# 表示当前行内容
 ```
 
 <a name="服务器相关"></a>
@@ -858,4 +860,3 @@ box-shadow: 0px 3px 8px #AAA, inset 0px 2px 3px #FFF;  //内外阴影，可做�
     }
 
     sync_server
-
