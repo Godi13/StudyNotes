@@ -5,10 +5,10 @@
 ***
 
 ## [SEO](SEO.md)
-## [JS指令](JS.md)
 ## [知识点整理](Front-End.md)
 ## [学习资料收集](Resource.md)
 ## [React学习笔记](React.md)
+## [JS知识点与指令](JS.md)
 ## [jQuery学习笔记](jQuery.md)
 ## [Jekyll-Ubuntu](Jekyll.md)
 ## [WEB基础学习笔记](HTML5+CSS3.md)
