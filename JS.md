@@ -4,6 +4,8 @@
   - [JavaScript 知识点](#javascript-知识点)
     - [变量提升](#变量提升)
     - [严格模式](#严格模式)
+    - [闭包](#闭包)
+    - [函数声明与表达式](#函数声明与表达式)
   - [JavaScript 常用指令](#javascript-常用指令)
     - [Brower](#brower)
     - [数据](#数据)
@@ -19,7 +21,7 @@
 
 <a name="js-相关总结"></a>
 # JS 相关总结
-强烈推荐 __阮一峰__ 所写的 [JavaScript 标准参考教程（alpha）](http://javascript.ruanyifeng.com/) 作为学习 JavaScript 的第一个教程！！！
+__阮一峰__ [JavaScript 标准参考教程（alpha）](http://javascript.ruanyifeng.com/)
 
 ***
 
@@ -79,6 +81,32 @@ b = 1;
 * `eval` `arguments` 变为关键字，不能作为变量、函数名
 * `eval` 独立作用域
 
+<a name="闭包"></a>
+#### 闭包
+
+1. 闭包的特点
+    * 函数嵌套函数
+    * 内部函数可以引用外部函数的参数和变量
+    * 参数和变量不会被垃圾回收机制回收
+
+2. 闭包的优点
+    * 让变量长期驻扎在内存当中
+    * 避免全局变量的污染
+    * 私有成员的存在
+
+3. 闭包的用法
+    * 模块化代码
+    * 在循环中直接找到对应元素的索引号
+
+4. 闭包需要注意的地方
+    * 在IE下容易引发内存泄露  
+      使用`onunload`事件将变量设为`null`
+
+<a name="函数声明与表达式"></a>
+#### 函数声明与表达式
+1. 函数表达式可以直接后面加括号执行，而函数声明是不可以的
+2. 函数声明可以被提前解析出来的，尽量使用函数表达式
+
 ***
 
 <a name="javascript-常用指令"></a>
@@ -97,7 +125,7 @@ window.close();
 
 setInterval(function,time);
 clearInterval(setInterval());
-setTimeout(function,time);                   //延迟执行
+setTimeout('function',interval);                   //延迟执行
 clearTimeout(setTimeout());
 
 window.history.back();
@@ -122,6 +150,9 @@ var h=document.documentElement.scrollHeight||document.body.scrollHeight;
 //offsetHeight = clientHeight + 滚动条 + 边框
 var w= document.documentElement.offsetWidth||document.body.offsetWidth;
 var h= document.documentElement.offsetHeight||document.body.offsetHeight;
+
+//获取当前网页地址并判断是否包含指定字符串
+if (window.location.href.indexOf('字符串') != -1)
 ```
 
 <a name="数据"></a>
@@ -226,9 +257,7 @@ document.querySelector('selector');          //返回找到的第一个结果
 getAttribute()
 setAttribute(属性，值)
 
-.childNodes
-.firstChild
-.lastChild
+.childNodes  .firstChild  .lastChild
 .parentNode
 .nextSibling                //兄弟节点，某个节点之后
 .previousSibling            //兄弟节点，某个节点之前
@@ -236,19 +265,18 @@ setAttribute(属性，值)
 .appendChild(newnode)       //插入节点
 .insertBefore(newnode,node) //在node前插入newnode
 .removeChild(node)
-.replace(newnode,oldnew)
+.replace(newnode,oldnode)
 
 document.createElement()
 document.createTextNode()
 
-
-
-
 //属性
+.nodeValue
 object.innerHTML
 object.style.backgroundColor
 object.style.display = 'none'/'block'
 object.className
+
 ```
 
 <a name="事件"></a>
@@ -281,3 +309,5 @@ Math.floor(num);          //向下取整
 Math.round(num);          //四舍五入
 Math.random();            //随机数
 ```
+
+***

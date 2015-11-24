@@ -12,6 +12,7 @@
 ## [jQuery学习笔记](jQuery.md)
 ## [Jekyll-Ubuntu](Jekyll.md)
 ## [WEB基础学习笔记](HTML5+CSS3.md)
+## [ECMAScript2015](ES6.md)
 ## [图解CSS3读书笔记](CSS3.md)
 ## [JavaScript学习笔记](JavaScript.md)
 ## [生活中遇到的<small><small><small><small><small>小</small></small></small></small></small>BUG汇总](BUG.md)
