@@ -8,7 +8,7 @@
     - [`Array Destructuring` 解构数组](#array-destructuring-解构数组)
     - [`Object Destructuring` 解构对象](#object-destructuring-解构对象)
   - [字符串模板](#字符串模板)
-    - [`Template Sreings` 模板字符串](#template-sreings-模板字符串)
+    - [`Template Strings` 模板字符串](#template-strings-模板字符串)
     - [`Tagged Templates` 带标签的模板字符串](#tagged-templates-带标签的模板字符串)
     - [判断字符串里是否包含其他的字符串](#判断字符串里是否包含其他的字符串)
   - [函数](#函数)
@@ -117,8 +117,8 @@ console.log(a,b,c);      //firefox 支持这种写法 chrome 不支持
 
 <a name="字符串模板"></a>
 ## 字符串模板
-<a name="template-sreings-模板字符串"></a>
-#### `Template Sreings` 模板字符串
+<a name="template-strings-模板字符串"></a>
+#### `Template Strings` 模板字符串
 
 ```js
 //之前的写法
@@ -533,8 +533,8 @@ class Shop extends Person {
   }
 }
 
-let Lee = new Person('Lee','1988-10-01');
-console.log(Lee.intro());
+let Lee = new Shop('Lee','1988-10-01');
+console.log(Lee.intro());         //Lee，1988-10-01
 ```
 
 ***

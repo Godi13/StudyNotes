@@ -659,14 +659,15 @@ module.exports = Action;
 
 ###### 4. 其他
 
-    wget -p -np -k -r url(你的网站入口)  //下载网站
     ifconfig                           //查看IP
     eog *                              //打开图片
     tar zxvf filename.tgz              //解压缩.tgz
     sudo ln -s /usr/local/bin/python3.5m /usr/bin/python
+    mkdir filename && cd $_            //创建文件夹并进入
 
 ###### 5. 下载
 
+    wget -p -np -k -r url(你的网站入口)  //下载网站
      sudo apt-get install axel
      axel http://xxxxxx
 
@@ -775,7 +776,7 @@ border：1px solid red;   //调式时可以先添加边框
 
 box-shadow: 0px 3px 8px #AAA, inset 0px 2px 3px #FFF;  //内外阴影，可做按钮效果
 
-ul>li[title=$#]*{$#}*    //$# 表示当前行内容
+ul>li[title=$#]*{$#}*    //$# 表示当前行内容 Emmet
 ```
 
 <a name="服务器相关"></a>
