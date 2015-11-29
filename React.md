@@ -88,7 +88,7 @@ var HelloWorld = React.createClass({
   }
 });
 React.render(<div style={style}><HelloWorld /></div>,document.body);
-```
+```]
 
 ```js
 var style = {

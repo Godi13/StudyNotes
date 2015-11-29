@@ -40,6 +40,7 @@
 #### React
 
 ##### [React学习笔记](React.md)
+##### [React相关代码](React-ES6.md)
 
 ***
 
@@ -54,6 +55,7 @@
 <a name="经验总结"></a>
 #### 经验总结
 
+##### [Jekyll-Ubuntu](Jekyll.md)
 ##### [生活中遇到的<small><small><small><small><small>小</small></small></small></small></small>BUG汇总](BUG.md)
 
 ***
@@ -63,9 +65,8 @@
 
 ##### [Git](Git.md)
 ##### [SEO](SEO.md)
+##### [工作环境配置](Front-End.md)
 ##### [学习资料收集](Resource.md)
-##### [Jekyll-Ubuntu](Jekyll.md)
-##### [大杂烩](Front-End.md)
 
 
 

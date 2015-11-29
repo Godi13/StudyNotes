@@ -1,8 +1,6 @@
-# 索引
-
 <!-- MarkdownTOC -->
 
-- [知识点整理](#知识点整理)
+- [待整理](#待整理)
   - [工作环境配置](#工作环境配置)
     - [1. Ubuntu14.04 服务器上安装 NodeJS](#1-ubuntu1404-服务器上安装-nodejs)
     - [2. Ubuntu 14.04 安装 node v4](#2-ubuntu-1404-安装-node-v4)
@@ -20,14 +18,8 @@
 
 <!-- /MarkdownTOC -->
 
-<a name="知识点整理"></a>
-# 知识点整理
-
->[关于WEB开发全栈详细介绍](https://www.youtube.com/watch?v=pB0WvcxTbCA)
-
-***
-
-***
+<a name="待整理"></a>
+# 待整理
 
 <a name="工作环境配置"></a>
 ## 工作环境配置

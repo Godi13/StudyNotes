@@ -82,6 +82,7 @@
     tar zxvf filename.tgz              //解压缩.tgz
     sudo ln -s /usr/local/bin/python3.5m /usr/bin/python
     mkdir filename && cd $_            //创建文件夹并进入
+    kill -9 进程号                      //杀死进程
 
 <a name="5-下载"></a>
 #### 5. 下载
