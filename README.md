@@ -21,6 +21,7 @@
 
 ##### [ECMAScript2015](ES6.md)
 ##### [JS知识点与指令](JS.md)
+##### [JQ知识点与指令](JQ.md)
 ##### [jQuery学习笔记](jQuery.md)
 ##### [JavaScript学习笔记](JavaScript.md)
 

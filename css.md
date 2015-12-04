@@ -38,6 +38,12 @@ border：1px solid red;   //调式时可以先添加边框
 }
 
 box-shadow: 0px 3px 8px #AAA, inset 0px 2px 3px #FFF;  //内外阴影，可做按钮效果
+
+transition: property duration timing-function delay;
+//property 规定设置过度效果的CSS属性的名称
+//duration 规定完成过渡效果需要多少秒或毫秒
+//timing-function 规定速度效果的速度曲线，默认ease
+//delay 定义过度效果延迟多久开始，默认0
 ```
 
 ***
