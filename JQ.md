@@ -135,6 +135,7 @@ $(function() {
   });
 })
 
+
 dblclick()    //双击
 hover()       //鼠标在上面或离开时都触发
 mouseenter()  //鼠标在上面时触发
@@ -156,9 +157,62 @@ $(function() {
 
   $('对象').keyup(function() {
     $('对象').text('XXXX').show();
-  })
+  });
 
+  $('对象').change(function() {
+  	if($(this).prop('checked')) {
+  	  $('对象').text('XXXX').show();
+  	} else {
+  	  $('对象').text('xxxx').show();
+  	}
+  });
+
+  $('form').submit(function() {
+  	 $('对象').text('XXXXX').show();
+  	 alert($('对象').val());
+  });
 })
 
+//on,相当于最上面的例子
+$(function() {
+  $('对象1').css('display', 'none');
+  $('对象2').on('click', function() {
+    $(this).siblings('h6').toggle();
+  });
+})
+//one
+  $('对象2').one('click', function() {  //one 只执行一次
+    $(this).siblings('h6').toggle();
+  });
 
+$('对象').off('click')   //取消事件绑定
+```
+
+## 效果
+
+```js
+//渐隐渐现，默认400毫秒，fast为200毫秒，slow为600毫秒
+$().fadeIn()       //渐现
+$().fadeOut()      //渐隐
+$().fadeToggle()   //渐隐渐现切换
+$().fadeIn(1000)   //渐现过程持续1000毫秒
+$().fadeIn().fadeOut()   //先渐现后渐隐
+$().fadeIn(1000，function() {
+	console.log('XXXX');  
+})；               //渐现后回调函数
+
+//逐渐渐隐渐现
+arguments.callee
+$('对象').fadeOut('fast',function() {
+	$(this).prev().fadeOut('fast', arguments.callee);
+});
+$('对象').fadeIn('fast',function() {
+	$(this).next().fadeIn('fast', arguments.callee);
+});
+
+//滑动效果渐隐渐现
+slideup() slidedown() slidetoggle()
+
+//隐藏显示
+show() hide() 
 ```

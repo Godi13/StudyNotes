@@ -47,8 +47,3 @@ transition: property duration timing-function delay;
 ```
 
 ***
-
-#### 3.Emmet
-
-ul>li[title=$#]*{$#}*    //$# 表示当前行内容 Emmet
-

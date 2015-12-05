@@ -18,6 +18,7 @@
 
 <!-- /MarkdownTOC -->
 
+
 <a name="待整理"></a>
 # 待整理
 
@@ -521,3 +522,8 @@ module.exports = Action;
 ```
 
 ***
+
+
+### Emmet
+
+	ul>li[title=$#]*{$#}*    //$# 表示当前行内容 Emmet
