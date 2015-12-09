@@ -522,8 +522,3 @@ module.exports = Action;
 ```
 
 ***
-
-
-### Emmet
-
-	ul>li[title=$#]*{$#}*    //$# 表示当前行内容 Emmet
