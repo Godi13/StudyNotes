@@ -29,7 +29,8 @@ __阮一峰__ [JavaScript 标准参考教程（alpha）](http://javascript.ruany
 <a name="javascript-知识点"></a>
 ## JavaScript 知识点
 
-<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> chrome 中打开 console 快捷键
+<kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> chrome 中打开 console 快捷键  
+<kbd>command</kbd>+<kbd>option</kbd>+<kbd>i</kbd> chrome 中打开 console 快捷键
 
 <a name="变量提升"></a>
 #### 变量提升

@@ -19,6 +19,7 @@
 <a name="javascript"></a>
 #### JavaScript
 
+##### [JS基础](JS-miaoV.md)
 ##### [ECMAScript2015](ES6.md)
 ##### [JS知识点与指令](JS.md)
 ##### [JQ知识点与指令](JQ.md)
@@ -68,7 +69,3 @@
 ##### [SEO](SEO.md)
 ##### [工作环境配置](Front-End.md)
 ##### [学习资料收集](Resource.md)
-
-
-
-
