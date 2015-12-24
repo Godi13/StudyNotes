@@ -87,7 +87,7 @@
 <a name="5-下载"></a>
 #### 5. 下载
 
-    wget -p -np -k -r url(你的网站入口)  //下载网站
+     wget -p -np -k -r url(你的网站入口)  //下载网站
      sudo apt-get install axel
      axel http://xxxxxx
 
@@ -159,5 +159,3 @@
 ## 强制关闭图形窗口
 
 在`系统`-`键盘`中添加自定义快捷键，Name：`ForceQuit`，Command：`xkill`，快捷键<kbd>ctrl</kbd><kbd>alt</kbd><kbd>X</kbd>
-
-
