@@ -1,6 +1,14 @@
 ```
-document.title = 123;    //title后面可以直接接文字
 document.body.innerHTML
+document.title = 123;  //title后面可以直接接文字
+
+setInterval(函数,毫秒)  //函数后面不要加括号，毫秒要14以上
+clearInterval(setInterval())
+setTimeout(函数，毫秒)  //只执行一次
+clearTimeout(setTimeout())
+
+图片的 display 显示为 display-block
+
 style.cssText   //类似于innnerHTML，会替换之前的cssText
 window.getComputedStyle(element[, pseudoElt])   //IE9以下版本会出现兼容性问题
 Element.currentStyle.attr  //支持IE
@@ -91,3 +99,64 @@ JS解析器工作方式：
 
 >所有函数默认返回值为`undefined`  
 >当函数的参数个数无法确定的时候使用`arguments`
+
+#### 闭包
+
+```js
+for(var i = 0; i < arr.length; i++) {
+  arr[i].onclick = (function(i) {
+    return function() {
+      alert(i);
+    }
+  })(i)
+}
+
+for(var i = 0; i < arr.length; i++) {
+  (function(i){
+    arr[i].onclick = function() {
+      alert(i);
+    }
+  })(i)
+}
+```
+
+闭包的特点：
+1. 函数嵌套函数
+2. 内部函数可以引用外部函数的参数和变量
+3. 参数和变量不会被垃圾回收机制收回
+
+闭包的优点：
+1. 一个变量长期驻扎在内存当中
+2. 避免全局变量的污染
+3. 私有成员的存在
+
+闭包的用法：
+1. 模块化代码
+2. 在循环中直接找到对应元素的索引
+
+闭包的问题：
+1. IE下容易引发内存泄露(只有关了浏览器才释放)
+
+```js
+//IE在这种函数内外相互引用的情况下会发生内存泄露
+window.onload = function() {
+  var oDiv = document.getElementById('div1');
+  oDiv.onclick = function() {
+    alert(oDiv.id);
+  };
+  //手动释放内存
+  window.onunload = function() {
+    oDiv.onclick = null;
+  };
+}
+
+//第二种方法
+window.onload = function() {
+  var oDiv = document.getElementById('div1');
+  var id = oDiv.id;
+  oDiv.onclick = function() {
+    alert(id);
+  };
+  oDiv = null;
+}
+```

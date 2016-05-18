@@ -19,6 +19,7 @@
 <a name="javascript"></a>
 #### JavaScript
 
+##### [NodeJS](NodeJS.md)
 ##### [JS基础](JS-miaoV.md)
 ##### [ECMAScript2015](ES6.md)
 ##### [JS知识点与指令](JS.md)
@@ -43,6 +44,7 @@
 
 ##### [React学习笔记](React.md)
 ##### [React相关代码](React-ES6.md)
+##### [Redux](Redux.md)
 
 ***
 
